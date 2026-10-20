@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand: espresso #361F18 and sand #D2B89E, from Caprea's swatch */
+  --color-espresso: #361f18;
+  --color-espresso-900: #24140f;
+  --color-espresso-800: #2d1913;
+  --color-espresso-700: #4a2c22;
+  --color-mocha: #6b4636;
+  --color-sand: #d2b89e;
+  --color-sand-300: #e3d1bd;
+  --color-sand-600: #b89a7c;
+  --color-cream: #f6efe6;
+  --color-cream-200: #ece0d1;
+  --color-matcha: #8fa36a;
+  --color-gold: #c9a45c;
+
+  --font-display: var(--font-gaqire), "Times New Roman", serif;
+  --font-sans: var(--font-josefin), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-espresso-900);
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--color-espresso);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-sand);
+    color: var(--color-espresso);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.02;
+  }
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@layer components {
+  .glass {
+    background: color-mix(in oklab, var(--color-espresso-900) 42%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid color-mix(in oklab, var(--color-sand) 18%, transparent);
+  }
+
+  .glass-light {
+    background: color-mix(in oklab, var(--color-cream) 55%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid color-mix(in oklab, var(--color-espresso) 10%, transparent);
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  /* Film grain over dark sections */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .input {
+    width: 100%;
+    border-radius: 0.9rem;
+    border: 1px solid color-mix(in oklab, var(--color-sand) 25%, transparent);
+    background: color-mix(in oklab, var(--color-espresso-900) 55%, transparent);
+    padding: 0.85rem 1rem;
+    color: var(--color-cream);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input::placeholder {
+    color: color-mix(in oklab, var(--color-cream) 40%, transparent);
+  }
+  .input:focus {
+    border-color: var(--color-sand);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-sand) 18%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
