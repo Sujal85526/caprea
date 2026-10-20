@@ -73,7 +73,7 @@ export function SignatureDrinks({ drinks }: { drinks: MenuItem[] }) {
           </Link>
         </div>
 
-        {drinks.map((d, i) => {
+        {drinks.map((d) => {
           const tint = tints[d.slug] ?? "#d2b89e";
           return (
             <article
@@ -81,8 +81,7 @@ export function SignatureDrinks({ drinks }: { drinks: MenuItem[] }) {
               className="sig-card group relative flex h-[68vh] min-h-[440px] w-full shrink-0 flex-col justify-between overflow-hidden rounded-[2rem] p-8 md:w-[min(30vw,420px)]"
               style={{ background: `radial-gradient(120% 80% at 50% 30%, ${tint}55, transparent 70%), #2d1913` }}
             >
-              <div className="flex items-start justify-between text-cream/60">
-                <span className="font-display text-xl">0{i + 1}</span>
+              <div className="flex min-h-7 items-start justify-end">
                 {d.best_seller && <span className="eyebrow rounded-full border border-gold/50 px-3 py-1 text-gold">Best seller</span>}
               </div>
               <div className="sig-cup relative mx-auto aspect-square w-[78%]">

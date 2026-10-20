@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
@@ -11,43 +11,47 @@ import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 
 const floaters = [
   { src: "/menu/salted-vanilla-matcha.webp", alt: "Salted vanilla matcha", cls: "left-[3%] top-[38%] w-16 sm:w-28 lg:left-[31%] lg:top-[20%] lg:w-32", speed: -0.35, rot: -10 },
-  { src: "/menu/velvet-sunset.webp", alt: "Velvet sunset", cls: "right-[4%] top-[36%] w-16 sm:w-24 lg:right-[31%] lg:top-[12%] lg:w-28", speed: -0.6, rot: 12 },
+  { src: "/menu/velvet-sunset.webp", alt: "Velvet sunset", cls: "hidden sm:block right-[4%] top-[36%] w-16 sm:w-24 lg:right-[31%] lg:top-[12%] lg:w-28", speed: -0.6, rot: 12 },
   { src: "/menu/golden-hour.webp", alt: "Golden hour", cls: "right-[8%] bottom-[22%] w-16 sm:w-24 lg:right-[30%] lg:bottom-[14%] lg:w-28", speed: -0.25, rot: -6 },
-  { src: "/menu/smores-cookie.webp", alt: "S'mores cookie", cls: "left-[8%] bottom-[24%] w-16 sm:w-24 lg:left-[32%] lg:bottom-[8%] lg:w-28", speed: -0.5, rot: 8 },
+  { src: "/menu/smores-cookie.webp", alt: "S'mores cookie", cls: "hidden sm:block left-[8%] bottom-[24%] w-16 sm:w-24 lg:left-[32%] lg:bottom-[8%] lg:w-28", speed: -0.5, rot: 8 },
 ];
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const ready = useSiteReady();
+  const [pour, setPour] = useState(false);
 
   useGSAP(
     () => {
       if (!ready) return;
       const split = SplitText.create(".hero-title", { type: "lines,words,chars", mask: "lines" });
-      const intro = gsap.timeline({ defaults: { ease: "expo.out" } });
-      intro
-        .from(".hero-arch", { clipPath: "inset(100% 0% 0% 0% round 999px 999px 32px 32px)", duration: 1.6, ease: "expo.inOut" })
-        .from(split.chars, { yPercent: 110, duration: 1.3, stagger: 0.025 }, "-=0.9")
-        .from(".hero-fade", { y: 24, opacity: 0, duration: 1, stagger: 0.08 }, "-=1")
-        .from(".hero-float", { scale: 0.4, opacity: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: "back.out(1.6)" }, "-=1.2")
-        .from(".hero-bg-logo", { opacity: 0, scale: 1.08, duration: 2 }, 0);
 
-      // Idle float for the drink illustrations.
+      // Intro: the arch opens and the matcha pours once on its own.
+      gsap
+        .timeline({ defaults: { ease: "expo.out" } })
+        .from(".hero-bg-logo", { opacity: 0, scale: 1.06, duration: 2.4 }, 0)
+        .from(".hero-arch", { clipPath: "inset(100% 0% 0% 0% round 999px 999px 32px 32px)", duration: 1.5, ease: "expo.inOut" }, 0)
+        .call(() => setPour(true), undefined, 1.1)
+        .from(split.chars, { yPercent: 110, duration: 1.3, stagger: 0.022 }, 0.6)
+        .from(".hero-fade", { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, 0.9)
+        .from(".hero-float", { scale: 0.5, opacity: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: "back.out(1.5)" }, 1);
+
+      // Slow idle float for the drink illustrations.
       gsap.utils.toArray<HTMLElement>(".hero-float img").forEach((el, i) => {
-        gsap.to(el, { y: i % 2 ? 14 : -14, rotate: i % 2 ? 3 : -3, duration: 3 + i * 0.4, repeat: -1, yoyo: true, ease: "sine.inOut" });
+        gsap.to(el, { y: i % 2 ? 10 : -10, rotate: i % 2 ? 2 : -2, duration: 3.4 + i * 0.4, repeat: -1, yoyo: true, ease: "sine.inOut" });
       });
 
-      // Scroll: text drifts up, arch opens, floaters parallax.
+      // Scroll: a gentle parallax while the hero leaves the screen; nothing is pinned.
       const scroll = gsap.timeline({
-        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom bottom", scrub: 0.6 },
+        defaults: { ease: "none" },
+        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
       });
       scroll
-        .to(".hero-copy", { yPercent: -18, opacity: 0, ease: "none", duration: 0.45 }, 0)
-        .to(".hero-arch", { scale: 1.12, ease: "none", duration: 1 }, 0)
-        .to(".hero-bg-logo", { yPercent: 18, ease: "none", duration: 1 }, 0)
-        .fromTo(".hero-caption", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3 }, 0.55);
+        .to(".hero-copy", { yPercent: -16, opacity: 0.15 }, 0)
+        .to(".hero-arch-wrap", { yPercent: 14 }, 0)
+        .to(".hero-bg-logo", { yPercent: 22 }, 0);
       gsap.utils.toArray<HTMLElement>(".hero-float").forEach((el) => {
-        scroll.to(el, { yPercent: Number(el.dataset.speed) * 160, ease: "none", duration: 1 }, 0);
+        scroll.to(el, { yPercent: Number(el.dataset.speed) * 120 }, 0);
       });
 
       return () => split.revert();
@@ -56,8 +60,8 @@ export function Hero() {
   );
 
   return (
-    <section ref={root} className="relative h-[260vh] bg-espresso" aria-label="Caprea">
-      <div className="sticky top-0 h-dvh overflow-hidden grain">
+    <section ref={root} className="relative bg-espresso" aria-label="Caprea">
+      <div className="relative h-svh min-h-[640px] overflow-hidden grain">
         {/* Oversized wordmark, as on Caprea's packaging */}
         <div className="hero-bg-logo pointer-events-none absolute inset-x-[-10%] top-1/2 -translate-y-1/2 text-sand/[0.06]">
           <Logo className="w-full" title="" />
@@ -81,21 +85,18 @@ export function Hero() {
             </h1>
           </div>
 
-          <div className="relative mx-auto my-5 h-[min(40dvh,520px)] sm:h-[min(48dvh,560px)] lg:my-0 lg:h-[min(72dvh,640px)]">
+          <div className="hero-arch-wrap relative mx-auto my-5 h-[min(40svh,520px)] sm:h-[min(48svh,560px)] lg:my-0 lg:h-[min(72svh,640px)]">
             <div
               className="hero-arch relative h-full aspect-[2/3] overflow-hidden rounded-t-full rounded-b-[2rem] bg-cream-200 shadow-[0_60px_120px_-40px_rgba(0,0,0,.8)] ring-1 ring-sand/20"
               style={{ clipPath: "inset(0% 0% 0% 0% round 999px 999px 32px 32px)" }}
             >
-              <FrameSequence name="matcha" count={36} trigger={root} focusY={0.35} className="absolute inset-0 size-full" />
+              <FrameSequence name="matcha" count={36} play={pour} duration={3.2} focusY={0.35} className="absolute inset-0 size-full" />
               <div className="absolute inset-0 bg-gradient-to-t from-espresso/60 via-transparent to-transparent" />
-              <p className="hero-caption absolute inset-x-0 bottom-7 text-center font-display text-xl text-cream uppercase opacity-0 sm:text-2xl">
-                Ceremonial matcha, poured slow
-              </p>
             </div>
           </div>
 
-          <div className="hero-copy flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
-            <p className="hero-fade max-w-sm text-base leading-relaxed text-cream/75 sm:text-lg">
+          <div className="hero-copy flex flex-col items-center gap-5 text-center lg:items-start lg:text-left">
+            <p className="hero-fade hidden max-w-sm text-base leading-relaxed text-cream/75 min-[400px]:block sm:text-lg">
               Caprea brings its coffee cart, barista and signature drinks to weddings, graduations and gatherings across the
               Emirates.
             </p>

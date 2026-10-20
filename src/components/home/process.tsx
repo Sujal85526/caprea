@@ -33,9 +33,8 @@ export function Process() {
         <div className="mx-auto grid w-full max-w-7xl items-center gap-5 px-6 sm:gap-10 sm:px-10 lg:grid-cols-2 lg:gap-20">
           <div className="relative mx-auto h-[30dvh] w-full max-w-md overflow-hidden rounded-[2rem] sm:h-[42dvh] sm:rounded-[2.5rem] shadow-[0_50px_100px_-40px_rgba(54,31,24,.55)] lg:h-[74dvh]">
             <FrameSequence name="strawberry" count={29} trigger={root} focusY={0.4} className="absolute inset-0 size-full" />
-            <div className="absolute inset-x-0 bottom-0 flex justify-between bg-gradient-to-t from-espresso/60 to-transparent p-6 text-cream">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-espresso/60 to-transparent p-6 text-cream">
               <span className="eyebrow">Strawberry matcha</span>
-              <span className="eyebrow tabular-nums">0{active + 1} / 0{steps.length}</span>
             </div>
           </div>
 
