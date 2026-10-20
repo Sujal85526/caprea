@@ -23,7 +23,7 @@ export function Hero() {
   useGSAP(
     () => {
       if (!ready) return;
-      const split = SplitText.create(".hero-title", { type: "lines,chars", mask: "lines" });
+      const split = SplitText.create(".hero-title", { type: "lines,words,chars", mask: "lines" });
       const intro = gsap.timeline({ defaults: { ease: "expo.out" } });
       intro
         .from(".hero-arch", { clipPath: "inset(100% 0% 0% 0% round 999px 999px 32px 32px)", duration: 1.6, ease: "expo.inOut" })
@@ -74,7 +74,7 @@ export function Hero() {
         <div className="relative z-20 mx-auto grid h-full max-w-7xl grid-rows-[auto_1fr_auto] items-center px-6 pt-24 pb-6 sm:px-10 lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-1 lg:gap-12 lg:pt-20 lg:pb-0">
           <div className="hero-copy text-center lg:text-left">
             <p className="hero-fade eyebrow mb-5 text-sand">Coffee &amp; matcha catering · UAE</p>
-            <h1 className="hero-title font-display text-[12vw] leading-[0.92] text-cream uppercase sm:text-7xl lg:text-[clamp(3rem,5.2vw,4.9rem)]">
+            <h1 className="hero-title font-display text-[12vw] leading-[0.92] text-cream uppercase sm:text-7xl lg:text-[clamp(2.8rem,4.3vw,4.6rem)]">
               Poured <br />
               for your <br className="hidden lg:block" />
               <span className="text-sand">moments</span>
