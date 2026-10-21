@@ -107,10 +107,7 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
       <div
         aria-hidden
         className="hero-panel pointer-events-none absolute inset-x-0 top-0 h-[27rem] rounded-b-[3rem] bg-espresso sm:h-[34rem] lg:inset-x-auto lg:right-0 lg:left-1/2 lg:bottom-0 lg:h-auto lg:rounded-b-none lg:rounded-bl-[12rem]"
-      >
-        <div className="absolute -right-20 bottom-10 size-80 rounded-full bg-mocha/50 blur-3xl" />
-        <div className="absolute inset-0 grain" />
-      </div>
+      />
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div className="hero-anim order-2 lg:order-1">

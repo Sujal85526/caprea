@@ -14,7 +14,7 @@ const photos = [
 
 export function Gallery({ instagram }: { instagram: string }) {
   return (
-    <section className="bg-espresso-900 py-20 text-cream sm:py-28">
+    <section className="bg-espresso py-20 text-cream sm:py-28">
       <div className="mx-auto max-w-6xl px-6 sm:px-10">
         <SectionHeading
           tone="dark"

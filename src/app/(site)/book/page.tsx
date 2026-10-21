@@ -14,8 +14,6 @@ export default function BookPage({ searchParams }: PageProps<"/book">) {
   return (
     <>
       <div className="relative overflow-hidden rounded-b-[3rem] bg-espresso text-cream">
-        <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 size-96 rounded-full bg-mocha/50 blur-3xl" />
-        <div aria-hidden className="absolute inset-0 grain" />
         <Reveal immediate stagger as="header" className="relative mx-auto max-w-7xl px-5 pt-28 pb-14 sm:px-8 md:pt-36 md:pb-20">
           <p className="eyebrow text-sand">Catering · Abu Dhabi &amp; across the UAE</p>
           <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1] text-cream uppercase sm:text-6xl md:text-7xl">

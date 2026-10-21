@@ -31,7 +31,7 @@ export function Marquee() {
   );
 
   return (
-    <div ref={ref} className="overflow-hidden bg-espresso-900 py-5 text-sand" aria-hidden>
+    <div ref={ref} className="overflow-hidden bg-espresso py-5 text-sand" aria-hidden>
       <div className="mq-track flex w-max">
         {row}
         {row}

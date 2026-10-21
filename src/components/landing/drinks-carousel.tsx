@@ -23,7 +23,6 @@ const tints: Record<string, string> = {
 export function DrinksCarousel({ drinks }: { drinks: MenuItem[] }) {
   return (
     <section className="relative overflow-hidden bg-espresso py-20 text-cream sm:py-28">
-      <div aria-hidden className="pointer-events-none absolute -top-40 -left-40 size-[32rem] rounded-full bg-mocha/40 blur-3xl" />
       <div className="relative mx-auto max-w-6xl px-6 sm:px-10">
         <SectionHeading
           tone="dark"
