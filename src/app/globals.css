@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   /* Brand: espresso #361F18 and sand #D2B89E, from Caprea's swatch */
@@ -12,6 +16,7 @@
   --color-sand-600: #b89a7c;
   --color-cream: #f6efe6;
   --color-cream-200: #ece0d1;
+  --color-linen: #fbf8f4;
   --color-matcha: #8fa36a;
   --color-gold: #c9a45c;
 
@@ -21,17 +26,96 @@
   --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* shadcn tokens mapped to the Caprea palette (light, minimal). */
+:root {
+  --radius: 1rem;
+  --background: #fbf8f4;
+  --foreground: #361f18;
+  --card: #ffffff;
+  --card-foreground: #361f18;
+  --popover: #ffffff;
+  --popover-foreground: #361f18;
+  --primary: #361f18;
+  --primary-foreground: #fbf8f4;
+  --secondary: #f1e8dd;
+  --secondary-foreground: #361f18;
+  --muted: #f3ece3;
+  --muted-foreground: #7a5f52;
+  --accent: #efe3d4;
+  --accent-foreground: #361f18;
+  --destructive: #b4413a;
+  --border: #e9ddcf;
+  --input: #e3d5c5;
+  --ring: #d2b89e;
+  --chart-1: #361f18;
+  --chart-2: #d2b89e;
+  --chart-3: #8fa36a;
+  --chart-4: #c9a45c;
+  --chart-5: #6b4636;
+  --sidebar: #fbf8f4;
+  --sidebar-foreground: #361f18;
+  --sidebar-primary: #361f18;
+  --sidebar-primary-foreground: #fbf8f4;
+  --sidebar-accent: #efe3d4;
+  --sidebar-accent-foreground: #361f18;
+  --sidebar-border: #e9ddcf;
+  --sidebar-ring: #d2b89e;
+}
+
+@theme inline {
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
   html {
-    background: var(--color-espresso-900);
-    color-scheme: dark;
     -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
   }
 
   body {
-    background: var(--color-espresso);
-    color: var(--color-cream);
-    font-family: var(--font-sans);
+    @apply bg-background font-sans text-foreground;
     text-rendering: optimizeLegibility;
   }
 
@@ -40,30 +124,31 @@
     color: var(--color-espresso);
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: 0.02em;
-    line-height: 1.02;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
-/* Lenis smooth scroll */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: clip;
-}
-
 @layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  /* Used by the admin panel's dark surfaces */
   .glass {
     background: color-mix(in oklab, var(--color-espresso-900) 42%, transparent);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
@@ -72,20 +157,12 @@ html.lenis body {
   }
 
   .glass-light {
-    background: color-mix(in oklab, var(--color-cream) 55%, transparent);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid color-mix(in oklab, var(--color-espresso) 10%, transparent);
+    background: color-mix(in oklab, var(--color-linen) 72%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid color-mix(in oklab, var(--color-espresso) 8%, transparent);
   }
 
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.72rem;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-  }
-
-  /* Film grain over dark sections */
   .grain::after {
     content: "";
     position: absolute;
@@ -96,6 +173,7 @@ html.lenis body {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
+  /* Dark form field, used by the admin panel */
   .input {
     width: 100%;
     border-radius: 0.9rem;
@@ -116,7 +194,12 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }

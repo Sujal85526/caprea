@@ -1,13 +1,13 @@
 "use client";
 
-import clsx from "clsx";
-import { Coffee } from "lucide-react";
+import { Coffee } from "@phosphor-icons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { MenuItem } from "@/lib/types";
 import { aed, cupTierFor, minCups } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
 import { selectableDrinks } from "./model";
-import { CheckBadge, FieldError, ItemImage, Label, QtyStepper, StepHeader, type StepProps } from "./ui";
+import { CheckBadge, FieldError, ItemImage, Label, QtyStepper, StepHeader, optionClass, type StepProps } from "./ui";
 
 const CATEGORY_LABEL: Record<string, string> = {
   signature: "Signature",
@@ -32,34 +32,24 @@ function DrinkCard({
 }) {
   const body = (
     <>
-      <span className="relative mx-auto block aspect-square w-full max-w-[9.5rem]">
-        <span
-          aria-hidden
-          className={clsx(
-            "absolute inset-[12%] rounded-full blur-2xl transition-opacity duration-500",
-            selected ? "bg-sand/35 opacity-100" : "bg-sand/15 opacity-60 group-hover:opacity-100",
-          )}
-        />
+      <span className="relative block aspect-square w-full overflow-hidden rounded-2xl bg-secondary/70">
         <ItemImage
           src={item.image_url}
           alt=""
-          className="relative size-full transition-transform duration-700 ease-(--ease-luxe) group-hover:-translate-y-1 group-hover:rotate-[-2deg]"
+          className="size-full p-3 transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-105"
         />
+        {onToggle && <CheckBadge on={selected} className="absolute top-2.5 right-2.5" />}
       </span>
-      <span className="mt-3 block text-center">
-        <span className="eyebrow block text-[0.58rem] text-sand/70">{CATEGORY_LABEL[item.category] ?? item.category}</span>
-        <span className="mt-1.5 block font-display text-xl leading-tight text-cream">{item.name}</span>
+      <span className="block px-1 pt-3.5 pb-1">
+        <span className="eyebrow block text-[0.58rem] text-mocha">{CATEGORY_LABEL[item.category] ?? item.category}</span>
+        <span className="mt-1.5 block font-display text-lg leading-tight text-espresso uppercase [overflow-wrap:anywhere]">
+          {item.name}
+        </span>
       </span>
     </>
   );
 
-  const shell = clsx(
-    "group relative flex flex-col rounded-3xl border p-4 pt-5 transition-all duration-500 ease-(--ease-luxe) sm:p-5",
-    selected
-      ? "border-sand bg-sand/[0.09] shadow-[0_24px_50px_-28px_rgba(210,184,158,0.6)]"
-      : "border-sand/15 bg-espresso-900/35 hover:border-sand/45",
-    disabled && "opacity-40",
-  );
+  const shell = cn("group flex flex-col p-3 sm:p-3.5", optionClass(selected), disabled && "opacity-50");
 
   if (onToggle) {
     return (
@@ -70,9 +60,8 @@ function DrinkCard({
         aria-checked={selected}
         aria-disabled={disabled}
         onClick={onToggle}
-        className={clsx(shell, "text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand")}
+        className={shell}
       >
-        <CheckBadge on={selected} className="absolute top-3.5 right-3.5 z-10" />
         {body}
       </button>
     );
@@ -88,7 +77,12 @@ function DrinkCard({
 function CategoryChips({ cats, value, onChange }: { cats: string[]; value: string; onChange: (c: string) => void }) {
   if (cats.length < 2) return null;
   return (
-    <div data-animate className="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Filter drinks">
+    <div
+      data-animate
+      className="mb-6 inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-secondary p-1 [scrollbar-width:none]"
+      role="tablist"
+      aria-label="Filter drinks"
+    >
       {["all", ...cats].map((c) => (
         <button
           key={c}
@@ -96,9 +90,9 @@ function CategoryChips({ cats, value, onChange }: { cats: string[]; value: strin
           role="tab"
           aria-selected={value === c}
           onClick={() => onChange(c)}
-          className={clsx(
-            "eyebrow rounded-full border px-4 py-2 text-[0.62rem] transition-colors duration-300",
-            value === c ? "border-sand bg-sand text-espresso" : "border-sand/25 text-cream/70 hover:border-sand/60",
+          className={cn(
+            "shrink-0 rounded-full px-4 py-2 text-sm transition-colors duration-200 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
+            value === c ? "bg-espresso text-cream" : "text-espresso/75 hover:text-espresso",
           )}
         >
           {c === "all" ? "All" : (CATEGORY_LABEL[c] ?? c)}
@@ -112,6 +106,18 @@ function useFiltered(items: MenuItem[]) {
   const [cat, setCat] = useState("all");
   const cats = [...new Set(items.map((i) => i.category))];
   return { cat, setCat, cats, list: cat === "all" ? items : items.filter((i) => i.category === cat) };
+}
+
+/** Sticky counter above a drinks grid. */
+function CounterBar({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      data-animate
+      className="sticky top-20 z-20 mb-6 flex items-center justify-between gap-4 rounded-full border bg-card/95 py-2.5 pr-4 pl-5 shadow-[0_12px_30px_-24px_rgba(54,31,24,.5)] backdrop-blur sm:top-24"
+    >
+      {children}
+    </div>
+  );
 }
 
 /** Package: choose signature drinks. Custom: drinks with cup steppers. */
@@ -151,26 +157,22 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
             : "Choose a package first."}
         </StepHeader>
 
-        <div
-          data-animate
-          className="sticky top-24 z-20 mb-6 flex items-center justify-between gap-4 rounded-full border border-sand/20 bg-espresso-900/80 py-2.5 pr-2.5 pl-5 backdrop-blur-xl"
-        >
-          <p className="text-sm text-cream/75">
-            <span className="font-display text-2xl text-cream tabular-nums">{picked.length}</span>
-            <span className="text-cream/50"> / {max}</span> selected
+        <CounterBar>
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-espresso tabular-nums">{picked.length}</span> / {max} selected
           </p>
-          <div className="flex gap-1.5" aria-hidden>
+          <div className="flex gap-1" aria-hidden>
             {Array.from({ length: max }, (_, i) => (
               <span
                 key={i}
-                className={clsx(
-                  "h-1.5 w-5 rounded-full transition-colors duration-500",
-                  i < picked.length ? "bg-sand" : "bg-sand/15",
+                className={cn(
+                  "h-1.5 w-5 rounded-full transition-colors duration-300",
+                  i < picked.length ? "bg-espresso" : "bg-secondary",
                 )}
               />
             ))}
           </div>
-        </div>
+        </CounterBar>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
           {items.map((item) => (
@@ -186,15 +188,15 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
         <FieldError>{errors.drinks}</FieldError>
 
         {coffee.length > 0 && (
-          <div data-animate className="glass mt-8 flex gap-4 rounded-3xl p-5 md:p-6">
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-sand/15 text-sand">
-              <Coffee className="size-5" />
+          <div data-animate className="mt-8 flex gap-4 rounded-3xl border bg-card p-5 md:p-6">
+            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-secondary text-espresso">
+              <Coffee className="size-5" weight="light" />
             </span>
             <div>
-              <p className="eyebrow text-sand">Plus our coffee selection</p>
-              <p className="mt-2 text-sm leading-relaxed text-cream/75">
+              <p className="eyebrow text-mocha">Plus our coffee selection</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 The remaining servings are poured from our specialty coffee bar:{" "}
-                <span className="text-cream">{coffee.map((c) => c.name).join(", ")}</span>.
+                <span className="text-espresso">{coffee.map((c) => c.name).join(", ")}</span>.
               </p>
             </div>
           </div>
@@ -218,16 +220,13 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
         Add any of our drinks and how many cups of each. Prices shown are our café prices, used for your estimate.
       </StepHeader>
 
-      <div
-        data-animate
-        className="sticky top-24 z-20 mb-6 flex items-center justify-between rounded-full border border-sand/20 bg-espresso-900/80 py-3 pr-5 pl-5 backdrop-blur-xl"
-      >
-        <p className="text-sm text-cream/75">
-          <span className="font-display text-2xl text-cream tabular-nums">{totalCups}</span> cups ·{" "}
+      <CounterBar>
+        <p className="text-sm text-muted-foreground">
+          <span className="font-medium text-espresso tabular-nums">{totalCups}</span> cups ·{" "}
           {Object.keys(form.drinks).length} drinks
         </p>
-        <p className="eyebrow text-[0.6rem] text-sand">Estimate</p>
-      </div>
+        <p className="eyebrow text-[0.6rem] text-mocha">Estimate</p>
+      </CounterBar>
 
       <CategoryChips cats={cats} value={cat} onChange={setCat} />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
@@ -235,8 +234,8 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
           const cups = form.drinks[item.slug] ?? 0;
           return (
             <DrinkCard key={item.slug} item={item} selected={cups > 0}>
-              <p className="mt-1 text-center text-xs text-cream/50">{aed(item.price ?? 0)} / cup</p>
-              <div className="mt-4 flex justify-center">
+              <p className="px-1 text-sm text-muted-foreground">{aed(item.price ?? 0)} / cup</p>
+              <div className="mt-3 flex justify-center border-t pt-3">
                 <QtyStepper
                   size="sm"
                   label={`${item.name} cups`}
@@ -278,7 +277,7 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
         price.
       </StepHeader>
 
-      <div data-animate className="glass rounded-3xl p-6 md:p-8">
+      <div data-animate className="rounded-3xl border bg-card p-6 md:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <Label>Total cups</Label>
@@ -292,8 +291,8 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
             />
           </div>
           <div className="sm:text-right">
-            <p className="eyebrow text-[0.6rem] text-cream/50">Your price</p>
-            <p className="mt-1 font-display text-3xl text-sand">
+            <p className="text-xs text-muted-foreground">Your price</p>
+            <p className="mt-1 font-display text-3xl text-espresso">
               {tier ? `${aed(tier.price_per_cup)} / cup` : `Min. ${min} cups`}
             </p>
           </div>
@@ -302,9 +301,9 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
           {tiers.map((t) => (
             <span
               key={t.id}
-              className={clsx(
-                "rounded-full border px-4 py-2 text-xs transition-colors duration-300",
-                tier?.id === t.id ? "border-sand bg-sand/15 text-cream" : "border-sand/20 text-cream/55",
+              className={cn(
+                "rounded-full border px-3.5 py-1.5 text-xs transition-colors duration-300",
+                tier?.id === t.id ? "border-espresso bg-espresso text-cream" : "border-border text-muted-foreground",
               )}
             >
               {t.label} · {aed(t.price_per_cup)}
@@ -314,7 +313,7 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
         <FieldError>{errors.cups}</FieldError>
       </div>
 
-      <h3 data-animate className="mt-12 mb-5 font-display text-3xl uppercase text-cream">
+      <h3 data-animate className="mt-12 mb-5 font-display text-2xl text-espresso uppercase sm:text-3xl">
         Drinks to serve
       </h3>
       <CategoryChips cats={cats} value={cat} onChange={setCat} />

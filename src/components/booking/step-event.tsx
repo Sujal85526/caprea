@@ -1,24 +1,19 @@
 "use client";
 
-import clsx from "clsx";
-import { CalendarDays, ChevronDown } from "lucide-react";
-import type { ReactNode } from "react";
+import { CalendarBlank } from "@phosphor-icons/react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { aed } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
 import { EventDatePicker } from "./date-picker";
 import { EVENT_TYPES, START_TIMES, earliestEventDate, formatEventDate, formatTime, latestEventDate } from "./model";
-import { FieldError, Label, StepHeader, type StepProps } from "./ui";
-
-function SelectShell({ children }: { children: ReactNode }) {
-  return (
-    <div className="relative">
-      {children}
-      <ChevronDown aria-hidden className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-sand" />
-    </div>
-  );
-}
+import { FieldError, Label, StepHeader, fieldClass, optionClass, type StepProps } from "./ui";
 
 const err = (id: string, msg?: string) =>
   msg ? { "aria-invalid": true as const, "aria-describedby": `${id}-error` } : {};
+
+const triggerClass = cn(fieldClass, "w-full data-[size=default]:h-12 [&>svg]:text-espresso");
 
 export function StepEvent({ form, update, catalog, errors }: StepProps) {
   const { settings, regions } = catalog;
@@ -32,8 +27,8 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
         your start time, including set-up.
       </StepHeader>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-        <fieldset data-animate className="glass rounded-3xl p-5 sm:p-7">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+        <fieldset data-animate className="min-w-0 rounded-3xl border bg-card p-4 sm:p-6">
           <legend className="sr-only">Event date</legend>
           <EventDatePicker
             value={form.eventDate}
@@ -43,9 +38,9 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
             invalid={!!errors.eventDate}
             describedBy={errors.eventDate ? "eventDate-error" : undefined}
           />
-          <div className="mt-5 flex items-center gap-3 border-t border-sand/15 pt-5 text-sm">
-            <CalendarDays className="size-4 shrink-0 text-sand" />
-            <span className={form.eventDate ? "text-cream" : "text-cream/45"}>
+          <div className="mt-4 flex items-center gap-3 border-t pt-4 text-sm">
+            <CalendarBlank className="size-5 shrink-0 text-mocha" weight="light" />
+            <span className={form.eventDate ? "font-medium text-espresso" : "text-muted-foreground"}>
               {form.eventDate ? formatEventDate(form.eventDate) : "Select a date"}
             </span>
           </div>
@@ -57,57 +52,45 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
             <Label htmlFor="startTime" hint={`${settings.service_hours} h service`}>
               Start time
             </Label>
-            <SelectShell>
-              <select
-                id="startTime"
-                className="input appearance-none pr-10"
-                value={form.startTime}
-                onChange={(e) => update({ startTime: e.target.value })}
-                {...err("startTime", errors.startTime)}
-              >
-                <option value="" disabled>
-                  Choose a time
-                </option>
+            <Select value={form.startTime} onValueChange={(v) => update({ startTime: v })}>
+              <SelectTrigger id="startTime" className={triggerClass} {...err("startTime", errors.startTime)}>
+                <SelectValue placeholder="Choose a time" />
+              </SelectTrigger>
+              <SelectContent position="popper" className="max-h-72 rounded-2xl">
                 {START_TIMES.map((t) => (
-                  <option key={t} value={t}>
+                  <SelectItem key={t} value={t} className="rounded-lg py-2 pl-3 text-sm">
                     {formatTime(t)}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </SelectShell>
+              </SelectContent>
+            </Select>
             <FieldError id="startTime-error">{errors.startTime}</FieldError>
           </div>
 
           <div data-animate>
             <Label htmlFor="eventType">Occasion</Label>
-            <SelectShell>
-              <select
-                id="eventType"
-                className="input appearance-none pr-10"
-                value={form.eventType}
-                onChange={(e) => update({ eventType: e.target.value })}
-                {...err("eventType", errors.eventType)}
-              >
-                <option value="" disabled>
-                  What are we celebrating?
-                </option>
+            <Select value={form.eventType} onValueChange={(v) => update({ eventType: v })}>
+              <SelectTrigger id="eventType" className={triggerClass} {...err("eventType", errors.eventType)}>
+                <SelectValue placeholder="What are we celebrating?" />
+              </SelectTrigger>
+              <SelectContent position="popper" className="rounded-2xl">
                 {EVENT_TYPES.map((t) => (
-                  <option key={t} value={t}>
+                  <SelectItem key={t} value={t} className="rounded-lg py-2 pl-3 text-sm">
                     {t}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </SelectShell>
+              </SelectContent>
+            </Select>
             <FieldError id="eventType-error">{errors.eventType}</FieldError>
           </div>
 
           {form.kind === "custom" && (
             <div data-animate>
               <Label htmlFor="guests">Number of guests</Label>
-              <input
+              <Input
                 id="guests"
                 inputMode="numeric"
-                className="input"
+                className={fieldClass}
                 placeholder="e.g. 80"
                 value={form.guests}
                 onChange={(e) => update({ guests: e.target.value.replace(/\D/g, "").slice(0, 5) })}
@@ -118,9 +101,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
           )}
 
           <fieldset data-animate>
-            <legend className="mb-2.5">
-              <span className="eyebrow text-sand-300">Emirate</span>
-            </legend>
+            <legend className="mb-2 text-sm font-medium text-espresso">Emirate</legend>
             <div role="radiogroup" aria-label="Emirate" className="grid grid-cols-2 gap-2">
               {regions.map((r) => {
                 const on = form.regionId === r.id;
@@ -131,13 +112,10 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
                     role="radio"
                     aria-checked={on}
                     onClick={() => update({ regionId: r.id })}
-                    className={clsx(
-                      "flex flex-col items-start rounded-2xl border px-4 py-3 text-left transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand",
-                      on ? "border-sand bg-sand/12" : "border-sand/20 bg-espresso-900/40 hover:border-sand/50",
-                    )}
+                    className={cn("flex flex-col items-start rounded-2xl px-4 py-3", optionClass(on))}
                   >
-                    <span className={clsx("text-[0.95rem]", on ? "text-cream" : "text-cream/85")}>{r.name}</span>
-                    <span className="mt-0.5 text-xs text-sand/80">
+                    <span className="text-[0.95rem] font-medium text-espresso">{r.name}</span>
+                    <span className="mt-0.5 text-xs text-muted-foreground">
                       {r.fee ? `${aed(r.fee)} transport` : "No transport fee"}
                     </span>
                   </button>
@@ -152,10 +130,10 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <div data-animate>
           <Label htmlFor="address">Venue address</Label>
-          <textarea
+          <Textarea
             id="address"
             rows={4}
-            className="input resize-none"
+            className={cn(fieldClass, "h-auto min-h-28 resize-none py-3 [field-sizing:fixed]")}
             placeholder="Venue name, area, building / villa, any access notes"
             value={form.address}
             maxLength={500}
@@ -168,10 +146,10 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
           <Label htmlFor="notes" hint="Optional">
             Notes
           </Label>
-          <textarea
+          <Textarea
             id="notes"
             rows={4}
-            className="input resize-none"
+            className={cn(fieldClass, "h-auto min-h-28 resize-none py-3 [field-sizing:fixed]")}
             placeholder={
               form.kind === "custom"
                 ? "Theme, dietary needs, anything you'd like us to know for your quote"

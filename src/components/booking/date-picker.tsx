@@ -1,8 +1,9 @@
 "use client";
 
 import { format } from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker } from "react-day-picker";
+import { CaretDown, CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 const toDate = (iso: string) => {
   const [y, m, d] = iso.split("-").map(Number);
@@ -30,7 +31,7 @@ export function EventDatePicker({
 
   return (
     <div aria-invalid={invalid || undefined} aria-describedby={describedBy}>
-      <DayPicker
+      <Calendar
         mode="single"
         selected={selected}
         onSelect={(d) => onChange(d ? format(d, "yyyy-MM-dd") : null)}
@@ -41,37 +42,19 @@ export function EventDatePicker({
         weekStartsOn={1}
         showOutsideDays
         fixedWeeks
-        components={{
-          Chevron: ({ orientation }) =>
-            orientation === "left" ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />,
-        }}
+        className="w-full bg-transparent p-0 [--cell-radius:9999px] [--cell-size:--spacing(10)] sm:[--cell-size:--spacing(11)]"
         classNames={{
-          root: "relative w-full select-none",
-          months: "w-full",
-          month: "w-full",
-          month_caption: "flex h-10 items-center px-1",
-          caption_label: "font-display text-2xl uppercase tracking-wide text-cream",
-          nav: "absolute top-0 right-0 z-10 flex items-center gap-2",
-          button_previous:
-            "grid size-10 place-items-center rounded-full border border-sand/25 text-sand transition-colors hover:border-sand hover:bg-sand hover:text-espresso disabled:pointer-events-none disabled:opacity-25 focus-visible:outline-2 focus-visible:outline-sand",
-          button_next:
-            "grid size-10 place-items-center rounded-full border border-sand/25 text-sand transition-colors hover:border-sand hover:bg-sand hover:text-espresso disabled:pointer-events-none disabled:opacity-25 focus-visible:outline-2 focus-visible:outline-sand",
-          chevron: "",
-          month_grid: "mt-5 w-full border-collapse",
-          weekdays: "",
-          weekday: "eyebrow pb-3 text-center text-[0.6rem] font-normal text-sand/60",
-          weeks: "",
-          week: "",
-          day: "p-0.5 text-center align-middle",
-          day_button:
-            "mx-auto grid aspect-square w-full max-w-11 place-items-center rounded-full text-[0.95rem] tabular-nums text-cream transition-all duration-300 ease-(--ease-luxe) hover:bg-sand/15 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-sand",
-          selected:
-            "[&>button]:bg-sand [&>button]:font-semibold [&>button]:text-espresso [&>button]:shadow-[0_8px_24px_-6px_rgba(210,184,158,0.65)] [&>button:hover]:bg-sand",
-          today: "[&>button]:ring-1 [&>button]:ring-sand/40",
-          disabled: "[&>button]:cursor-not-allowed [&>button]:text-cream/20 [&>button]:line-through [&>button:hover]:bg-transparent",
-          outside: "[&>button]:text-cream/25",
-          hidden: "invisible",
-          focused: "",
+          root: "w-full",
+          caption_label: "font-display text-xl tracking-wide text-espresso uppercase select-none",
+          weekday: "flex-1 pb-1 text-[0.72rem] font-normal tracking-[0.12em] text-muted-foreground uppercase select-none",
+          disabled: "text-muted-foreground/45 opacity-100 [&>button]:line-through [&>button]:decoration-muted-foreground/40",
+          today: "rounded-full [&>button]:ring-1 [&>button]:ring-sand",
+        }}
+        components={{
+          Chevron: ({ orientation, className }) => {
+            const Icon = orientation === "left" ? CaretLeft : orientation === "right" ? CaretRight : CaretDown;
+            return <Icon className={cn("size-4", className)} weight="bold" />;
+          },
         }}
       />
     </div>

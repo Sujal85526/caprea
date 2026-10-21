@@ -1,10 +1,10 @@
 "use client";
 
-import clsx from "clsx";
 import Image from "next/image";
 import type { BookingKind } from "@/lib/types";
 import { aed, minCups } from "@/lib/pricing";
-import { CheckBadge, FieldError, StepHeader, type StepProps } from "./ui";
+import { cn } from "@/lib/utils";
+import { CheckBadge, FieldError, StepHeader, optionClass, type StepProps } from "./ui";
 
 type Option = { kind: BookingKind; eyebrow: string; title: string; body: string; foot: string; photo: string };
 
@@ -53,7 +53,7 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
       <div
         role="radiogroup"
         aria-label="Booking type"
-        className={clsx("grid gap-5", options.length === 3 ? "lg:grid-cols-3" : "sm:grid-cols-2")}
+        className={cn("grid gap-4", options.length === 3 ? "md:grid-cols-3" : "sm:grid-cols-2")}
       >
         {options.map((o) => {
           const on = form.kind === o.kind;
@@ -65,37 +65,24 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
               aria-checked={on}
               data-animate
               onClick={() => onChoose(o.kind)}
-              className={clsx(
-                "group relative flex min-h-[22rem] flex-col overflow-hidden rounded-3xl border text-left transition-all duration-500 ease-(--ease-luxe) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sand",
-                on
-                  ? "border-sand shadow-[0_30px_60px_-30px_rgba(210,184,158,0.45)]"
-                  : "border-sand/15 hover:-translate-y-1 hover:border-sand/50",
-              )}
+              className={cn("group flex flex-col p-3 sm:p-4", optionClass(on))}
             >
-              <Image
-                src={o.photo}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 22vw, 100vw"
-                className={clsx(
-                  "object-cover transition-transform duration-[1.2s] ease-(--ease-luxe) group-hover:scale-105",
-                  on ? "scale-105 opacity-60" : "opacity-40",
-                )}
-              />
-              <span className="absolute inset-0 bg-linear-to-t from-espresso-900 via-espresso-900/80 to-espresso-900/10" />
-              <span className="relative flex items-center justify-between p-6">
-                <span className="eyebrow rounded-full border border-sand/30 bg-espresso-900/50 px-3 py-1.5 text-[0.6rem] text-sand backdrop-blur">
-                  {o.eyebrow}
-                </span>
-                <CheckBadge on={on} />
+              <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-secondary">
+                <Image
+                  src={o.photo}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 28vw, 100vw"
+                  className="object-cover transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-[1.03]"
+                />
+                <CheckBadge on={on} className="absolute top-3 right-3" />
               </span>
-              <span className="relative mt-auto block p-6 pt-0">
-                <span className="block font-display text-3xl uppercase leading-none text-cream">{o.title}</span>
-                <span className="mt-3 block text-sm leading-relaxed text-cream/70">{o.body}</span>
+              <span className="flex flex-1 flex-col px-1 pt-4 pb-1">
+                <span className="eyebrow text-[0.62rem] text-mocha">{o.eyebrow}</span>
+                <span className="mt-2 block font-display text-2xl leading-tight text-espresso uppercase">{o.title}</span>
+                <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">{o.body}</span>
                 {o.foot && (
-                  <span className="mt-5 block border-t border-sand/20 pt-4 text-xs tracking-[0.18em] text-sand uppercase">
-                    {o.foot}
-                  </span>
+                  <span className="mt-auto block pt-4 text-sm font-medium text-espresso">{o.foot}</span>
                 )}
               </span>
             </button>

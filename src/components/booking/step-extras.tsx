@@ -1,14 +1,14 @@
 "use client";
 
-import clsx from "clsx";
-import { Clock, CupSoda, Palette, Sparkles } from "lucide-react";
+import { Clock, Coffee, Palette, Sparkle } from "@phosphor-icons/react";
 import type { Extra } from "@/lib/types";
 import { aed } from "@/lib/pricing";
+import { cn } from "@/lib/utils";
 import { MAX_EXTRA_HOURS } from "./model";
 import { FieldError, ItemImage, QtyStepper, StepHeader, Toggle, type StepProps } from "./ui";
 
 const extraIcon = (x: Extra) =>
-  x.unit === "per_hour" ? Clock : x.unit === "on_request" ? CupSoda : x.slug.includes("corner") ? Palette : Sparkles;
+  x.unit === "per_hour" ? Clock : x.unit === "on_request" ? Coffee : x.slug.includes("corner") ? Palette : Sparkle;
 
 export function StepExtras({ form, update, catalog, errors }: StepProps) {
   const { settings } = catalog;
@@ -36,7 +36,7 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
 
       {addons.length > 0 && (
         <section aria-labelledby="addons-title">
-          <h3 id="addons-title" data-animate className="eyebrow mb-5 text-sand">
+          <h3 id="addons-title" data-animate className="eyebrow mb-4 font-sans text-mocha">
             Add-ons
           </h3>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -47,18 +47,21 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
                 <div
                   key={a.slug}
                   data-animate
-                  className={clsx(
-                    "flex items-center gap-4 rounded-3xl border p-3 pr-4 transition-all duration-500 ease-(--ease-luxe)",
-                    qty > 0 ? "border-sand bg-sand/[0.09]" : "border-sand/15 bg-espresso-900/35",
+                  className={cn(
+                    "flex items-center gap-4 rounded-3xl border bg-card p-3 pr-4 transition-[border-color,background-color,box-shadow] duration-300",
+                    qty > 0 ? "border-espresso bg-secondary/45 ring-1 ring-espresso" : "border-border",
                   )}
                 >
-                  <span className="relative grid size-20 shrink-0 place-items-center rounded-2xl bg-sand/[0.07]">
-                    <ItemImage src={a.image_url} alt="" className="size-16" />
+                  <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-2xl bg-secondary/70">
+                    <ItemImage src={a.image_url} alt="" className="size-20" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="font-display text-lg leading-tight text-cream">{a.name}</p>
-                    <p className="mt-1 text-xs text-cream/55">
-                      {aed(unit)} each{qty > 0 && <span className="text-sand"> · {aed(unit * qty)}</span>}
+                    <p className="font-display text-lg leading-tight text-espresso uppercase [overflow-wrap:anywhere]">
+                      {a.name}
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {aed(unit)} each
+                      {qty > 0 && <span className="font-medium text-espresso"> · {aed(unit * qty)}</span>}
                     </p>
                     <div className="mt-2.5">
                       <QtyStepper
@@ -82,51 +85,53 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
 
       {catalog.extras.length > 0 && (
         <section aria-labelledby="extras-title" className="mt-12">
-          <h3 id="extras-title" data-animate className="eyebrow mb-5 text-sand">
+          <h3 id="extras-title" data-animate className="eyebrow mb-4 font-sans text-mocha">
             Extras
           </h3>
-          <div className="glass divide-y divide-sand/10 overflow-hidden rounded-3xl">
+          <div className="divide-y overflow-hidden rounded-3xl border bg-card">
             {catalog.extras.map((x) => {
               const Icon = extraIcon(x);
               const qty = form.extras[x.slug] ?? 0;
               return (
-                <div key={x.slug} data-animate className="flex flex-wrap items-center gap-4 p-5 md:px-6">
+                <div key={x.slug} data-animate className="flex flex-wrap items-center gap-x-4 gap-y-3 p-5 md:px-6">
                   <span
-                    className={clsx(
+                    className={cn(
                       "grid size-11 shrink-0 place-items-center rounded-full transition-colors duration-300",
-                      qty > 0 ? "bg-sand text-espresso" : "bg-sand/12 text-sand",
+                      qty > 0 ? "bg-espresso text-cream" : "bg-secondary text-espresso",
                     )}
                   >
-                    <Icon className="size-5" />
+                    <Icon className="size-5" weight="light" />
                   </span>
                   <div className="min-w-[10rem] flex-1">
-                    <p className="text-[0.98rem] text-cream">{x.name}</p>
-                    {x.description && <p className="mt-0.5 text-sm text-cream/55">{x.description}</p>}
+                    <p className="text-[0.95rem] font-medium text-espresso">{x.name}</p>
+                    {x.description && <p className="mt-0.5 text-sm text-muted-foreground">{x.description}</p>}
                   </div>
-                  <p className="text-sm whitespace-nowrap text-sand">
-                    {x.unit === "on_request" || x.price == null
-                      ? "Priced on request"
-                      : x.unit === "per_hour"
-                        ? `${aed(x.price)} / hour`
-                        : aed(x.price)}
-                  </p>
-                  {x.unit === "per_hour" ? (
-                    <QtyStepper
-                      size="sm"
-                      label={`${x.name} hours`}
-                      value={qty}
-                      max={MAX_EXTRA_HOURS}
-                      onChange={(n) => setExtra(x.slug, n)}
-                    />
-                  ) : (
-                    <Toggle label={x.name} on={qty > 0} onChange={(v) => setExtra(x.slug, v ? 1 : 0)} />
-                  )}
+                  <div className="flex items-center gap-4 max-sm:w-full max-sm:justify-between max-sm:pl-15">
+                    <p className="text-sm whitespace-nowrap text-espresso">
+                      {x.unit === "on_request" || x.price == null
+                        ? "Priced on request"
+                        : x.unit === "per_hour"
+                          ? `${aed(x.price)} / hour`
+                          : aed(x.price)}
+                    </p>
+                    {x.unit === "per_hour" ? (
+                      <QtyStepper
+                        size="sm"
+                        label={`${x.name} hours`}
+                        value={qty}
+                        max={MAX_EXTRA_HOURS}
+                        onChange={(n) => setExtra(x.slug, n)}
+                      />
+                    ) : (
+                      <Toggle label={x.name} on={qty > 0} onChange={(v) => setExtra(x.slug, v ? 1 : 0)} />
+                    )}
+                  </div>
                 </div>
               );
             })}
           </div>
           <FieldError>{errors.extras}</FieldError>
-          <p data-animate className="mt-4 text-xs leading-relaxed text-cream/50">
+          <p data-animate className="mt-4 text-xs leading-relaxed text-muted-foreground">
             Extra cups are agreed with your barista and settled before service begins. Standard service is{" "}
             {settings.service_hours} hours.
           </p>

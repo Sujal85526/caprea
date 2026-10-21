@@ -3,6 +3,7 @@ import { Josefin_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
 const gaqire = localFont({
   src: "./fonts/Gaqire.otf",
@@ -34,21 +35,22 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#361F18",
+  themeColor: "#FBF8F4",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${gaqire.variable} ${josefin.variable} antialiased`}>
+    <html lang="en" className={cn("antialiased", gaqire.variable, josefin.variable)}>
       <body className="min-h-dvh">
         {children}
         <Toaster
           position="bottom-center"
           toastOptions={{
             style: {
-              background: "#24140f",
-              color: "#f6efe6",
-              border: "1px solid rgba(210,184,158,.25)",
+              background: "#361f18",
+              color: "#fbf8f4",
+              border: "none",
+              borderRadius: "999px",
               fontFamily: "var(--font-josefin)",
             },
           }}

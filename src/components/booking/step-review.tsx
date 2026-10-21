@@ -1,7 +1,8 @@
 "use client";
 
-import { Pencil } from "lucide-react";
+import { PencilSimple } from "@phosphor-icons/react";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import type { Quote } from "@/lib/pricing";
 import { formatEventDate, formatTime, type StepId } from "./model";
 import { SummaryBody } from "./summary";
@@ -9,28 +10,30 @@ import { StepHeader, type StepProps } from "./ui";
 
 function Block({ title, onEdit, children }: { title: string; onEdit: () => void; children: ReactNode }) {
   return (
-    <section data-animate className="glass rounded-3xl p-5 sm:p-6">
+    <section data-animate className="rounded-3xl border bg-card p-5 sm:p-6">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="eyebrow text-sand">{title}</h3>
-        <button
+        <h3 className="eyebrow font-sans text-mocha">{title}</h3>
+        <Button
           type="button"
+          variant="ghost"
+          size="sm"
           onClick={onEdit}
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs tracking-[0.14em] text-cream/60 uppercase transition-colors hover:bg-sand/10 hover:text-sand focus-visible:outline-2 focus-visible:outline-sand"
+          className="-mr-2 text-muted-foreground hover:text-espresso"
           aria-label={`Edit ${title.toLowerCase()}`}
         >
-          <Pencil className="size-3" /> Edit
-        </button>
+          <PencilSimple weight="light" /> Edit
+        </Button>
       </div>
-      <dl className="mt-4 space-y-2.5 text-sm">{children}</dl>
+      <dl className="mt-3 divide-y text-sm">{children}</dl>
     </section>
   );
 }
 
 function Row({ k, v }: { k: string; v: ReactNode }) {
   return (
-    <div className="flex justify-between gap-6">
-      <dt className="text-cream/50">{k}</dt>
-      <dd className="text-right text-cream">{v}</dd>
+    <div className="flex justify-between gap-6 py-2.5">
+      <dt className="shrink-0 text-muted-foreground">{k}</dt>
+      <dd className="min-w-0 text-right text-espresso">{v}</dd>
     </div>
   );
 }
@@ -63,7 +66,7 @@ export function StepReview({ form, catalog, quote, onEdit }: StepProps & { quote
         </Block>
       </div>
 
-      <section data-animate className="glass mt-4 rounded-3xl p-5 sm:p-6 lg:hidden">
+      <section data-animate className="mt-4 rounded-3xl border bg-card p-5 sm:p-6 lg:hidden">
         <SummaryBody form={form} catalog={catalog} quote={quote} />
       </section>
     </div>

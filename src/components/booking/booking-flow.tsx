@@ -1,14 +1,12 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ArrowLeft, ArrowRight, LoaderCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CircleNotch } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { submitBooking } from "@/app/(site)/book/actions";
-import { useLenis } from "@/components/site/smooth-scroll";
 import { Button } from "@/components/ui/button";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import type { BookingKind, Catalog } from "@/lib/types";
 import {
   FIELD_STEP,
@@ -32,8 +30,6 @@ import { StepPackage } from "./step-package";
 import { StepReview } from "./step-review";
 import { SummaryCard, SummarySheet } from "./summary";
 
-gsap.registerPlugin(useGSAP);
-
 export type BookingStart = { kind: BookingKind | null; packageId: string | null };
 
 function initialState(start: BookingStart) {
@@ -43,12 +39,8 @@ function initialState(start: BookingStart) {
   return { form, step };
 }
 
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 export function BookingFlow({ catalog, start }: { catalog: Catalog; start: BookingStart }) {
   const router = useRouter();
-  const lenis = useLenis();
   const init = useMemo(() => initialState(start), [start]);
   const [form, setForm] = useState<BookingForm>(init.form);
   const [stepIndex, setStepIndex] = useState(init.step);
@@ -78,27 +70,20 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
     });
   }, []);
 
-  // Step transition: fade/slide the panel, stagger its cards.
+  // Step transition: a short, quiet fade.
   useGSAP(
     () => {
       if (prefersReducedMotion() || !panelRef.current) return;
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from(panelRef.current, { autoAlpha: 0, x: 24 * direction.current, duration: 0.45, clearProps: "all" });
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      tl.from(panelRef.current, { autoAlpha: 0, x: 10 * direction.current, duration: 0.35, clearProps: "all" });
       const items = panelRef.current.querySelectorAll("[data-animate]");
       if (items.length)
-        tl.from(
-          items,
-          { autoAlpha: 0, y: 18, duration: 0.5, stagger: { each: 0.035, amount: 0.35 }, clearProps: "all" },
-          0.05,
-        );
+        tl.from(items, { autoAlpha: 0, y: 8, duration: 0.35, stagger: { each: 0.02, amount: 0.15 }, clearProps: "all" }, 0);
     },
     { dependencies: [step, form.kind], scope: rootRef },
   );
 
-  const scrollToY = (top: number) => {
-    if (lenis) lenis.scrollTo(top, { duration: 0.9 });
-    else window.scrollTo({ top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
-  };
+  const scrollToY = (top: number) => window.scrollTo({ top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
 
   const goTo = useCallback(
     (i: number) => {
@@ -114,8 +99,7 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
         panelRef.current?.focus({ preventScroll: true });
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [stepIndex, lenis],
+    [stepIndex],
   );
 
   const showErrors = (e: FieldErrors) => {
@@ -191,7 +175,7 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
   };
 
   return (
-    <div ref={rootRef} className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-16">
+    <div ref={rootRef} className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-14">
       <div className="min-w-0">
         <StepIndicator steps={steps} current={stepIndex} maxReached={maxReached} onJump={goTo} />
 
@@ -206,20 +190,20 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
           {panels[step]}
         </div>
 
-        <div className="mt-12 flex items-center justify-between gap-4 border-t border-sand/15 pt-8">
+        <div className="mt-12 flex items-center justify-between gap-4 border-t pt-8">
           {stepIndex > 0 ? (
-            <Button type="button" variant="outline" onClick={back} disabled={pending} className="px-5 sm:px-7">
-              <ArrowLeft className="size-4" /> <span className="max-sm:sr-only">Back</span>
+            <Button type="button" variant="outline" size="lg" onClick={back} disabled={pending} className="px-5 sm:px-7">
+              <ArrowLeft weight="bold" /> <span className="max-sm:sr-only">Back</span>
             </Button>
           ) : (
             <span />
           )}
 
           {isLast ? (
-            <Button type="button" onClick={submit} disabled={pending} aria-busy={pending} className="min-w-[13rem]">
+            <Button type="button" size="lg" onClick={submit} disabled={pending} aria-busy={pending} className="min-w-[13rem]">
               {pending ? (
                 <>
-                  <LoaderCircle className="size-4 animate-spin" /> {form.kind === "custom" ? "Sending…" : "Confirming…"}
+                  <CircleNotch weight="bold" className="animate-spin" /> {form.kind === "custom" ? "Sending…" : "Confirming…"}
                 </>
               ) : form.kind === "custom" ? (
                 "Send request"
@@ -230,8 +214,8 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
           ) : step === "mode" && !form.kind ? (
             <span />
           ) : (
-            <Button type="button" onClick={next}>
-              Continue <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+            <Button type="button" size="lg" onClick={next}>
+              Continue <ArrowRight weight="bold" className="transition-transform duration-300 group-hover/button:translate-x-0.5" />
             </Button>
           )}
         </div>
