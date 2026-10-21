@@ -46,7 +46,6 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
 
       gsap
         .timeline({ defaults: { ease: "expo.out" } })
-        .from(".hero-panel", { clipPath: "inset(0% 0% 100% 0%)", duration: 1.2, ease: "expo.inOut" }, 0)
         .from(".hero-eyebrow", { y: 12, opacity: 0, duration: 0.8 }, 0.1)
         .from(split.lines, { yPercent: 110, duration: 1.2, stagger: 0.1 }, 0.05)
         .from(".hero-arch", { clipPath: "inset(100% 0% 0% 0% round 12rem 12rem 2rem 2rem)", duration: 1.4, ease: "expo.inOut" }, 0)
@@ -102,39 +101,34 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden pt-24 pb-20 sm:pt-36 lg:pt-40 lg:pb-28">
-      {/* Espresso panel behind the photo: top band on phones, right column on desktop */}
-      <div
-        aria-hidden
-        className="hero-panel pointer-events-none absolute inset-x-0 top-0 h-[27rem] rounded-b-[3rem] bg-espresso sm:h-[34rem] lg:inset-x-auto lg:right-0 lg:left-1/2 lg:bottom-0 lg:h-auto lg:rounded-b-none lg:rounded-bl-[12rem]"
-      />
+    <section ref={root} className="relative overflow-hidden bg-espresso pt-28 pb-20 text-cream sm:pt-36 lg:pt-40 lg:pb-28">
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div className="hero-anim order-2 lg:order-1">
-          <p className="hero-eyebrow eyebrow text-mocha">Coffee &amp; matcha catering · Abu Dhabi</p>
-          <h1 className="hero-title mt-5 font-display text-[2.45rem] min-[400px]:text-[2.7rem] leading-[1] text-espresso uppercase sm:text-6xl lg:text-7xl">
+          <p className="hero-eyebrow eyebrow text-sand">Coffee &amp; matcha catering · Abu Dhabi</p>
+          <h1 className="hero-title mt-5 font-display text-[2.45rem] min-[400px]:text-[2.7rem] leading-[1] text-cream uppercase sm:text-6xl lg:text-7xl">
             Poured for <br className="hidden sm:block" />
-            your <span className="text-mocha">moments</span>
+            your <span className="text-sand">moments</span>
           </h1>
-          <p className="hero-copy mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="hero-copy mt-6 max-w-md text-base leading-relaxed text-cream/70 sm:text-lg">
             Caprea brings its coffee cart, a barista and our signature drinks to weddings, graduations and gatherings.
           </p>
           <div className="hero-copy mt-8 flex flex-wrap gap-3">
             <Magnetic>
-              <Button asChild size="lg">
+              <Button asChild size="lg" variant="sand">
                 <Link href="/book">
                   Book your event <ArrowUpRight weight="bold" className="transition-transform duration-300 group-hover/button:rotate-45" />
                 </Link>
               </Button>
             </Magnetic>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="border-cream/25 bg-transparent text-cream hover:bg-cream/10 hover:text-cream">
               <Link href="/packages">View packages</Link>
             </Button>
           </div>
           <ul className="mt-10 grid max-w-md grid-cols-2 gap-x-6 gap-y-3">
             {facts.map(({ Icon, label }) => (
-              <li key={label} className="hero-fact flex items-center gap-2.5 text-sm text-espresso/80">
-                <Icon className="size-5 text-mocha" weight="light" /> {label}
+              <li key={label} className="hero-fact flex items-center gap-2.5 text-sm text-cream/80">
+                <Icon className="size-5 text-sand" weight="light" /> {label}
               </li>
             ))}
           </ul>
@@ -157,7 +151,7 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
             </div>
           </div>
 
-          <div data-depth="0.8" className="hero-thumb absolute -bottom-6 -left-6 w-24 overflow-hidden rounded-2xl border-4 border-background shadow-xl sm:-left-10 sm:w-36 lg:w-40">
+          <div data-depth="0.8" className="hero-thumb absolute -bottom-6 -left-6 w-24 overflow-hidden rounded-2xl border-4 border-espresso shadow-xl sm:-left-10 sm:w-36 lg:w-40">
             <div className="relative aspect-[4/5]">
               <Image src="/photos/iced-latte-pour.webp" alt="Milk poured into an iced latte" fill sizes="160px" className="object-cover" />
             </div>
