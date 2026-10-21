@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CalendarCheck, Confetti, Package } from "@phosphor-icons/react/dist/ssr";
 import { SectionHeading } from "@/components/landing/section-heading";
 import { Reveal } from "@/components/site/reveal";
+import { RevealImage } from "@/components/site/reveal-image";
 
 const steps = [
   { Icon: Package, title: "Choose a package", body: "From 30 to 300 guests, or ask us for a custom setup." },
@@ -13,9 +14,9 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" className="scroll-mt-24 bg-secondary/60 py-20 sm:py-28">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 sm:px-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-        <Reveal className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] lg:max-w-none">
+        <RevealImage className="mx-auto aspect-[4/5] w-full max-w-sm rounded-[2rem] lg:max-w-none">
           <Image src="/photos/barista-cups.webp" alt="Caprea barista holding branded cups" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
-        </Reveal>
+        </RevealImage>
 
         <div>
           <SectionHeading eyebrow="How it works" title="Three easy steps" className="mb-8 sm:mb-10" />

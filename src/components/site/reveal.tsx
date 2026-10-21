@@ -3,6 +3,7 @@
 import { useRef, type ElementType, type ReactNode } from "react";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
+import { useSiteReady } from "@/components/site/loader";
 
 type Props = {
   children: ReactNode;
@@ -18,11 +19,17 @@ type Props = {
 /** Fades content up once as it enters the viewport. Short and quiet by design: no pinning, no scrubbing. */
 export function Reveal({ children, className, as: Tag = "div", stagger, delay = 0, immediate }: Props) {
   const ref = useRef<HTMLElement>(null);
+  const ready = useSiteReady();
 
   useGSAP(
     () => {
       const el = ref.current;
       if (!el || prefersReducedMotion()) return;
+      // Above-the-fold content waits (hidden) for the intro loader to lift.
+      if (immediate && !ready) {
+        gsap.set(stagger ? Array.from(el.children) : el, { autoAlpha: 0 });
+        return;
+      }
       const targets = stagger ? Array.from(el.children) : el;
       gsap.from(targets, {
         y: 24,
@@ -35,7 +42,7 @@ export function Reveal({ children, className, as: Tag = "div", stagger, delay = 
         scrollTrigger: immediate ? undefined : { trigger: el, start: "top 88%", once: true },
       });
     },
-    { scope: ref },
+    { scope: ref, dependencies: [ready] },
   );
 
   return (

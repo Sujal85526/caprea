@@ -7,6 +7,7 @@ import { Faq } from "@/components/landing/faq";
 import { Gallery } from "@/components/landing/gallery";
 import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
+import { Marquee } from "@/components/landing/marquee";
 import { PackageGrid } from "@/components/landing/package-grid";
 import { SectionHeading } from "@/components/landing/section-heading";
 import { getCatalog } from "@/lib/catalog";
@@ -22,6 +23,7 @@ export default async function HomePage() {
         minGuests={Math.min(...guests)}
         maxGuests={Math.max(...guests)}
       />
+      <Marquee />
       <DrinksCarousel drinks={menu.filter((m) => m.catering_signature)} />
       <HowItWorks />
 

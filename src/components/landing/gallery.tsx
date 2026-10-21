@@ -2,7 +2,7 @@ import Image from "next/image";
 import { InstagramLogo } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/landing/section-heading";
-import { Reveal } from "@/components/site/reveal";
+import { RevealImage } from "@/components/site/reveal-image";
 
 const photos = [
   { src: "/photos/matcha-splash.webp", alt: "Matcha splashing from a Caprea cup", cls: "col-span-2 row-span-2" },
@@ -27,13 +27,13 @@ export function Gallery({ instagram }: { instagram: string }) {
             </Button>
           }
         />
-        <Reveal stagger className="grid auto-rows-[9.5rem] grid-cols-2 gap-3 sm:auto-rows-[12rem] sm:gap-4 md:grid-cols-4">
-          {photos.map((p) => (
-            <div key={p.src} className={`group relative overflow-hidden rounded-3xl bg-cream-200 ${p.cls}`}>
+        <div className="grid auto-rows-[9.5rem] grid-cols-2 gap-3 sm:auto-rows-[12rem] sm:gap-4 md:grid-cols-4">
+          {photos.map((p, i) => (
+            <RevealImage key={p.src} delay={i * 0.08} className={`group rounded-3xl bg-cream-200 ${p.cls}`}>
               <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 25vw, 50vw" className="object-cover transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-[1.04]" />
-            </div>
+            </RevealImage>
           ))}
-        </Reveal>
+        </div>
       </div>
     </section>
   );

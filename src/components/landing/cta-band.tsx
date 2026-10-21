@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/site/reveal";
+import { RevealImage } from "@/components/site/reveal-image";
 
 export function CtaBand() {
   return (
@@ -25,9 +26,9 @@ export function CtaBand() {
             </Button>
           </div>
         </div>
-        <div className="relative hidden min-h-72 md:block">
+        <RevealImage className="hidden min-h-72 md:block">
           <Image src="/photos/matcha-cup.webp" alt="Matcha in a Caprea cup" fill sizes="40vw" className="object-cover" />
-        </div>
+        </RevealImage>
       </Reveal>
     </section>
   );

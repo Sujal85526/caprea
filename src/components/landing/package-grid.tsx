@@ -3,6 +3,7 @@ import { ArrowUpRight, Check } from "@phosphor-icons/react/dist/ssr";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/site/reveal";
+import { SpotlightCard } from "@/components/site/spotlight-card";
 import { aed } from "@/lib/pricing";
 import type { Package } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -15,10 +16,10 @@ export function PackageGrid({ packages }: { packages: Package[] }) {
       className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pt-3 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3 xl:grid-cols-5"
     >
       {packages.map((p) => (
-        <article
+        <SpotlightCard
           key={p.id}
           className={cn(
-            "relative flex w-[78vw] max-w-xs shrink-0 snap-start flex-col rounded-3xl border p-6 xl:p-5 transition-shadow duration-500 hover:shadow-[0_24px_60px_-30px_rgba(54,31,24,.45)] sm:w-auto sm:max-w-none",
+            "relative flex w-[78vw] max-w-xs shrink-0 snap-start flex-col rounded-3xl border p-6 xl:p-5 transition-[box-shadow,translate] duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_-30px_rgba(54,31,24,.45)] sm:w-auto sm:max-w-none",
             p.featured ? "border-espresso bg-espresso text-cream" : "border-border bg-card text-espresso",
           )}
         >
@@ -43,7 +44,7 @@ export function PackageGrid({ packages }: { packages: Package[] }) {
               </Link>
             </Button>
           </div>
-        </article>
+        </SpotlightCard>
       ))}
     </Reveal>
   );
