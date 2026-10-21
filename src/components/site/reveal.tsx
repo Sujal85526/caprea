@@ -34,12 +34,12 @@ export function Reveal({ children, className, as: Tag = "div", stagger, delay = 
       gsap.from(targets, {
         y: 24,
         autoAlpha: 0,
-        duration: 0.9,
+        duration: 0.7,
         delay,
         ease: "power3.out",
-        stagger: stagger ? 0.08 : 0,
+        stagger: stagger ? 0.06 : 0,
         clearProps: "transform,opacity,visibility",
-        scrollTrigger: immediate ? undefined : { trigger: el, start: "top 88%", once: true },
+        scrollTrigger: immediate ? undefined : { trigger: el, start: "top 94%", once: true },
       });
     },
     { scope: ref, dependencies: [ready] },

@@ -16,10 +16,10 @@ export function SplitTitle({ as: Tag = "h2", className, children, immediate }: {
       const split = SplitText.create(el, { type: "lines", mask: "lines" });
       gsap.from(split.lines, {
         yPercent: 110,
-        duration: 1.1,
-        stagger: 0.09,
+        duration: 0.9,
+        stagger: 0.07,
         ease: "expo.out",
-        scrollTrigger: immediate ? undefined : { trigger: el, start: "top 88%", once: true },
+        scrollTrigger: immediate ? undefined : { trigger: el, start: "top 94%", once: true },
       });
       return () => split.revert();
     },
