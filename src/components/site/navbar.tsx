@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, List, X } from "@phosphor-icons/react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
 const links = [
   { href: "/", label: "Home" },
@@ -33,6 +34,22 @@ function NavbarWithPath() {
 
 function NavbarView({ pathname }: { pathname: string | null }) {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const panel = useRef<HTMLDivElement>(null);
+
+  // Mobile menu entrance: the panel swings in from the top-right corner, the close button spins into place,
+  // then each link rotates up into view one after another. Runs once the panel is mounted.
+  const playMenuIn = () => {
+    const el = panel.current;
+    if (!el || prefersReducedMotion()) return;
+    const q = gsap.utils.selector(el);
+    gsap
+      .timeline({ defaults: { ease: "expo.out" } })
+      .from(el, { rotate: 10, xPercent: 30, opacity: 0, transformOrigin: "100% 0%", duration: 0.9 })
+      .from(q(".mm-close"), { rotate: -270, scale: 0.3, opacity: 0, duration: 0.9 }, 0.1)
+      .from(q(".mm-link"), { yPercent: 120, rotate: 10, transformOrigin: "0% 100%", duration: 0.9, stagger: 0.07 }, 0.15)
+      .from(q(".mm-foot"), { y: 24, opacity: 0, duration: 0.7 }, 0.5);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -77,35 +94,44 @@ function NavbarView({ pathname }: { pathname: string | null }) {
             </Link>
           </Button>
 
-          <Sheet>
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
-                <List className="size-6" />
+              <Button variant="ghost" size="icon" className="group/burger lg:hidden" aria-label="Open menu">
+                <List className="size-6 transition-transform duration-500 ease-(--ease-luxe) group-hover/burger:rotate-90" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full border-none bg-linen p-0 sm:max-w-sm [&>button]:hidden">
+            <SheetContent
+              side="right"
+              onOpenAutoFocus={(e) => {
+                e.preventDefault();
+                requestAnimationFrame(playMenuIn);
+              }}
+              className="overflow-hidden border-none bg-linen p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-sm [&>button]:hidden"
+            >
               <SheetTitle className="sr-only">Menu</SheetTitle>
-              <div className="flex h-full flex-col px-6 pt-5 pb-8">
+              <div ref={panel} className="flex h-full flex-col px-6 pt-5 pb-8">
                 <div className="flex items-center justify-between">
                   <Logo className="w-24 text-espresso" />
-                  <SheetClose asChild>
-                    <Button variant="ghost" size="icon" aria-label="Close menu">
-                      <X className="size-6" />
-                    </Button>
-                  </SheetClose>
+                  <span className="mm-close inline-flex">
+                    <SheetClose asChild>
+                      <Button variant="ghost" size="icon" aria-label="Close menu">
+                        <X className="size-6" />
+                      </Button>
+                    </SheetClose>
+                  </span>
                 </div>
                 <ul className="mt-12 space-y-1">
                   {links.map((l) => (
-                    <li key={l.href}>
+                    <li key={l.href} className="overflow-hidden">
                       <SheetClose asChild>
-                        <Link href={l.href} className="block py-3 font-display text-4xl text-espresso uppercase">
+                        <Link href={l.href} className="mm-link block py-3 font-display text-4xl text-espresso uppercase">
                           {l.label}
                         </Link>
                       </SheetClose>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto space-y-4">
+                <div className="mm-foot mt-auto space-y-4 [&_a]:transition-none">
                   <SheetClose asChild>
                     <Button asChild size="lg" className="w-full">
                       <Link href="/book">
