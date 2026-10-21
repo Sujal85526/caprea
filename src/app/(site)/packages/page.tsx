@@ -34,9 +34,9 @@ export default async function PackagesPage() {
         <PackageGrid packages={packages} />
       </section>
 
-      <section className="bg-secondary/60 py-20 sm:py-28">
+      <section className="bg-espresso py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-6 sm:px-10">
-          <SectionHeading eyebrow="What guests choose from" title="Drinks in every package" />
+          <SectionHeading tone="dark" eyebrow="What guests choose from" title="Drinks in every package" />
           <div className="grid gap-4 md:grid-cols-2">
             <DrinkList title="Signature drinks" note="Choose up to your package's limit" items={menu.filter((m) => m.catering_signature)} />
             <DrinkList title="Coffee selection" note="Fills the remaining servings" items={menu.filter((m) => m.catering_coffee)} />

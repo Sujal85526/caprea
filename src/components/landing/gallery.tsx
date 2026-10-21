@@ -14,13 +14,14 @@ const photos = [
 
 export function Gallery({ instagram }: { instagram: string }) {
   return (
-    <section className="py-20 sm:py-28">
+    <section className="bg-espresso-900 py-20 text-cream sm:py-28">
       <div className="mx-auto max-w-6xl px-6 sm:px-10">
         <SectionHeading
+          tone="dark"
           eyebrow="Gallery"
           title="Made to be shared"
           action={
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="border-cream/25 bg-transparent text-cream hover:bg-cream/10 hover:text-cream">
               <a href={`https://instagram.com/${instagram}`} target="_blank" rel="noreferrer">
                 <InstagramLogo /> @{instagram}
               </a>
@@ -29,7 +30,7 @@ export function Gallery({ instagram }: { instagram: string }) {
         />
         <div className="grid auto-rows-[9.5rem] grid-cols-2 gap-3 sm:auto-rows-[12rem] sm:gap-4 md:grid-cols-4">
           {photos.map((p, i) => (
-            <RevealImage key={p.src} delay={i * 0.08} className={`group rounded-3xl bg-cream-200 ${p.cls}`}>
+            <RevealImage key={p.src} delay={i * 0.08} className={`group rounded-3xl bg-espresso ${p.cls}`}>
               <Image src={p.src} alt={p.alt} fill sizes="(min-width: 768px) 25vw, 50vw" className="object-cover transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-[1.04]" />
             </RevealImage>
           ))}

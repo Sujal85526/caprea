@@ -64,7 +64,7 @@ function NavbarView({ pathname }: { pathname: string | null }) {
         aria-label="Main"
         className={cn(
           "mx-auto flex max-w-6xl items-center justify-between rounded-full py-2 pr-2 pl-5 transition-[background-color,box-shadow,border-color] duration-500",
-          scrolled ? "glass-light shadow-[0_12px_40px_-20px_rgba(54,31,24,.35)]" : "border border-transparent",
+          scrolled ? "bg-linen/95 shadow-[0_12px_40px_-20px_rgba(54,31,24,.45)] backdrop-blur-md" : "bg-linen/95 shadow-[0_8px_30px_-22px_rgba(54,31,24,.4)] backdrop-blur-md",
         )}
       >
         <Link href="/" aria-label="Caprea home" className="text-espresso">

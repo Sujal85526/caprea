@@ -46,7 +46,8 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
 
       gsap
         .timeline({ defaults: { ease: "expo.out" } })
-        .from(".hero-eyebrow", { y: 12, opacity: 0, duration: 0.8 })
+        .from(".hero-panel", { clipPath: "inset(0% 0% 100% 0%)", duration: 1.2, ease: "expo.inOut" }, 0)
+        .from(".hero-eyebrow", { y: 12, opacity: 0, duration: 0.8 }, 0.1)
         .from(split.lines, { yPercent: 110, duration: 1.2, stagger: 0.1 }, 0.05)
         .from(".hero-arch", { clipPath: "inset(100% 0% 0% 0% round 12rem 12rem 2rem 2rem)", duration: 1.4, ease: "expo.inOut" }, 0)
         .from(".hero-arch img", { scale: 1.25, duration: 1.8 }, 0)
@@ -102,8 +103,14 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
 
   return (
     <section ref={root} className="relative overflow-hidden pt-24 pb-20 sm:pt-36 lg:pt-40 lg:pb-28">
-      {/* Soft warm glow behind the arch */}
-      <div className="pointer-events-none absolute top-24 right-[-10%] size-[38rem] rounded-full bg-sand/25 blur-3xl" />
+      {/* Espresso panel behind the photo: top band on phones, right column on desktop */}
+      <div
+        aria-hidden
+        className="hero-panel pointer-events-none absolute inset-x-0 top-0 h-[27rem] rounded-b-[3rem] bg-espresso sm:h-[34rem] lg:inset-x-auto lg:right-0 lg:left-1/2 lg:bottom-0 lg:h-auto lg:rounded-b-none lg:rounded-bl-[12rem]"
+      >
+        <div className="absolute -right-20 bottom-10 size-80 rounded-full bg-mocha/50 blur-3xl" />
+        <div className="absolute inset-0 grain" />
+      </div>
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div className="hero-anim order-2 lg:order-1">

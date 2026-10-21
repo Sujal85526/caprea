@@ -12,22 +12,28 @@ export const metadata: Metadata = {
 
 export default function BookPage({ searchParams }: PageProps<"/book">) {
   return (
-    <div className="mx-auto max-w-7xl px-5 pt-28 pb-36 sm:px-8 md:pt-36 lg:pb-28">
-      <Reveal immediate stagger as="header" className="mb-10 max-w-3xl md:mb-14">
-        <p className="eyebrow text-mocha">Catering · Abu Dhabi &amp; across the UAE</p>
-        <h1 className="mt-4 font-display text-5xl leading-[1] text-espresso uppercase sm:text-6xl md:text-7xl">
-          Book your Caprea cart
-        </h1>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          Specialty coffee, ceremonial matcha and our signature drinks, poured fresh by our baristas at your
-          celebration. Build your menu below and see your price as you go.
-        </p>
-      </Reveal>
+    <>
+      <div className="relative overflow-hidden rounded-b-[3rem] bg-espresso text-cream">
+        <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 size-96 rounded-full bg-mocha/50 blur-3xl" />
+        <div aria-hidden className="absolute inset-0 grain" />
+        <Reveal immediate stagger as="header" className="relative mx-auto max-w-7xl px-5 pt-28 pb-14 sm:px-8 md:pt-36 md:pb-20">
+          <p className="eyebrow text-sand">Catering · Abu Dhabi &amp; across the UAE</p>
+          <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1] text-cream uppercase sm:text-6xl md:text-7xl">
+            Book your Caprea cart
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-cream/70 md:text-lg">
+            Specialty coffee, ceremonial matcha and our signature drinks, poured fresh by our baristas at your
+            celebration. Build your menu below and see your price as you go.
+          </p>
+        </Reveal>
+      </div>
 
-      <Suspense fallback={<FlowSkeleton />}>
-        <BookingContent searchParams={searchParams} />
-      </Suspense>
-    </div>
+      <div className="mx-auto max-w-7xl px-5 pt-10 pb-36 sm:px-8 md:pt-14 lg:pb-28">
+        <Suspense fallback={<FlowSkeleton />}>
+          <BookingContent searchParams={searchParams} />
+        </Suspense>
+      </div>
+    </>
   );
 }
 
