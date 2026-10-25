@@ -37,11 +37,16 @@ export async function Footer() {
   return (
     <footer id="contact" className="scroll-mt-20 bg-espresso text-cream">
       <div className="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
-        <div className="grid gap-12 border-t border-cream/15 pt-16 pb-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          <p className="max-w-xs text-sm leading-relaxed text-cream/65">
-            Specialty coffee and matcha catering from Abu Dhabi. Our cart, barista and signature drinks at your event, anywhere
-            in the UAE.
-          </p>
+        <div className="grid gap-10 border-t border-cream/15 pt-14 pb-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div>
+            <Link href="/" aria-label="Caprea home" className="inline-flex min-h-10 items-center text-sand">
+              <Logo className="w-32" />
+            </Link>
+            <p className="mt-6 max-w-xs text-sm leading-relaxed text-cream/65">
+              Specialty coffee and matcha catering from Abu Dhabi. Our cart, barista and signature drinks at your event,
+              anywhere in the UAE.
+            </p>
+          </div>
           {columns.map((c) => (
             <div key={c.title}>
               <p className="label mb-5 text-sand">{c.title}</p>
@@ -68,9 +73,7 @@ export async function Footer() {
           ))}
         </div>
 
-        <Logo className="w-full text-sand" />
-
-        <div className="flex flex-col gap-2 pt-8 pb-10 text-xs tracking-wide text-cream/50 sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-2 border-t border-cream/15 pt-6 pb-8 text-xs tracking-wide text-cream/50 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Caprea · Abu Dhabi, UAE</p>
           <p>Specialty coffee · Matcha · Signature drinks</p>
         </div>

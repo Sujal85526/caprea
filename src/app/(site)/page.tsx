@@ -3,12 +3,13 @@ import { CtaBand } from "@/components/landing/cta-band";
 import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { PackageList } from "@/components/landing/package-list";
+import { PhotoStrip } from "@/components/landing/photo-strip";
 import { SignatureGrid } from "@/components/landing/signature-grid";
 import { Story } from "@/components/landing/story";
 import { getCatalog } from "@/lib/catalog";
 
 export default async function HomePage() {
-  const { menu, packages } = await getCatalog();
+  const { menu, packages, settings } = await getCatalog();
   const guests = packages.map((p) => p.guests);
 
   return (
@@ -28,6 +29,7 @@ export default async function HomePage() {
       </section>
 
       <HowItWorks />
+      <PhotoStrip instagram={settings.instagram} />
       <Story />
       <CtaBand />
     </>
