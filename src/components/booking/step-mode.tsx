@@ -65,9 +65,9 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
               aria-checked={on}
               data-animate
               onClick={() => onChoose(o.kind)}
-              className={cn("group flex flex-col p-3 sm:p-4", optionClass(on))}
+              className={cn("group flex min-w-0 flex-col p-3 sm:p-4", optionClass(on))}
             >
-              <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-secondary">
+              <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-none bg-secondary">
                 <Image
                   src={o.photo}
                   alt=""
@@ -78,7 +78,7 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
                 <CheckBadge on={on} className="absolute top-3 right-3" />
               </span>
               <span className="flex flex-1 flex-col px-1 pt-4 pb-1">
-                <span className="eyebrow text-[0.62rem] text-mocha">{o.eyebrow}</span>
+                <span className="label text-[0.64rem] text-espresso/60">{o.eyebrow}</span>
                 <span className="mt-2 block font-display text-2xl leading-tight text-espresso uppercase">{o.title}</span>
                 <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">{o.body}</span>
                 {o.foot && (

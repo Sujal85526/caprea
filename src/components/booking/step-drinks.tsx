@@ -32,7 +32,7 @@ function DrinkCard({
 }) {
   const body = (
     <>
-      <span className="relative block aspect-square w-full overflow-hidden rounded-2xl bg-secondary/70">
+      <span className="relative block aspect-square w-full overflow-hidden rounded-none bg-cream">
         <ItemImage
           src={item.image_url}
           alt=""
@@ -41,7 +41,7 @@ function DrinkCard({
         {onToggle && <CheckBadge on={selected} className="absolute top-2.5 right-2.5" />}
       </span>
       <span className="block px-1 pt-3.5 pb-1">
-        <span className="eyebrow block text-[0.58rem] text-mocha">{CATEGORY_LABEL[item.category] ?? item.category}</span>
+        <span className="label block text-[0.58rem] text-espresso/60">{CATEGORY_LABEL[item.category] ?? item.category}</span>
         <span className="mt-1.5 block font-display text-lg leading-tight text-espresso uppercase [overflow-wrap:anywhere]">
           {item.name}
         </span>
@@ -49,7 +49,7 @@ function DrinkCard({
     </>
   );
 
-  const shell = cn("group flex flex-col p-3 sm:p-3.5", optionClass(selected), disabled && "opacity-50");
+  const shell = cn("group flex min-w-0 flex-col p-3 sm:p-3.5", optionClass(selected), disabled && "opacity-50");
 
   if (onToggle) {
     return (
@@ -79,7 +79,7 @@ function CategoryChips({ cats, value, onChange }: { cats: string[]; value: strin
   return (
     <div
       data-animate
-      className="mb-6 inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-secondary p-1 [scrollbar-width:none]"
+      className="mb-6 flex max-w-full gap-1.5 overflow-x-auto [scrollbar-width:none]"
       role="tablist"
       aria-label="Filter drinks"
     >
@@ -91,8 +91,8 @@ function CategoryChips({ cats, value, onChange }: { cats: string[]; value: strin
           aria-selected={value === c}
           onClick={() => onChange(c)}
           className={cn(
-            "shrink-0 rounded-full px-4 py-2 text-sm transition-colors duration-200 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
-            value === c ? "bg-espresso text-cream" : "text-espresso/75 hover:text-espresso",
+            "label h-10 shrink-0 border px-4 transition-colors duration-200 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
+            value === c ? "border-espresso bg-espresso text-cream" : "border-espresso/15 text-espresso/70 hover:border-espresso/50 hover:text-espresso",
           )}
         >
           {c === "all" ? "All" : (CATEGORY_LABEL[c] ?? c)}
@@ -113,7 +113,7 @@ function CounterBar({ children }: { children: React.ReactNode }) {
   return (
     <div
       data-animate
-      className="sticky top-20 z-20 mb-6 flex items-center justify-between gap-4 rounded-full border bg-card/95 py-2.5 pr-4 pl-5 shadow-[0_12px_30px_-24px_rgba(54,31,24,.5)] backdrop-blur sm:top-24"
+      className="sticky top-[4.5rem] z-20 mb-6 flex items-center justify-between gap-4 border bg-card/95 py-3 pr-4 pl-5 backdrop-blur sm:top-[5.5rem]"
     >
       {children}
     </div>
@@ -166,8 +166,8 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
               <span
                 key={i}
                 className={cn(
-                  "h-1.5 w-5 rounded-full transition-colors duration-300",
-                  i < picked.length ? "bg-espresso" : "bg-secondary",
+                  "h-0.5 w-5 transition-colors duration-300",
+                  i < picked.length ? "bg-espresso" : "bg-espresso/15",
                 )}
               />
             ))}
@@ -188,12 +188,12 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
         <FieldError>{errors.drinks}</FieldError>
 
         {coffee.length > 0 && (
-          <div data-animate className="mt-8 flex gap-4 rounded-3xl border bg-card p-5 md:p-6">
+          <div data-animate className="mt-8 flex gap-4 rounded-none border bg-card p-5 md:p-6">
             <span className="grid size-11 shrink-0 place-items-center rounded-full bg-secondary text-espresso">
               <Coffee className="size-5" weight="light" />
             </span>
             <div>
-              <p className="eyebrow text-mocha">Plus our coffee selection</p>
+              <p className="label text-espresso/60">Plus our coffee selection</p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 The remaining servings are poured from our specialty coffee bar:{" "}
                 <span className="text-espresso">{coffee.map((c) => c.name).join(", ")}</span>.
@@ -225,7 +225,7 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
           <span className="font-medium text-espresso tabular-nums">{totalCups}</span> cups ·{" "}
           {Object.keys(form.drinks).length} drinks
         </p>
-        <p className="eyebrow text-[0.6rem] text-mocha">Estimate</p>
+        <p className="label text-[0.6rem] text-espresso/60">Estimate</p>
       </CounterBar>
 
       <CategoryChips cats={cats} value={cat} onChange={setCat} />
@@ -277,7 +277,7 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
         price.
       </StepHeader>
 
-      <div data-animate className="rounded-3xl border bg-card p-6 md:p-8">
+      <div data-animate className="rounded-none border bg-card p-6 md:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <Label>Total cups</Label>
@@ -302,7 +302,7 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
             <span
               key={t.id}
               className={cn(
-                "rounded-full border px-3.5 py-1.5 text-xs transition-colors duration-300",
+                "border px-3.5 py-1.5 text-xs transition-colors duration-300",
                 tier?.id === t.id ? "border-espresso bg-espresso text-cream" : "border-border text-muted-foreground",
               )}
             >

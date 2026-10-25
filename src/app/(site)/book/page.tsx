@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BookingFlow, type BookingStart } from "@/components/booking/booking-flow";
-import { Reveal } from "@/components/site/reveal";
+import { PageHero } from "@/components/site/page-hero";
 import { getCatalog } from "@/lib/catalog";
 
 export const metadata: Metadata = {
@@ -13,20 +13,12 @@ export const metadata: Metadata = {
 export default function BookPage({ searchParams }: PageProps<"/book">) {
   return (
     <>
-      <div className="relative overflow-hidden rounded-b-[3rem] bg-espresso text-cream">
-        <Reveal immediate stagger as="header" className="relative mx-auto max-w-7xl px-5 pt-28 pb-14 sm:px-8 md:pt-36 md:pb-20">
-          <p className="eyebrow text-sand">Catering · Abu Dhabi &amp; across the UAE</p>
-          <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1] text-cream uppercase sm:text-6xl md:text-7xl">
-            Book your Caprea cart
-          </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-cream/70 md:text-lg">
-            Specialty coffee, ceremonial matcha and our signature drinks, poured fresh by our baristas at your
-            celebration. Build your menu below and see your price as you go.
-          </p>
-        </Reveal>
-      </div>
+      <PageHero compact eyebrow="Catering · Abu Dhabi &amp; across the UAE" title="Book your event">
+        Specialty coffee, ceremonial matcha and our signature drinks, poured fresh by our baristas at your celebration.
+        Build your menu below and see your price as you go.
+      </PageHero>
 
-      <div className="mx-auto max-w-7xl px-5 pt-10 pb-36 sm:px-8 md:pt-14 lg:pb-28">
+      <div className="mx-auto max-w-[90rem] px-5 pb-36 sm:px-8 lg:px-12 lg:pb-28">
         <Suspense fallback={<FlowSkeleton />}>
           <BookingContent searchParams={searchParams} />
         </Suspense>
@@ -56,16 +48,16 @@ function FlowSkeleton() {
   return (
     <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-14" aria-busy>
       <div>
-        <div className="mb-12 hidden h-8 rounded-full bg-secondary/70 md:block" />
-        <div className="h-3 w-28 animate-pulse rounded-full bg-secondary" />
-        <div className="mt-4 h-10 w-2/3 animate-pulse rounded-2xl bg-secondary/70" />
+        <div className="mb-12 hidden h-8 bg-cream md:block" />
+        <div className="h-3 w-28 animate-pulse bg-cream" />
+        <div className="mt-4 h-10 w-2/3 animate-pulse bg-cream" />
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="h-[22rem] animate-pulse rounded-3xl border bg-card" />
+            <div key={i} className="h-[22rem] animate-pulse border bg-card" />
           ))}
         </div>
       </div>
-      <div className="hidden h-[28rem] animate-pulse rounded-3xl border bg-card lg:block" />
+      <div className="hidden h-[28rem] animate-pulse border bg-card lg:block" />
       <span className="sr-only">Loading booking form…</span>
     </div>
   );

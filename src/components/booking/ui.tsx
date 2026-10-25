@@ -17,22 +17,22 @@ export type StepProps = {
 
 /** Shared look for text inputs / textareas / select triggers on the booking page. */
 export const fieldClass =
-  "h-12 rounded-xl border-input bg-card px-4 text-[0.95rem] shadow-none md:text-[0.95rem] placeholder:text-muted-foreground/70";
+  "h-12 rounded-none border-input bg-card px-4 text-[0.95rem] shadow-none md:text-[0.95rem] placeholder:text-muted-foreground/70";
 
 /** Selectable card: white with a thin border; selected = espresso ring + beige fill. */
 export const optionClass = (on: boolean) =>
   cn(
-    "rounded-3xl border bg-card text-left transition-[border-color,box-shadow,background-color] duration-300 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
+    "rounded-none border bg-card text-left transition-[border-color,box-shadow,background-color] duration-300 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
     on
-      ? "border-espresso bg-secondary/45 ring-1 ring-espresso"
-      : "border-border hover:border-sand hover:shadow-[0_20px_50px_-32px_rgba(54,31,24,.45)]",
+      ? "border-espresso bg-cream/60 ring-1 ring-espresso"
+      : "border-border hover:border-espresso/45",
   );
 
 export function StepHeader({ eyebrow, title, children }: { eyebrow: string; title: ReactNode; children?: ReactNode }) {
   return (
     <header data-animate className="mb-8 md:mb-10">
-      <p className="eyebrow text-mocha">{eyebrow}</p>
-      <h2 className="mt-3 font-display text-3xl text-espresso uppercase sm:text-4xl">{title}</h2>
+      <p className="label text-espresso/60">{eyebrow}</p>
+      <h2 className="mt-4 font-display text-[2.1rem] leading-[0.95] text-espresso uppercase sm:text-5xl">{title}</h2>
       {children && <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-muted-foreground">{children}</p>}
     </header>
   );
@@ -144,7 +144,7 @@ export function ItemImage({ src, alt, className }: { src: string | null; alt: st
       width={320}
       height={320}
       unoptimized={src.startsWith("http")}
-      className={cn("object-contain drop-shadow-[0_14px_14px_rgba(54,31,24,.18)]", className)}
+      className={cn("object-contain", className)}
     />
   );
 }
@@ -158,17 +158,22 @@ export function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boo
       aria-checked={on}
       aria-label={label}
       onClick={() => onChange(!on)}
-      className={cn(
-        "relative h-7 w-12 shrink-0 rounded-full border transition-colors duration-300 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
-        on ? "border-espresso bg-espresso" : "border-input bg-secondary",
-      )}
+      className="group/toggle -my-1.5 grid h-10 w-14 shrink-0 place-items-center outline-none"
     >
       <span
+        aria-hidden
         className={cn(
-          "absolute top-1/2 size-5 -translate-y-1/2 rounded-full bg-card shadow-sm transition-[left] duration-300 ease-(--ease-luxe)",
-          on ? "left-[1.45rem]" : "left-1",
+          "relative h-7 w-12 rounded-full border transition-colors duration-300 group-focus-visible/toggle:ring-3 group-focus-visible/toggle:ring-ring/60",
+          on ? "border-espresso bg-espresso" : "border-input bg-cream",
         )}
-      />
+      >
+        <span
+          className={cn(
+            "absolute top-1/2 size-5 -translate-y-1/2 rounded-full bg-card shadow-sm transition-[left] duration-300 ease-(--ease-luxe)",
+            on ? "left-[1.45rem]" : "left-1",
+          )}
+        />
+      </span>
     </button>
   );
 }

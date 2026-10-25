@@ -10,9 +10,9 @@ import { StepHeader, type StepProps } from "./ui";
 
 function Block({ title, onEdit, children }: { title: string; onEdit: () => void; children: ReactNode }) {
   return (
-    <section data-animate className="rounded-3xl border bg-card p-5 sm:p-6">
+    <section data-animate className="rounded-none border bg-card p-5 sm:p-6">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="eyebrow font-sans text-mocha">{title}</h3>
+        <h3 className="label font-sans text-espresso/60">{title}</h3>
         <Button
           type="button"
           variant="ghost"
@@ -66,7 +66,7 @@ export function StepReview({ form, catalog, quote, onEdit }: StepProps & { quote
         </Block>
       </div>
 
-      <section data-animate className="mt-4 rounded-3xl border bg-card p-5 sm:p-6 lg:hidden">
+      <section data-animate className="mt-4 rounded-none border bg-card p-5 sm:p-6 lg:hidden">
         <SummaryBody form={form} catalog={catalog} quote={quote} />
       </section>
     </div>

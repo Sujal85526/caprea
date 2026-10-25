@@ -28,7 +28,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
       </StepHeader>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-        <fieldset data-animate className="min-w-0 rounded-3xl border bg-card p-4 sm:p-6">
+        <fieldset data-animate className="min-w-0 rounded-none border bg-card p-4 sm:p-6">
           <legend className="sr-only">Event date</legend>
           <EventDatePicker
             value={form.eventDate}
@@ -39,7 +39,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
             describedBy={errors.eventDate ? "eventDate-error" : undefined}
           />
           <div className="mt-4 flex items-center gap-3 border-t pt-4 text-sm">
-            <CalendarBlank className="size-5 shrink-0 text-mocha" weight="light" />
+            <CalendarBlank className="size-5 shrink-0 text-espresso/60" weight="light" />
             <span className={form.eventDate ? "font-medium text-espresso" : "text-muted-foreground"}>
               {form.eventDate ? formatEventDate(form.eventDate) : "Select a date"}
             </span>
@@ -56,7 +56,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
               <SelectTrigger id="startTime" className={triggerClass} {...err("startTime", errors.startTime)}>
                 <SelectValue placeholder="Choose a time" />
               </SelectTrigger>
-              <SelectContent position="popper" className="max-h-72 rounded-2xl">
+              <SelectContent position="popper" className="max-h-72 rounded-none">
                 {START_TIMES.map((t) => (
                   <SelectItem key={t} value={t} className="rounded-lg py-2 pl-3 text-sm">
                     {formatTime(t)}
@@ -73,7 +73,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
               <SelectTrigger id="eventType" className={triggerClass} {...err("eventType", errors.eventType)}>
                 <SelectValue placeholder="What are we celebrating?" />
               </SelectTrigger>
-              <SelectContent position="popper" className="rounded-2xl">
+              <SelectContent position="popper" className="rounded-none">
                 {EVENT_TYPES.map((t) => (
                   <SelectItem key={t} value={t} className="rounded-lg py-2 pl-3 text-sm">
                     {t}
@@ -112,7 +112,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
                     role="radio"
                     aria-checked={on}
                     onClick={() => update({ regionId: r.id })}
-                    className={cn("flex flex-col items-start rounded-2xl px-4 py-3", optionClass(on))}
+                    className={cn("flex flex-col items-start rounded-none px-4 py-3", optionClass(on))}
                   >
                     <span className="text-[0.95rem] font-medium text-espresso">{r.name}</span>
                     <span className="mt-0.5 text-xs text-muted-foreground">

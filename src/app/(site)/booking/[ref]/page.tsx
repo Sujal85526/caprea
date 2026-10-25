@@ -89,7 +89,7 @@ function whatsappHref(settings: Settings, text: string) {
 
 function SuccessMark() {
   return (
-    <span className="mx-auto grid size-20 place-items-center rounded-full bg-secondary text-espresso">
+    <span className="mx-auto grid size-20 place-items-center rounded-full border border-espresso/15 bg-cream text-espresso">
       <CheckCircle className="size-11" weight="light" />
     </span>
   );
@@ -114,8 +114,8 @@ function Generic({ settings, bookingRef }: { settings: Settings; bookingRef?: st
   return (
     <div className="mx-auto max-w-2xl text-center">
       <SuccessMark />
-      <p className="eyebrow mt-8 text-mocha">Thank you</p>
-      <h1 className="mt-4 font-display text-5xl text-espresso uppercase md:text-6xl">Booking received</h1>
+      <p className="label mt-8 text-espresso/60">Thank you</p>
+      <h1 className="mt-4 font-display text-[2.6rem] leading-[0.95] text-espresso uppercase sm:text-6xl md:text-7xl">Booking received</h1>
       <p className="mx-auto mt-6 max-w-lg leading-relaxed text-muted-foreground">
         If you&apos;ve just booked with us, your confirmation is on its way to your inbox with every detail of your event.
         Can&apos;t find it? Message us and we&apos;ll help right away.
@@ -132,8 +132,8 @@ function Generic({ settings, bookingRef }: { settings: Settings; bookingRef?: st
 
 function Card({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
   return (
-    <section className={`rounded-3xl border bg-card p-6 sm:p-7 ${className ?? ""}`}>
-      <h2 className="eyebrow font-sans text-mocha">{title}</h2>
+    <section className={`border bg-card p-6 sm:p-7 ${className ?? ""}`}>
+      <h2 className="label font-sans text-espresso/60">{title}</h2>
       <div className="mt-5">{children}</div>
     </section>
   );
@@ -169,10 +169,10 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
     <div>
       <header className="mx-auto max-w-2xl text-center">
         <SuccessMark />
-        <p className="eyebrow mt-8 text-mocha">
+        <p className="label mt-8 text-espresso/60">
           {isRequest ? "Request" : "Booking"} {b.ref}
         </p>
-        <h1 className="mt-4 font-display text-5xl text-espresso uppercase md:text-6xl">
+        <h1 className="mt-4 font-display text-[2.6rem] leading-[0.95] text-espresso uppercase sm:text-6xl md:text-7xl">
           {isRequest ? "Request received" : "Booking confirmed"}
         </h1>
         <p className="mx-auto mt-6 max-w-lg leading-relaxed text-muted-foreground">
@@ -181,12 +181,12 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
             : `Thank you, ${first}. We can't wait to serve your guests. We'll send your ${settings.deposit_percent}% deposit link to ${b.customer_email} shortly.`}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs text-espresso">
+          <span className="inline-flex items-center gap-2 border bg-card px-4 py-1.5 text-xs text-espresso">
             <span className="size-1.5 rounded-full bg-matcha" />
             {b.status === "request" ? "Awaiting quote" : b.status === "confirmed" ? "Confirmed" : b.status}
           </span>
           {!isRequest && (
-            <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs text-muted-foreground capitalize">
+            <span className="inline-flex items-center gap-2 border bg-card px-4 py-1.5 text-xs text-muted-foreground capitalize">
               <Clock className="size-3.5" weight="light" />
               {b.payment_status === "unpaid" ? "Deposit pending" : b.payment_status.replace("_", " ")}
             </span>
@@ -210,7 +210,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
             {b.package_name && <Row k="Package" v={b.package_name} />}
             {b.kind === "per_cup" && b.cups && <Row k="Cups" v={b.cups} />}
             {b.drinks.map((d) => (
-              <Row key={d.slug} k={d.name} v={d.cups ? `${d.cups} cups` : <Check className="ml-auto size-4 text-mocha" weight="bold" />} />
+              <Row key={d.slug} k={d.name} v={d.cups ? `${d.cups} cups` : <Check className="ml-auto size-4 text-espresso/60" weight="bold" />} />
             ))}
             {b.addons.map((a) => (
               <Row key={a.slug} k={a.name} v={`${a.qty} pcs`} />
@@ -219,7 +219,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
               <Row
                 key={x.slug}
                 k={x.name}
-                v={x.unit === "on_request" ? "On request" : x.unit === "per_hour" ? `${x.qty} h` : <Check className="ml-auto size-4 text-mocha" weight="bold" />}
+                v={x.unit === "on_request" ? "On request" : x.unit === "per_hour" ? `${x.qty} h` : <Check className="ml-auto size-4 text-espresso/60" weight="bold" />}
               />
             ))}
           </dl>
@@ -277,10 +277,10 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
 function Skeleton() {
   return (
     <div className="mx-auto max-w-2xl text-center" aria-busy>
-      <div className="mx-auto size-20 animate-pulse rounded-full bg-secondary" />
-      <div className="mx-auto mt-8 h-3 w-32 animate-pulse rounded-full bg-secondary" />
-      <div className="mx-auto mt-5 h-14 w-3/4 animate-pulse rounded-2xl bg-secondary/70" />
-      <div className="mx-auto mt-6 h-4 w-2/3 animate-pulse rounded-full bg-secondary/70" />
+      <div className="mx-auto size-20 animate-pulse bg-cream" />
+      <div className="mx-auto mt-8 h-3 w-32 animate-pulse bg-cream" />
+      <div className="mx-auto mt-5 h-14 w-3/4 animate-pulse bg-cream" />
+      <div className="mx-auto mt-6 h-4 w-2/3 animate-pulse bg-cream/70" />
       <span className="sr-only">Loading your booking…</span>
     </div>
   );

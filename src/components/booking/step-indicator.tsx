@@ -20,14 +20,14 @@ export function StepIndicator({
       {/* Mobile: compact label + thin bar */}
       <div className="md:hidden">
         <div className="flex items-baseline justify-between gap-4">
-          <p className="eyebrow text-[0.65rem] text-muted-foreground">
+          <p className="label text-[0.64rem] text-muted-foreground">
             Step {current + 1} of {steps.length}
           </p>
           <p className="text-sm font-medium text-espresso">{STEP_LABELS[steps[current]]}</p>
         </div>
-        <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-secondary">
+        <div className="mt-3 h-0.5 w-full overflow-hidden bg-espresso/10">
           <div
-            className="h-full rounded-full bg-espresso transition-[width] duration-500 ease-(--ease-luxe)"
+            className="h-full bg-espresso transition-[width] duration-500 ease-(--ease-luxe)"
             style={{ width: `${((current + 1) / steps.length) * 100}%` }}
           />
         </div>

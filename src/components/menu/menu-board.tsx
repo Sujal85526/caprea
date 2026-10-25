@@ -1,14 +1,13 @@
 "use client";
 
-import Image from "next/image";
-import { useMemo } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { aed } from "@/lib/pricing";
+import { useMemo, useRef, useState } from "react";
+import { ProductTile } from "@/components/menu/product-tile";
+import { Flip, gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import type { MenuCategory, MenuItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const sections: { key: MenuCategory; title: string }[] = [
+  { key: "signature", title: "Signature" },
   { key: "matcha", title: "Matcha" },
   { key: "coffee", title: "Coffee" },
   { key: "smoothie", title: "Smoothies" },
@@ -17,71 +16,111 @@ const sections: { key: MenuCategory; title: string }[] = [
   { key: "box", title: "Gathering boxes" },
 ];
 
+type Filter = MenuCategory | "all";
+
+/** Whole menu in one grid; the category filter rearranges the tiles with a short Flip animation. */
 export function MenuBoard({ items }: { items: MenuItem[] }) {
-  const groups = useMemo(
-    () => sections.map((s) => ({ ...s, items: items.filter((i) => i.category === s.key) })).filter((g) => g.items.length),
-    [items],
+  const [filter, setFilter] = useState<Filter>("all");
+  const grid = useRef<HTMLDivElement>(null);
+  const flipState = useRef<Flip.FlipState | null>(null);
+  const firstReveal = useRef<ScrollTrigger[]>([]);
+
+  const groups = useMemo(() => sections.filter((s) => items.some((i) => i.category === s.key)), [items]);
+  // Group the "all" view by category so related drinks sit together.
+  const ordered = useMemo(() => {
+    const rank = new Map(sections.map((s, i) => [s.key, i]));
+    return [...items].sort((a, b) => (rank.get(a.category) ?? 99) - (rank.get(b.category) ?? 99));
+  }, [items]);
+  const count = filter === "all" ? items.length : items.filter((i) => i.category === filter).length;
+
+  const choose = (f: Filter) => {
+    if (f === filter || !grid.current) return;
+    const tiles = grid.current.querySelectorAll(".menu-tile");
+    // Tiles below the fold may still be waiting for their first reveal; show them before rearranging.
+    firstReveal.current.forEach((t) => t.kill());
+    firstReveal.current = [];
+    gsap.killTweensOf(tiles);
+    gsap.set(tiles, { clearProps: "transform,opacity" });
+    if (!prefersReducedMotion()) flipState.current = Flip.getState(tiles);
+    setFilter(f);
+  };
+
+  // First view: tiles rise in, row by row, as they scroll into view.
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      const tiles = gsap.utils.toArray<HTMLElement>(".menu-tile");
+      gsap.set(tiles, { opacity: 0, y: 28 });
+      firstReveal.current = ScrollTrigger.batch(tiles, {
+        start: "top 94%",
+        once: true,
+        onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, ease: "power3.out", clearProps: "transform,opacity" }),
+      });
+    },
+    { scope: grid },
+  );
+
+  // After React shows/hides tiles, animate from the recorded layout.
+  useGSAP(
+    () => {
+      const state = flipState.current;
+      if (!state || !grid.current) return;
+      flipState.current = null;
+      Flip.from(state, {
+        targets: grid.current.querySelectorAll(".menu-tile"),
+        duration: 0.6,
+        ease: "power3.inOut",
+        absolute: true,
+        nested: true,
+        onEnter: (els) => gsap.fromTo(els, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: "power3.out" }),
+        onLeave: (els) => gsap.to(els, { opacity: 0, duration: 0.25 }),
+      });
+    },
+    { dependencies: [filter], scope: grid },
   );
 
   return (
-    <Tabs defaultValue="all" className="gap-8">
-      <div className="sticky top-20 z-30 -mx-6 bg-background/85 px-6 py-3 backdrop-blur-md sm:top-24 sm:mx-0 sm:px-0">
-        <TabsList className="h-auto w-full justify-start gap-1 overflow-x-auto rounded-full bg-secondary p-1 [scrollbar-width:none] sm:w-auto">
-          <TabsTrigger value="all" className="rounded-full px-4 py-2 data-[state=active]:bg-espresso data-[state=active]:text-cream">
-            All
-          </TabsTrigger>
-          {groups.map((g) => (
-            <TabsTrigger key={g.key} value={g.key} className="rounded-full px-4 py-2 data-[state=active]:bg-espresso data-[state=active]:text-cream">
-              {g.title}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+    <div>
+      <div className="sticky top-16 z-30 -mx-5 mb-10 border-b border-espresso/10 bg-linen/95 px-5 backdrop-blur-md sm:top-20 sm:-mx-8 sm:mb-14 sm:px-8 lg:-mx-12 lg:px-12">
+        <div className="flex items-center justify-between gap-6">
+          <div role="tablist" aria-label="Filter the menu" className="-mx-2 flex min-w-0 gap-1 overflow-x-auto [scrollbar-width:none] sm:gap-3">
+            {[{ key: "all" as const, title: "All" }, ...groups].map((g) => {
+              const on = filter === g.key;
+              return (
+                <button
+                  key={g.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => choose(g.key)}
+                  className={cn(
+                    "label relative h-12 shrink-0 px-2 whitespace-nowrap transition-colors duration-300 outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    on ? "text-espresso" : "text-espresso/50 hover:text-espresso",
+                  )}
+                >
+                  {g.title}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute inset-x-2 bottom-0 h-px origin-left bg-espresso transition-transform duration-500 ease-(--ease-luxe)",
+                      on ? "scale-x-100" : "scale-x-0",
+                    )}
+                  />
+                </button>
+              );
+            })}
+          </div>
+          <p className="label hidden shrink-0 text-espresso/50 tabular-nums sm:block" aria-live="polite">
+            {count} items
+          </p>
+        </div>
       </div>
 
-      <TabsContent value="all" className="space-y-16">
-        {groups.map((g) => (
-          <section key={g.key}>
-            <h2 className="mb-6 font-display text-3xl text-espresso uppercase sm:text-4xl">{g.title}</h2>
-            <Grid items={g.items} photo={g.key === "box"} />
-          </section>
+      <div ref={grid} className="grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-16">
+        {ordered.map((it) => (
+          <ProductTile key={it.id} item={it} className={cn("menu-tile", filter !== "all" && filter !== it.category && "hidden")} />
         ))}
-      </TabsContent>
-      {groups.map((g) => (
-        <TabsContent key={g.key} value={g.key}>
-          <Grid items={g.items} photo={g.key === "box"} />
-        </TabsContent>
-      ))}
-    </Tabs>
-  );
-}
-
-function Grid({ items, photo }: { items: MenuItem[]; photo: boolean }) {
-  return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-      {items.map((it) => (
-        <article key={it.id} className="group flex flex-col rounded-3xl border bg-card p-3 transition-shadow duration-500 hover:shadow-[0_20px_50px_-30px_rgba(54,31,24,.45)] sm:p-4">
-          <div className={cn("relative aspect-square overflow-hidden rounded-2xl", photo ? "bg-cream-200" : "bg-secondary/70")}>
-            {it.image_url && (
-              <Image
-                src={it.image_url}
-                alt={it.name}
-                fill
-                sizes="(min-width: 1024px) 260px, 45vw"
-                className={cn(
-                  "transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-105",
-                  photo ? "object-cover" : "object-contain p-3 drop-shadow-[0_14px_14px_rgba(54,31,24,.18)]",
-                )}
-              />
-            )}
-            {it.best_seller && <Badge className="absolute top-2.5 left-2.5 bg-espresso text-cream">Best seller</Badge>}
-          </div>
-          <div className="flex flex-1 flex-col px-1 pt-4 pb-1">
-            <h3 className="font-display text-lg leading-tight text-espresso uppercase [overflow-wrap:anywhere] sm:text-xl">{it.name}</h3>
-            {it.description && <p className="mt-1 text-xs leading-relaxed text-muted-foreground sm:text-sm">{it.description}</p>}
-            {it.price != null && <p className="mt-auto pt-3 text-sm font-medium text-espresso">{aed(it.price)}</p>}
-          </div>
-        </article>
-      ))}
+      </div>
     </div>
   );
 }

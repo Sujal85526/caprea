@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "@phosphor-icons/react";
-import { Badge } from "@/components/ui/badge";
+import { Tag } from "@/components/menu/product-tile";
 import { aed } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { CheckBadge, FieldError, StepHeader, optionClass, type StepProps } from "./ui";
@@ -33,12 +33,12 @@ export function StepPackage({ form, update, catalog, errors }: StepProps) {
               aria-checked={on}
               data-animate
               onClick={() => choose(p.id)}
-              className={cn("flex flex-col p-6", optionClass(on))}
+              className={cn("flex min-w-0 flex-col p-5 sm:p-6", optionClass(on))}
             >
               <span className="flex w-full items-center justify-between gap-3">
-                <span className="eyebrow text-mocha">{p.name}</span>
+                <span className="label text-espresso/60">{p.name}</span>
                 <span className="flex items-center gap-2">
-                  {p.featured && <Badge className="bg-sand text-espresso">Popular</Badge>}
+                  {p.featured && <Tag dark>Most booked</Tag>}
                   <CheckBadge on={on} />
                 </span>
               </span>
@@ -52,13 +52,13 @@ export function StepPackage({ form, update, catalog, errors }: StepProps) {
                 {[`Up to ${p.max_signature_drinks} signature drinks`, `${p.cups_per_drink} cups each`, ...p.includes].map(
                   (inc) => (
                     <li key={inc} className="flex items-start gap-2.5">
-                      <Check className="mt-0.5 size-4 shrink-0 text-mocha" weight="bold" /> {inc}
+                      <Check className="mt-0.5 size-4 shrink-0 text-espresso/60" weight="bold" /> {inc}
                     </li>
                   ),
                 )}
               </ul>
 
-              <span className="mt-auto flex w-full items-end justify-between border-t pt-5">
+              <span className="mt-auto flex w-full flex-wrap items-end justify-between gap-x-4 gap-y-1 border-t pt-5">
                 <span className="text-xs text-muted-foreground">Package price</span>
                 <span className="font-display text-3xl leading-none text-espresso">{aed(p.price)}</span>
               </span>

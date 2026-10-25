@@ -4,14 +4,15 @@ import { cn } from "@/lib/utils"
 import { Slot } from "radix-ui"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-[0.82rem] font-medium tracking-[0.04em] whitespace-nowrap transition-all duration-300 outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-none border border-transparent bg-clip-padding text-[0.72rem] font-medium tracking-[0.18em] uppercase whitespace-nowrap transition-all duration-300 outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-espresso-700",
-        sand: "bg-sand text-espresso hover:bg-sand-300",
+        default: "border-espresso bg-espresso text-linen hover:bg-transparent hover:text-espresso",
+        sand: "border-sand bg-sand text-espresso hover:border-cream hover:bg-cream",
         outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border-espresso/80 bg-transparent text-espresso hover:border-espresso hover:bg-espresso hover:text-linen aria-expanded:bg-espresso aria-expanded:text-linen",
+        light: "border-cream/40 bg-transparent text-cream hover:border-cream hover:bg-cream hover:text-espresso",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
@@ -23,8 +24,8 @@ const buttonVariants = cva(
       size: {
         default: "h-11 gap-2 px-6",
         xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-9 gap-1.5 px-4 text-[0.78rem] [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-12 gap-2 px-8 text-[0.88rem]",
+        sm: "h-10 gap-1.5 px-4 text-[0.68rem] [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "h-12 gap-2.5 px-8 text-[0.74rem]",
         icon: "size-11",
         "icon-xs":
           "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",

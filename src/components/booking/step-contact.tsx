@@ -97,8 +97,8 @@ export function StepContact({ form, update, catalog, errors }: StepProps) {
       </div>
 
       {terms.length > 0 && (
-        <section id="booking-terms" data-animate className="mt-10 rounded-3xl border bg-card px-5 py-2 sm:px-7">
-          <h3 className="eyebrow pt-5 pb-1 font-sans text-mocha">Booking terms</h3>
+        <section id="booking-terms" data-animate className="mt-10 rounded-none border bg-card px-5 py-2 sm:px-7">
+          <h3 className="label pt-5 pb-1 font-sans text-espresso/60">Booking terms</h3>
           <TermsList terms={terms} />
         </section>
       )}
@@ -109,7 +109,7 @@ export function StepContact({ form, update, catalog, errors }: StepProps) {
             id="agree"
             checked={form.agree}
             onCheckedChange={(v) => update({ agree: v === true })}
-            className="mt-0.5 size-5 rounded-md border-input bg-card [&_svg]:size-3.5"
+            className="relative mt-0.5 size-5 rounded-md border-input bg-card before:absolute before:-inset-2.5 before:content-[''] [&_svg]:size-3.5"
             {...err("agree", errors.agree)}
           />
           <label htmlFor="agree" className="cursor-pointer text-sm leading-relaxed text-espresso/85">

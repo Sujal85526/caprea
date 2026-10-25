@@ -28,6 +28,7 @@
 
 /* shadcn tokens mapped to the Caprea palette (light, minimal). */
 :root {
+  /* Public site: every brown is the brand espresso; quieter tones are espresso at lower opacity. */
   --radius: 1rem;
   --background: #fbf8f4;
   --foreground: #361f18;
@@ -37,15 +38,15 @@
   --popover-foreground: #361f18;
   --primary: #361f18;
   --primary-foreground: #fbf8f4;
-  --secondary: #f1e8dd;
+  --secondary: #f6efe6;
   --secondary-foreground: #361f18;
-  --muted: #f3ece3;
-  --muted-foreground: #7a5f52;
-  --accent: #efe3d4;
+  --muted: #f6efe6;
+  --muted-foreground: rgb(54 31 24 / 0.62);
+  --accent: #f6efe6;
   --accent-foreground: #361f18;
   --destructive: #b4413a;
-  --border: #e9ddcf;
-  --input: #e3d5c5;
+  --border: rgb(54 31 24 / 0.12);
+  --input: rgb(54 31 24 / 0.22);
   --ring: #d2b89e;
   --chart-1: #361f18;
   --chart-2: #d2b89e;
@@ -56,9 +57,9 @@
   --sidebar-foreground: #361f18;
   --sidebar-primary: #361f18;
   --sidebar-primary-foreground: #fbf8f4;
-  --sidebar-accent: #efe3d4;
+  --sidebar-accent: #f6efe6;
   --sidebar-accent-foreground: #361f18;
-  --sidebar-border: #e9ddcf;
+  --sidebar-border: rgb(54 31 24 / 0.12);
   --sidebar-ring: #d2b89e;
 }
 
@@ -146,6 +147,26 @@
     font-size: 0.72rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
+  }
+
+  /* Small uppercase label used across the public site */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  /* Text link with an underline that draws in from the left on hover */
+  .link-line {
+    background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 1px;
+    transition: background-size 0.5s var(--ease-luxe);
+  }
+  .link-line:hover,
+  .link-line:focus-visible {
+    background-size: 100% 1px;
   }
 
   /* Used by the admin panel's dark surfaces */

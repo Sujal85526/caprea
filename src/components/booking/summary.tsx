@@ -26,13 +26,13 @@ export function SummaryBody({ form, catalog, quote }: Props) {
 
   return (
     <div>
-      <p className="eyebrow text-mocha">Your booking</p>
+      <p className="label text-espresso/60">Your booking</p>
       <p className="mt-2 font-display text-2xl leading-tight text-espresso uppercase">
         {form.kind ? KIND_TITLE[form.kind] : "Getting started"}
       </p>
 
       {pkg && (
-        <div className="mt-4 flex items-center gap-3 rounded-2xl bg-secondary/70 p-4">
+        <div className="mt-4 flex items-center gap-3 rounded-none bg-cream p-4">
           <span className="font-display text-4xl leading-none text-espresso">{pkg.guests}</span>
           <span className="text-sm text-espresso">
             guests · {pkg.name}
@@ -56,7 +56,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
           <p className="text-xs text-muted-foreground">Drinks</p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {drinks.map((d) => (
-              <li key={d.name} className="rounded-full border bg-card px-3 py-1 text-xs text-espresso">
+              <li key={d.name} className="border bg-card px-3 py-1 text-xs text-espresso">
                 {d.name}
                 {form.kind === "custom" && <span className="text-muted-foreground"> × {d.n}</span>}
               </li>
@@ -83,7 +83,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
         </ul>
       )}
 
-      <div className="mt-5 rounded-2xl bg-secondary/70 p-4">
+      <div className="mt-5 rounded-none bg-cream p-4">
         <div className="flex items-baseline justify-between gap-3">
           <span className="text-sm font-medium text-espresso">{estimate ? "Estimated total" : "Total"}</span>
           <span className="font-display text-3xl text-espresso tabular-nums">{aed(quote.total)}</span>
@@ -106,11 +106,11 @@ export function SummaryBody({ form, catalog, quote }: Props) {
       {catalog.settings.terms?.length > 0 && (
         <Dialog>
           <DialogTrigger asChild>
-            <Button type="button" variant="link" size="sm" className="mt-3 h-auto px-0 text-muted-foreground hover:text-espresso">
+            <Button type="button" variant="link" size="sm" className="mt-2 px-0 text-muted-foreground hover:text-espresso">
               <ShieldCheck weight="light" className="size-4" /> Booking terms
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl bg-card p-6 sm:max-w-lg sm:p-8">
+          <DialogContent className="max-h-[85vh] overflow-y-auto rounded-none bg-card p-6 sm:max-w-lg sm:p-8">
             <DialogTitle className="font-display text-2xl font-normal text-espresso uppercase">Booking terms</DialogTitle>
             <TermsList terms={catalog.settings.terms} />
           </DialogContent>
@@ -124,7 +124,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
 export function SummaryCard(props: Props) {
   return (
     <aside aria-label="Booking summary" className="sticky top-28 hidden self-start lg:block">
-      <div className="rounded-3xl border bg-card p-7 shadow-[0_24px_60px_-40px_rgba(54,31,24,.35)]">
+      <div className="rounded-none border bg-card p-7">
         <SummaryBody {...props} />
       </div>
     </aside>
@@ -137,16 +137,14 @@ export function SummarySheet(props: Props) {
   const { total, deposit } = props.quote;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-card/95 shadow-[0_-16px_40px_-24px_rgba(54,31,24,.35)] backdrop-blur lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-card/95 backdrop-blur lg:hidden">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <div className="min-w-0">
-          <p className="text-xs text-muted-foreground">{estimate ? "Estimated total" : "Total"}</p>
-          <p className="flex items-baseline gap-2">
-            <span className="font-display text-2xl leading-tight text-espresso tabular-nums">{aed(total)}</span>
-            {!estimate && total > 0 && (
-              <span className="truncate text-xs text-muted-foreground">Deposit {aed(deposit)}</span>
-            )}
+          <p className="truncate text-xs text-muted-foreground">
+            {estimate ? "Estimated total" : "Total"}
+            {!estimate && total > 0 && <> · Deposit {aed(deposit)}</>}
           </p>
+          <p className="font-display text-2xl leading-tight whitespace-nowrap text-espresso tabular-nums">{aed(total)}</p>
         </div>
         <Sheet>
           <SheetTrigger asChild>
@@ -154,7 +152,7 @@ export function SummarySheet(props: Props) {
               Summary <CaretUp weight="bold" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="max-h-[85vh] gap-0 rounded-t-3xl bg-card p-0">
+          <SheetContent side="bottom" className="max-h-[85vh] gap-0 rounded-none bg-card p-0">
             <SheetTitle className="sr-only">Booking summary</SheetTitle>
             <SheetDescription className="sr-only">Your selections, total and deposit.</SheetDescription>
             <span aria-hidden className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-border" />

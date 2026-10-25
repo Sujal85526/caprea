@@ -36,7 +36,7 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
 
       {addons.length > 0 && (
         <section aria-labelledby="addons-title">
-          <h3 id="addons-title" data-animate className="eyebrow mb-4 font-sans text-mocha">
+          <h3 id="addons-title" data-animate className="label mb-4 font-sans text-espresso/60">
             Add-ons
           </h3>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -48,11 +48,11 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
                   key={a.slug}
                   data-animate
                   className={cn(
-                    "flex items-center gap-4 rounded-3xl border bg-card p-3 pr-4 transition-[border-color,background-color,box-shadow] duration-300",
-                    qty > 0 ? "border-espresso bg-secondary/45 ring-1 ring-espresso" : "border-border",
+                    "flex items-center gap-4 rounded-none border bg-card p-3 pr-4 transition-[border-color,background-color,box-shadow] duration-300",
+                    qty > 0 ? "border-espresso bg-cream/60 ring-1 ring-espresso" : "border-border",
                   )}
                 >
-                  <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-2xl bg-secondary/70">
+                  <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-none bg-cream">
                     <ItemImage src={a.image_url} alt="" className="size-20" />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -85,10 +85,10 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
 
       {catalog.extras.length > 0 && (
         <section aria-labelledby="extras-title" className="mt-12">
-          <h3 id="extras-title" data-animate className="eyebrow mb-4 font-sans text-mocha">
+          <h3 id="extras-title" data-animate className="label mb-4 font-sans text-espresso/60">
             Extras
           </h3>
-          <div className="divide-y overflow-hidden rounded-3xl border bg-card">
+          <div className="divide-y overflow-hidden rounded-none border bg-card">
             {catalog.extras.map((x) => {
               const Icon = extraIcon(x);
               const qty = form.extras[x.slug] ?? 0;

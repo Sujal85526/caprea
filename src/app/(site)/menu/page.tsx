@@ -18,7 +18,7 @@ export default async function MenuPage() {
         Everything we pour at the café and at your events. Catering packages are built from our signature drinks and
         coffee selection.
       </PageHero>
-      <div className="mx-auto max-w-6xl px-6 pb-20 sm:px-10 sm:pb-28">
+      <div className="mx-auto max-w-[90rem] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-12">
         <MenuBoard items={menu} />
       </div>
       <CtaBand />

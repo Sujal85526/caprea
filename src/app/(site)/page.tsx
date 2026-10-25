@@ -1,15 +1,12 @@
-import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { Button } from "@/components/ui/button";
+import { ArrowLink, SectionHeading } from "@/components/landing/section-heading";
 import { CtaBand } from "@/components/landing/cta-band";
-import { DrinksCarousel } from "@/components/landing/drinks-carousel";
 import { Faq } from "@/components/landing/faq";
-import { Gallery } from "@/components/landing/gallery";
 import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
-import { Marquee } from "@/components/landing/marquee";
-import { PackageGrid } from "@/components/landing/package-grid";
-import { SectionHeading } from "@/components/landing/section-heading";
+import { ImageBand } from "@/components/landing/image-band";
+import { PackageList } from "@/components/landing/package-list";
+import { SignatureGrid } from "@/components/landing/signature-grid";
+import { Story } from "@/components/landing/story";
 import { getCatalog } from "@/lib/catalog";
 
 export default async function HomePage() {
@@ -23,30 +20,18 @@ export default async function HomePage() {
         minGuests={Math.min(...guests)}
         maxGuests={Math.max(...guests)}
       />
-      <Marquee />
-      <DrinksCarousel drinks={menu.filter((m) => m.catering_signature)} />
-      <HowItWorks />
+      <SignatureGrid drinks={menu.filter((m) => m.catering_signature)} />
+      <ImageBand src="/photos/matcha-foam.webp" alt="Freshly whisked matcha foam" eyebrow="Ceremonial-grade matcha">
+        Made fresh, cup by cup
+      </ImageBand>
 
-      <section id="packages" className="scroll-mt-24 py-20 sm:py-28">
-        <div className="mx-auto max-w-6xl px-6 sm:px-10 xl:max-w-7xl">
-          <SectionHeading
-            eyebrow="Catering packages"
-            title="Choose your package"
-            action={
-              <Button asChild variant="outline">
-                <Link href="/packages">
-                  Compare &amp; terms <ArrowRight />
-                </Link>
-              </Button>
-            }
-          >
-            Every package includes Caprea&apos;s cart, a barista, a waiter and {settings.service_hours} hours of service.
-          </SectionHeading>
-          <PackageGrid packages={packages} />
-        </div>
+      <section id="packages" className="mx-auto max-w-[90rem] scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+        <SectionHeading eyebrow="Catering packages" title="Choose your package" action={<ArrowLink href="/packages">Compare &amp; terms</ArrowLink>} />
+        <PackageList packages={packages} />
       </section>
 
-      <Gallery instagram={settings.instagram} />
+      <HowItWorks />
+      <Story instagram={settings.instagram} />
       <Faq terms={settings.terms} />
       <CtaBand />
     </>
