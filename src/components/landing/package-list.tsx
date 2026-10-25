@@ -35,11 +35,11 @@ export function PackageList({ packages }: { packages: Package[] }) {
               <Link
                 href={`/book?package=${p.id}`}
                 className={cn(
-                  "group relative grid grid-cols-[5.25rem_minmax(0,1fr)] items-center gap-x-3 py-6 transition-colors duration-500 sm:grid-cols-[7rem_minmax(0,1fr)_auto_auto] sm:gap-x-6 lg:grid-cols-[10rem_minmax(0,1.1fr)_minmax(0,1fr)_auto_auto] lg:py-8",
+                  "group relative grid grid-cols-[5.25rem_minmax(0,1fr)] items-center gap-x-3 py-5 transition-colors duration-500 sm:grid-cols-[7rem_minmax(0,1fr)_auto_auto] sm:gap-x-6 lg:grid-cols-[10rem_minmax(0,1.1fr)_minmax(0,1fr)_auto_auto] lg:py-6",
                   p.featured ? "bg-cream" : "hover:bg-cream/70",
                 )}
               >
-                <span className="row-span-2 pl-3 font-display text-[2.3rem] leading-none text-espresso tabular-nums sm:row-span-1 sm:pl-5 sm:text-6xl lg:text-7xl">{p.guests}</span>
+                <span className="row-span-2 pl-3 font-display text-[2.3rem] leading-none text-espresso tabular-nums sm:row-span-1 sm:pl-5 sm:text-5xl lg:text-6xl">{p.guests}</span>
 
                 <span className="min-w-0">
                   <span className="flex flex-wrap items-center gap-2">

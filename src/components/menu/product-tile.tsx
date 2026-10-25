@@ -33,10 +33,13 @@ export function Tag({ children, dark }: { children: React.ReactNode; dark?: bool
 export function ProductTile({
   item,
   showSignature = true,
+  compact,
   sizes,
   className,
 }: {
   item: MenuItem;
+  /** name, price and category only, for denser rows */
+  compact?: boolean;
   /** tag drinks that can be chosen in catering packages */
   showSignature?: boolean;
   sizes?: string;
@@ -65,17 +68,17 @@ export function ProductTile({
           </span>
         )}
       </div>
-      <div className="mt-4 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3">
-        <h3 className="font-display text-[1.05rem] leading-tight tracking-[0.04em] text-espresso uppercase sm:text-lg">{item.name}</h3>
+      <div className={cn("mt-4 flex flex-col gap-1", !compact && "sm:flex-row sm:items-baseline sm:gap-3")}>
+        <h3 className={cn("font-display leading-tight tracking-[0.04em] text-espresso uppercase", compact ? "text-base" : "text-[1.05rem] sm:text-lg")}>{item.name}</h3>
         {item.price != null && (
           <>
-            <span aria-hidden className="hidden h-px min-w-4 flex-1 translate-y-[-0.2rem] border-b border-dotted border-espresso/30 sm:block" />
+            {!compact && <span aria-hidden className="hidden h-px min-w-4 flex-1 translate-y-[-0.2rem] border-b border-dotted border-espresso/30 sm:block" />}
             <p className="text-sm whitespace-nowrap text-espresso/80 tabular-nums">{aed(item.price)}</p>
           </>
         )}
       </div>
-      {item.description && <p className="mt-1.5 text-sm leading-relaxed text-espresso/60">{item.description}</p>}
-      <div className="mt-3 flex flex-wrap gap-1.5">
+      {!compact && item.description && <p className="mt-1.5 text-sm leading-relaxed text-espresso/60">{item.description}</p>}
+      <div className={cn("flex flex-wrap gap-1.5", compact ? "mt-2.5" : "mt-3")}>
         <Tag>{CATEGORY_LABEL[item.category]}</Tag>
         {showSignature && item.catering_signature && <Tag>Catering signature</Tag>}
       </div>

@@ -8,11 +8,11 @@ import { SplitTitle } from "@/components/site/split-title";
 export function CtaBand() {
   return (
     <section className="bg-espresso text-cream">
-      <div className="mx-auto max-w-[90rem] px-5 pt-24 pb-20 sm:px-8 sm:pt-32 sm:pb-24 lg:px-12">
+      <div className="mx-auto max-w-[90rem] px-5 pt-20 pb-16 sm:px-8 sm:pt-28 sm:pb-20 lg:px-12">
         <Reveal>
           <p className="label text-sand">Reserve your date</p>
         </Reveal>
-        <SplitTitle className="mt-5 max-w-5xl font-display text-[clamp(2.6rem,10vw,7.5rem)] leading-[0.92] text-cream uppercase">
+        <SplitTitle className="mt-5 max-w-5xl font-display text-[clamp(2.6rem,9vw,6.5rem)] leading-[0.92] text-cream uppercase">
           Let&apos;s pour something special
         </SplitTitle>
         <Reveal className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">

@@ -60,6 +60,9 @@ function NavbarView({ pathname }: { pathname: string | null }) {
   }, []);
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname === href);
+  // Over the home page's photographic hero the bar is transparent with cream type.
+  const overHero = pathname === "/" && !scrolled;
+  const ink = overHero ? "text-cream" : "text-espresso";
 
   return (
     <header
@@ -69,7 +72,7 @@ function NavbarView({ pathname }: { pathname: string | null }) {
       )}
     >
       <nav aria-label="Main" className="mx-auto grid h-16 max-w-[90rem] grid-cols-[1fr_auto] items-center px-5 sm:h-20 sm:px-8 lg:grid-cols-[1fr_auto_1fr] lg:px-12">
-        <Link href="/" aria-label="Caprea home" className="-my-2 inline-flex w-fit items-center py-2 text-espresso">
+        <Link href="/" aria-label="Caprea home" className={cn("-my-2 inline-flex w-fit items-center py-2 transition-colors duration-500", ink)}>
           <Logo className="w-24 sm:w-28" />
         </Link>
 
@@ -79,7 +82,7 @@ function NavbarView({ pathname }: { pathname: string | null }) {
               <Link
                 href={l.href}
                 aria-current={isActive(l.href) ? "page" : undefined}
-                className="label inline-flex h-10 items-center text-espresso"
+                className={cn("label inline-flex h-10 items-center transition-colors duration-500", ink)}
               >
                 <span className={cn("link-line py-1", isActive(l.href) && "bg-[length:100%_1px]")}>{l.label}</span>
               </Link>
@@ -88,7 +91,7 @@ function NavbarView({ pathname }: { pathname: string | null }) {
         </ul>
 
         <div className="flex items-center justify-end gap-2">
-          <Button asChild size="sm" className="hidden sm:inline-flex">
+          <Button asChild size="sm" variant={overHero ? "light" : "default"} className="hidden sm:inline-flex">
             <Link href="/book">
               Book your event <ArrowUpRight weight="bold" />
             </Link>
@@ -98,8 +101,8 @@ function NavbarView({ pathname }: { pathname: string | null }) {
             <SheetTrigger asChild>
               <button type="button" className="group/burger -mr-2 grid size-11 place-items-center lg:hidden" aria-label="Open menu">
                 <span aria-hidden className="flex w-7 flex-col items-end gap-[7px]">
-                  <span className="h-px w-7 bg-espresso transition-[width] duration-500 ease-(--ease-luxe) group-hover/burger:w-5" />
-                  <span className="h-px w-5 bg-espresso transition-[width] duration-500 ease-(--ease-luxe) group-hover/burger:w-7" />
+                  <span className={cn("h-px w-7 transition-[width,background-color] duration-500 ease-(--ease-luxe) group-hover/burger:w-5", overHero ? "bg-cream" : "bg-espresso")} />
+                  <span className={cn("h-px w-5 transition-[width,background-color] duration-500 ease-(--ease-luxe) group-hover/burger:w-7", overHero ? "bg-cream" : "bg-espresso")} />
                 </span>
               </button>
             </SheetTrigger>
