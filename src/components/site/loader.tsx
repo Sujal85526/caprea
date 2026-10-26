@@ -19,7 +19,8 @@ export function useSiteReady() {
   );
 }
 
-const PRELOAD = ["/photos/strawberry-matcha.webp", "/photos/iced-latte-pour.webp", "/menu/matcha-latte.webp", "/menu/velvet-sunset.webp", "/menu/smores-cookie.webp"];
+// The home page's drink illustrations; the hero itself is typographic.
+const PRELOAD = ["/menu/matcha-latte.webp", "/menu/acai-smoothie.webp", "/menu/golden-hour.webp", "/menu/cloud-nine.webp"];
 
 function preload(src: string) {
   return new Promise<void>((resolve) => {
@@ -144,7 +145,7 @@ export function Loader() {
                 className="ld-steam"
                 d={`M${x} ${2 + i * 2} q-6 -8 0 -16 q6 -8 0 -16`}
                 fill="none"
-                stroke="#b89a7c"
+                stroke="#d2b89e"
                 strokeWidth="2"
                 strokeLinecap="round"
                 opacity="0"
@@ -177,7 +178,7 @@ export function Loader() {
 
           <div className="ld-meta mt-6 flex flex-col items-center gap-1">
             <p className="font-display text-4xl text-espresso tabular-nums">{String(pct).padStart(3, "0")}</p>
-            <p className="eyebrow text-[0.62rem] text-mocha">Brewing your experience</p>
+            <p className="eyebrow text-[0.62rem] text-espresso/55">Brewing your experience</p>
           </div>
         </div>
       </div>

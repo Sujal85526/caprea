@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, List, X } from "@phosphor-icons/react";
+import { Suspense, useRef, useState } from "react";
+import { ArrowUpRight, ChatCircle, Coffee, House, List, Package, Plus, X } from "@phosphor-icons/react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -33,119 +33,154 @@ function NavbarWithPath() {
 }
 
 function NavbarView({ pathname }: { pathname: string | null }) {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
 
-  // Mobile menu entrance: the panel swings in from the top-right corner, the close button spins into place,
-  // then each link rotates up into view one after another. Runs once the panel is mounted.
+  // Mobile menu: links fade up one after another once the panel is mounted.
   const playMenuIn = () => {
     const el = panel.current;
     if (!el || prefersReducedMotion()) return;
-    const q = gsap.utils.selector(el);
-    gsap
-      .timeline({ defaults: { ease: "expo.out" } })
-      .from(el, { rotate: 10, xPercent: 30, opacity: 0, transformOrigin: "100% 0%", duration: 0.9 })
-      .from(q(".mm-close"), { rotate: -270, scale: 0.3, opacity: 0, duration: 0.9 }, 0.1)
-      .from(q(".mm-link"), { yPercent: 120, rotate: 10, transformOrigin: "0% 100%", duration: 0.9, stagger: 0.07 }, 0.15)
-      .from(q(".mm-foot"), { y: 24, opacity: 0, duration: 0.7 }, 0.5);
+    gsap.from(gsap.utils.selector(el)(".mm-item"), { y: 16, autoAlpha: 0, duration: 0.6, stagger: 0.05, ease: "power3.out" });
   };
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-4">
-      <nav
-        aria-label="Main"
-        className={cn(
-          "mx-auto flex max-w-6xl items-center justify-between rounded-full py-2 pr-2 pl-5 transition-[background-color,box-shadow,border-color] duration-500",
-          scrolled ? "bg-linen/95 shadow-[0_12px_40px_-20px_rgba(54,31,24,.45)] backdrop-blur-md" : "bg-linen/95 shadow-[0_8px_30px_-22px_rgba(54,31,24,.4)] backdrop-blur-md",
-        )}
-      >
-        <Link href="/" aria-label="Caprea home" className="text-espresso">
-          <Logo className="w-24 sm:w-28" />
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 border-b border-espresso/10 bg-cream/95 backdrop-blur-md">
+        <nav aria-label="Main" className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:h-[4.5rem] sm:px-10">
+          <Link href="/" aria-label="Caprea home" className="flex h-11 items-center text-espresso">
+            <Logo className="w-24 sm:w-28" />
+          </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
-          {links.map((l) => (
-            <li key={l.href}>
-              <Link
-                href={l.href}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm transition-colors",
-                  pathname === l.href ? "bg-secondary text-espresso" : "text-espresso/70 hover:text-espresso",
-                )}
-              >
-                {l.label}
+          <ul className="hidden items-center gap-1 lg:flex">
+            {links.map((l) => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  aria-current={pathname === l.href ? "page" : undefined}
+                  className={cn(
+                    "inline-flex h-11 items-center rounded-full px-4 text-sm transition-colors",
+                    pathname === l.href ? "text-espresso" : "text-espresso/60 hover:text-espresso",
+                  )}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-2">
+            <Button asChild className="hidden sm:inline-flex">
+              <Link href="/book">
+                Book your event <ArrowUpRight weight="bold" />
               </Link>
-            </li>
-          ))}
-        </ul>
+            </Button>
 
-        <div className="flex items-center gap-2">
-          <Button asChild className="hidden sm:inline-flex">
-            <Link href="/book">
-              Book your event <ArrowUpRight weight="bold" />
-            </Link>
-          </Button>
-
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="group/burger lg:hidden" aria-label="Open menu">
-                <List className="size-6 transition-transform duration-500 ease-(--ease-luxe) group-hover/burger:rotate-90" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              onOpenAutoFocus={(e) => {
-                e.preventDefault();
-                requestAnimationFrame(playMenuIn);
-              }}
-              className="overflow-hidden border-none bg-linen p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-sm [&>button]:hidden"
-            >
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <div ref={panel} className="flex h-full flex-col px-6 pt-5 pb-8">
-                <div className="flex items-center justify-between">
-                  <Logo className="w-24 text-espresso" />
-                  <span className="mm-close inline-flex">
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="-mr-2 lg:hidden" aria-label="Open menu">
+                  <List className="size-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                onOpenAutoFocus={(e) => {
+                  e.preventDefault();
+                  requestAnimationFrame(playMenuIn);
+                }}
+                className="border-none bg-cream p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-sm [&>button]:hidden"
+              >
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <div ref={panel} className="flex h-full flex-col px-6 pt-3 pb-8">
+                  <div className="flex h-11 items-center justify-between">
+                    <Logo className="w-24 text-espresso" />
                     <SheetClose asChild>
-                      <Button variant="ghost" size="icon" aria-label="Close menu">
+                      <Button variant="ghost" size="icon" className="-mr-2" aria-label="Close menu">
                         <X className="size-6" />
                       </Button>
                     </SheetClose>
-                  </span>
-                </div>
-                <ul className="mt-12 space-y-1">
-                  {links.map((l) => (
-                    <li key={l.href} className="overflow-hidden">
-                      <SheetClose asChild>
-                        <Link href={l.href} className="mm-link block py-3 font-display text-4xl text-espresso uppercase">
-                          {l.label}
+                  </div>
+                  <ul className="mt-10">
+                    {links.map((l) => (
+                      <li key={l.href} className="mm-item border-b border-espresso/10">
+                        <SheetClose asChild>
+                          <Link href={l.href} className="flex min-h-14 items-center text-2xl font-light text-espresso">
+                            {l.label}
+                          </Link>
+                        </SheetClose>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mm-item mt-auto">
+                    <SheetClose asChild>
+                      <Button asChild size="lg" className="w-full">
+                        <Link href="/book">
+                          Book your event <ArrowUpRight weight="bold" />
                         </Link>
-                      </SheetClose>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mm-foot mt-auto space-y-4 [&_a]:transition-none">
-                  <SheetClose asChild>
-                    <Button asChild size="lg" className="w-full">
-                      <Link href="/book">
-                        Book your event <ArrowUpRight weight="bold" />
-                      </Link>
-                    </Button>
-                  </SheetClose>
-                  <p className="text-center text-sm text-muted-foreground">+971 52 225 0022 · @caprea.ae</p>
+                      </Button>
+                    </SheetClose>
+                  </div>
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </nav>
-    </header>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </nav>
+      </header>
+      <TabBar pathname={pathname} />
+    </>
+  );
+}
+
+const tabs = [
+  { href: "/", label: "Home", Icon: House },
+  { href: "/menu", label: "Menu", Icon: Coffee },
+  { href: "/book", label: "Book", Icon: Plus },
+  { href: "/packages", label: "Packages", Icon: Package },
+  { href: "/#contact", label: "Contact", Icon: ChatCircle },
+];
+
+/**
+ * Floating bottom tab bar on phones and tablets, with Book as the raised centre button. Pages with their own
+ * bottom bar (the booking flow) opt out with a `data-no-tabbar` element.
+ */
+function TabBar({ pathname }: { pathname: string | null }) {
+  return (
+    <nav
+      aria-label="Quick links"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 mx-auto max-w-md lg:hidden [body:has([data-no-tabbar])_&]:hidden"
+    >
+      <ul className="grid grid-cols-5 items-end rounded-[1.75rem] bg-espresso px-1.5 pt-1.5 pb-1.5 text-cream shadow-[0_18px_40px_-18px_rgba(54,31,24,.6)]">
+        {tabs.map(({ href, label, Icon }) => {
+          const active = pathname === href;
+          if (href === "/book")
+            return (
+              <li key={href} className="flex justify-center">
+                <Link href={href} className="-mt-6 flex min-w-14 flex-col items-center gap-1 text-[0.65rem] font-medium">
+                  <span className="grid size-14 place-items-center rounded-full border-4 border-espresso bg-cream text-espresso">
+                    <Icon className="size-5" weight="bold" />
+                  </span>
+                  {label}
+                </Link>
+              </li>
+            );
+          return (
+            <li key={href}>
+              <Link
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex min-h-12 flex-col items-center justify-center gap-1 text-[0.65rem] font-medium transition-colors",
+                  active ? "text-cream" : "text-cream/60",
+                )}
+              >
+                <span className={cn("grid h-7 w-11 place-items-center rounded-full", active && "bg-cream text-espresso")}>
+                  <Icon className="size-[1.15rem]" weight={active ? "fill" : "regular"} />
+                </span>
+                {label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
