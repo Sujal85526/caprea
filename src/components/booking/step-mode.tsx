@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import { Coffee, Package, PencilSimpleLine, type Icon } from "@phosphor-icons/react";
 import type { BookingKind } from "@/lib/types";
 import { aed, minCups } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { CheckBadge, FieldError, StepHeader, optionClass, type StepProps } from "./ui";
 
-type Option = { kind: BookingKind; eyebrow: string; title: string; body: string; foot: string; photo: string };
+type Option = { kind: BookingKind; eyebrow: string; title: string; body: string; foot: string; Icon: Icon };
 
 export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onChoose: (k: BookingKind) => void }) {
   const { settings, packages, cupTiers } = catalog;
@@ -18,9 +18,9 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
       kind: "package",
       eyebrow: "Recommended",
       title: "Choose a package",
-      body: "Curated for your guest count. Pick your signature drinks and we handle the rest.",
+      body: "Sized to your guest count. Pick your drinks, we handle the rest.",
       foot: packages.length ? `From ${aed(fromPrice)}` : "",
-      photo: "/photos/trio-overhead.webp",
+      Icon: Package,
     },
     ...(settings.pricing_mode !== "packages"
       ? [
@@ -30,7 +30,7 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
             title: "Order by the cup",
             body: `Tell us how many cups you need, from ${minCups(cupTiers)}, and which drinks to pour.`,
             foot: cupTiers.length ? `From ${aed(lowestCup)} per cup` : "",
-            photo: "/photos/latte-art.webp",
+            Icon: Coffee,
           },
         ]
       : []),
@@ -38,9 +38,9 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
       kind: "custom",
       eyebrow: "Bespoke",
       title: "Create your own",
-      body: "Build your own menu, cup by cup. Our team reviews it and confirms a tailored quote.",
+      body: "Build your own menu. We confirm a tailored quote.",
       foot: "Free quote, no commitment",
-      photo: "/photos/matcha-splash.webp",
+      Icon: PencilSimpleLine,
     },
   ];
 
@@ -65,22 +65,18 @@ export function StepMode({ form, catalog, errors, onChoose }: StepProps & { onCh
               aria-checked={on}
               data-animate
               onClick={() => onChoose(o.kind)}
-              className={cn("group flex flex-col p-3 sm:p-4", optionClass(on))}
+              className={cn("flex flex-col p-5 sm:p-6", optionClass(on))}
             >
-              <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-secondary">
-                <Image
-                  src={o.photo}
-                  alt=""
-                  fill
-                  sizes="(min-width: 768px) 28vw, 100vw"
-                  className="object-cover transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-[1.03]"
-                />
-                <CheckBadge on={on} className="absolute top-3 right-3" />
+              <span className="flex w-full items-start justify-between">
+                <span className="grid size-12 place-items-center rounded-full border border-espresso/15 text-espresso">
+                  <o.Icon className="size-6" weight="light" />
+                </span>
+                <CheckBadge on={on} />
               </span>
-              <span className="flex flex-1 flex-col px-1 pt-4 pb-1">
-                <span className="eyebrow text-[0.62rem] text-mocha">{o.eyebrow}</span>
-                <span className="mt-2 block font-display text-2xl leading-tight text-espresso uppercase">{o.title}</span>
-                <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">{o.body}</span>
+              <span className="flex flex-1 flex-col pt-5">
+                <span className="eyebrow text-[0.62rem] text-espresso/55">{o.eyebrow}</span>
+                <span className="mt-2 block font-sans text-xl leading-tight font-semibold text-espresso">{o.title}</span>
+                <span className="mt-1.5 block text-sm leading-relaxed text-espresso/60">{o.body}</span>
                 {o.foot && (
                   <span className="mt-auto block pt-4 text-sm font-medium text-espresso">{o.foot}</span>
                 )}

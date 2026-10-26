@@ -31,8 +31,8 @@ export const optionClass = (on: boolean) =>
 export function StepHeader({ eyebrow, title, children }: { eyebrow: string; title: ReactNode; children?: ReactNode }) {
   return (
     <header data-animate className="mb-8 md:mb-10">
-      <p className="eyebrow text-mocha">{eyebrow}</p>
-      <h2 className="mt-3 font-display text-3xl text-espresso uppercase sm:text-4xl">{title}</h2>
+      <p className="eyebrow text-espresso/55">{eyebrow}</p>
+      <h2 className="mt-3 font-sans text-[1.75rem] leading-tight font-semibold tracking-normal text-espresso sm:text-4xl">{title}</h2>
       {children && <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-muted-foreground">{children}</p>}
     </header>
   );
@@ -106,7 +106,7 @@ export function QtyStepper({
   };
   const btn = cn(
     "grid shrink-0 place-items-center rounded-full border border-border bg-card text-espresso transition-colors duration-200 outline-none hover:border-espresso hover:bg-espresso hover:text-cream focus-visible:ring-3 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:opacity-35",
-    size === "sm" ? "size-8" : "size-10",
+    size === "sm" ? "size-10" : "size-11",
   );
   return (
     <div className="inline-flex items-center gap-1.5" role="group" aria-label={label}>

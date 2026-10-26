@@ -49,7 +49,7 @@ type PublicBooking = Pick<
 
 export default function BookingPage({ params, searchParams }: PageProps<"/booking/[ref]">) {
   return (
-    <div className="mx-auto max-w-5xl px-5 pt-32 pb-28 sm:px-8 md:pt-40">
+    <div className="mx-auto max-w-5xl px-5 pt-12 pb-28 sm:px-8 md:pt-16">
       <Suspense fallback={<Skeleton />}>
         <Confirmation params={params} searchParams={searchParams} />
       </Suspense>
@@ -114,8 +114,8 @@ function Generic({ settings, bookingRef }: { settings: Settings; bookingRef?: st
   return (
     <div className="mx-auto max-w-2xl text-center">
       <SuccessMark />
-      <p className="eyebrow mt-8 text-mocha">Thank you</p>
-      <h1 className="mt-4 font-display text-5xl text-espresso uppercase md:text-6xl">Booking received</h1>
+      <p className="eyebrow mt-8 text-espresso/55">Thank you</p>
+      <h1 className="mt-4 font-sans text-4xl font-semibold tracking-normal text-espresso md:text-5xl">Booking received</h1>
       <p className="mx-auto mt-6 max-w-lg leading-relaxed text-muted-foreground">
         If you&apos;ve just booked with us, your confirmation is on its way to your inbox with every detail of your event.
         Can&apos;t find it? Message us and we&apos;ll help right away.
@@ -133,7 +133,7 @@ function Generic({ settings, bookingRef }: { settings: Settings; bookingRef?: st
 function Card({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
   return (
     <section className={`rounded-3xl border bg-card p-6 sm:p-7 ${className ?? ""}`}>
-      <h2 className="eyebrow font-sans text-mocha">{title}</h2>
+      <h2 className="eyebrow font-sans text-espresso/55">{title}</h2>
       <div className="mt-5">{children}</div>
     </section>
   );
@@ -143,7 +143,7 @@ function Row({ k, v, strong }: { k: ReactNode; v: ReactNode; strong?: boolean })
   return (
     <div className="flex items-start justify-between gap-6 border-b py-3 text-sm last:border-0">
       <dt className="text-muted-foreground">{k}</dt>
-      <dd className={strong ? "text-right font-display text-2xl text-espresso" : "text-right text-espresso"}>{v}</dd>
+      <dd className={strong ? "text-right font-sans font-semibold text-2xl text-espresso" : "text-right text-espresso"}>{v}</dd>
     </div>
   );
 }
@@ -169,10 +169,10 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
     <div>
       <header className="mx-auto max-w-2xl text-center">
         <SuccessMark />
-        <p className="eyebrow mt-8 text-mocha">
+        <p className="eyebrow mt-8 text-espresso/55">
           {isRequest ? "Request" : "Booking"} {b.ref}
         </p>
-        <h1 className="mt-4 font-display text-5xl text-espresso uppercase md:text-6xl">
+        <h1 className="mt-4 font-sans text-4xl font-semibold tracking-normal text-espresso md:text-5xl">
           {isRequest ? "Request received" : "Booking confirmed"}
         </h1>
         <p className="mx-auto mt-6 max-w-lg leading-relaxed text-muted-foreground">
@@ -210,7 +210,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
             {b.package_name && <Row k="Package" v={b.package_name} />}
             {b.kind === "per_cup" && b.cups && <Row k="Cups" v={b.cups} />}
             {b.drinks.map((d) => (
-              <Row key={d.slug} k={d.name} v={d.cups ? `${d.cups} cups` : <Check className="ml-auto size-4 text-mocha" weight="bold" />} />
+              <Row key={d.slug} k={d.name} v={d.cups ? `${d.cups} cups` : <Check className="ml-auto size-4 text-espresso/55" weight="bold" />} />
             ))}
             {b.addons.map((a) => (
               <Row key={a.slug} k={a.name} v={`${a.qty} pcs`} />
@@ -219,7 +219,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
               <Row
                 key={x.slug}
                 k={x.name}
-                v={x.unit === "on_request" ? "On request" : x.unit === "per_hour" ? `${x.qty} h` : <Check className="ml-auto size-4 text-mocha" weight="bold" />}
+                v={x.unit === "on_request" ? "On request" : x.unit === "per_hour" ? `${x.qty} h` : <Check className="ml-auto size-4 text-espresso/55" weight="bold" />}
               />
             ))}
           </dl>

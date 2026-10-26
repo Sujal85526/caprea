@@ -41,8 +41,8 @@ function DrinkCard({
         {onToggle && <CheckBadge on={selected} className="absolute top-2.5 right-2.5" />}
       </span>
       <span className="block px-1 pt-3.5 pb-1">
-        <span className="eyebrow block text-[0.58rem] text-mocha">{CATEGORY_LABEL[item.category] ?? item.category}</span>
-        <span className="mt-1.5 block font-display text-lg leading-tight text-espresso uppercase [overflow-wrap:anywhere]">
+        <span className="eyebrow block text-[0.58rem] text-espresso/55">{CATEGORY_LABEL[item.category] ?? item.category}</span>
+        <span className="mt-1.5 block font-sans text-base leading-tight font-semibold tracking-normal text-espresso [overflow-wrap:anywhere]">
           {item.name}
         </span>
       </span>
@@ -193,7 +193,7 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
               <Coffee className="size-5" weight="light" />
             </span>
             <div>
-              <p className="eyebrow text-mocha">Plus our coffee selection</p>
+              <p className="eyebrow text-espresso/55">Plus our coffee selection</p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 The remaining servings are poured from our specialty coffee bar:{" "}
                 <span className="text-espresso">{coffee.map((c) => c.name).join(", ")}</span>.
@@ -225,7 +225,7 @@ export function StepDrinks({ form, update, catalog, errors }: StepProps) {
           <span className="font-medium text-espresso tabular-nums">{totalCups}</span> cups ·{" "}
           {Object.keys(form.drinks).length} drinks
         </p>
-        <p className="eyebrow text-[0.6rem] text-mocha">Estimate</p>
+        <p className="eyebrow text-[0.6rem] text-espresso/55">Estimate</p>
       </CounterBar>
 
       <CategoryChips cats={cats} value={cat} onChange={setCat} />
@@ -292,7 +292,7 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
           </div>
           <div className="sm:text-right">
             <p className="text-xs text-muted-foreground">Your price</p>
-            <p className="mt-1 font-display text-3xl text-espresso">
+            <p className="mt-1 font-sans font-semibold text-3xl text-espresso">
               {tier ? `${aed(tier.price_per_cup)} / cup` : `Min. ${min} cups`}
             </p>
           </div>
@@ -313,7 +313,7 @@ export function StepCups({ form, update, catalog, errors }: StepProps) {
         <FieldError>{errors.cups}</FieldError>
       </div>
 
-      <h3 data-animate className="mt-12 mb-5 font-display text-2xl text-espresso uppercase sm:text-3xl">
+      <h3 data-animate className="mt-12 mb-5 font-sans text-2xl font-semibold tracking-normal text-espresso">
         Drinks to serve
       </h3>
       <CategoryChips cats={cats} value={cat} onChange={setCat} />

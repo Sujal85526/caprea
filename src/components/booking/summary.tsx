@@ -26,14 +26,14 @@ export function SummaryBody({ form, catalog, quote }: Props) {
 
   return (
     <div>
-      <p className="eyebrow text-mocha">Your booking</p>
-      <p className="mt-2 font-display text-2xl leading-tight text-espresso uppercase">
+      <p className="eyebrow text-espresso/55">Your booking</p>
+      <p className="mt-2 font-sans text-xl leading-tight font-semibold tracking-normal text-espresso">
         {form.kind ? KIND_TITLE[form.kind] : "Getting started"}
       </p>
 
       {pkg && (
         <div className="mt-4 flex items-center gap-3 rounded-2xl bg-secondary/70 p-4">
-          <span className="font-display text-4xl leading-none text-espresso">{pkg.guests}</span>
+          <span className="font-sans text-3xl leading-none font-semibold text-espresso">{pkg.guests}</span>
           <span className="text-sm text-espresso">
             guests · {pkg.name}
             <span className="block text-xs text-muted-foreground">
@@ -86,7 +86,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
       <div className="mt-5 rounded-2xl bg-secondary/70 p-4">
         <div className="flex items-baseline justify-between gap-3">
           <span className="text-sm font-medium text-espresso">{estimate ? "Estimated total" : "Total"}</span>
-          <span className="font-display text-3xl text-espresso tabular-nums">{aed(quote.total)}</span>
+          <span className="font-sans text-2xl font-semibold whitespace-nowrap text-espresso tabular-nums">{aed(quote.total)}</span>
         </div>
         {estimate ? (
           <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
@@ -111,7 +111,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
             </Button>
           </DialogTrigger>
           <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl bg-card p-6 sm:max-w-lg sm:p-8">
-            <DialogTitle className="font-display text-2xl font-normal text-espresso uppercase">Booking terms</DialogTitle>
+            <DialogTitle className="font-sans text-xl font-semibold tracking-normal text-espresso">Booking terms</DialogTitle>
             <TermsList terms={catalog.settings.terms} />
           </DialogContent>
         </Dialog>
@@ -123,7 +123,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
 /** Sticky card on desktop. */
 export function SummaryCard(props: Props) {
   return (
-    <aside aria-label="Booking summary" className="sticky top-28 hidden self-start lg:block">
+    <aside aria-label="Booking summary" className="sticky top-24 hidden self-start lg:block">
       <div className="rounded-3xl border bg-card p-7 shadow-[0_24px_60px_-40px_rgba(54,31,24,.35)]">
         <SummaryBody {...props} />
       </div>
@@ -141,8 +141,8 @@ export function SummarySheet(props: Props) {
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <div className="min-w-0">
           <p className="text-xs text-muted-foreground">{estimate ? "Estimated total" : "Total"}</p>
-          <p className="flex items-baseline gap-2">
-            <span className="font-display text-2xl leading-tight text-espresso tabular-nums">{aed(total)}</span>
+          <p className="flex min-w-0 items-baseline gap-2">
+            <span className="font-sans text-xl leading-tight font-semibold whitespace-nowrap text-espresso tabular-nums">{aed(total)}</span>
             {!estimate && total > 0 && (
               <span className="truncate text-xs text-muted-foreground">Deposit {aed(deposit)}</span>
             )}
@@ -150,7 +150,7 @@ export function SummarySheet(props: Props) {
         </div>
         <Sheet>
           <SheetTrigger asChild>
-            <Button type="button" variant="outline" size="sm" className="shrink-0">
+            <Button type="button" variant="outline" className="shrink-0">
               Summary <CaretUp weight="bold" />
             </Button>
           </SheetTrigger>

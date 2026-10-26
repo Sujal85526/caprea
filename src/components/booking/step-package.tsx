@@ -1,7 +1,6 @@
 "use client";
 
 import { Check } from "@phosphor-icons/react";
-import { Badge } from "@/components/ui/badge";
 import { aed } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { CheckBadge, FieldError, StepHeader, optionClass, type StepProps } from "./ui";
@@ -19,7 +18,7 @@ export function StepPackage({ form, update, catalog, errors }: StepProps) {
   return (
     <div>
       <StepHeader eyebrow="Packages" title="Choose your package">
-        Each package includes your signature drinks plus our specialty coffee selection for the remaining servings.
+        Your signature drinks, plus our coffee selection for the rest.
       </StepHeader>
 
       <div role="radiogroup" aria-label="Package" className="grid gap-4 sm:grid-cols-2">
@@ -33,35 +32,27 @@ export function StepPackage({ form, update, catalog, errors }: StepProps) {
               aria-checked={on}
               data-animate
               onClick={() => choose(p.id)}
-              className={cn("flex flex-col p-6", optionClass(on))}
+              className={cn("flex flex-col p-5 sm:p-6", optionClass(on))}
             >
               <span className="flex w-full items-center justify-between gap-3">
-                <span className="eyebrow text-mocha">{p.name}</span>
+                <span className="text-base font-semibold text-espresso">{p.name}</span>
                 <span className="flex items-center gap-2">
-                  {p.featured && <Badge className="bg-sand text-espresso">Popular</Badge>}
+                  {p.featured && (
+                    <span className="eyebrow rounded-full bg-sand px-2.5 py-1 text-[0.55rem] font-semibold text-espresso">Popular</span>
+                  )}
                   <CheckBadge on={on} />
                 </span>
               </span>
+              <span className="mt-1 text-sm text-espresso/55">Up to {p.guests} guests</span>
+              <span className="mt-4 text-2xl leading-none font-semibold text-espresso">{aed(p.price)}</span>
 
-              <span className="mt-5 flex items-baseline gap-2">
-                <span className="font-display text-6xl leading-none text-espresso">{p.guests}</span>
-                <span className="text-sm text-muted-foreground">guests</span>
-              </span>
-
-              <ul className="mt-6 mb-6 space-y-2.5 text-sm text-espresso">
-                {[`Up to ${p.max_signature_drinks} signature drinks`, `${p.cups_per_drink} cups each`, ...p.includes].map(
-                  (inc) => (
-                    <li key={inc} className="flex items-start gap-2.5">
-                      <Check className="mt-0.5 size-4 shrink-0 text-mocha" weight="bold" /> {inc}
-                    </li>
-                  ),
-                )}
+              <ul className="mt-5 space-y-2 text-sm text-espresso/75">
+                {[`${p.max_signature_drinks} signature drinks`, `${p.cups_per_drink} cups each`, ...p.includes].slice(0, 4).map((inc) => (
+                  <li key={inc} className="flex items-start gap-2">
+                    <Check className="mt-0.5 size-3.5 shrink-0 text-espresso/50" weight="bold" /> {inc}
+                  </li>
+                ))}
               </ul>
-
-              <span className="mt-auto flex w-full items-end justify-between border-t pt-5">
-                <span className="text-xs text-muted-foreground">Package price</span>
-                <span className="font-display text-3xl leading-none text-espresso">{aed(p.price)}</span>
-              </span>
             </button>
           );
         })}

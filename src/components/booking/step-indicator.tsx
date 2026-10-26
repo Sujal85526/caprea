@@ -48,7 +48,7 @@ export function StepIndicator({
                 aria-current={active ? "step" : undefined}
                 aria-label={`Step ${i + 1}: ${STEP_LABELS[s]}${done ? " (done)" : ""}`}
                 className={cn(
-                  "flex shrink-0 items-center gap-2 rounded-full py-1 pr-2 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
+                  "flex min-h-11 shrink-0 items-center gap-2 rounded-full pr-2 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
                   reachable ? "cursor-pointer" : "cursor-default",
                 )}
               >

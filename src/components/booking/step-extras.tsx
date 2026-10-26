@@ -36,7 +36,7 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
 
       {addons.length > 0 && (
         <section aria-labelledby="addons-title">
-          <h3 id="addons-title" data-animate className="eyebrow mb-4 font-sans text-mocha">
+          <h3 id="addons-title" data-animate className="eyebrow mb-4 font-sans text-espresso/55">
             Add-ons
           </h3>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -56,7 +56,7 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
                     <ItemImage src={a.image_url} alt="" className="size-20" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="font-display text-lg leading-tight text-espresso uppercase [overflow-wrap:anywhere]">
+                    <p className="font-sans text-base leading-tight font-semibold tracking-normal text-espresso [overflow-wrap:anywhere]">
                       {a.name}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">
@@ -85,7 +85,7 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
 
       {catalog.extras.length > 0 && (
         <section aria-labelledby="extras-title" className="mt-12">
-          <h3 id="extras-title" data-animate className="eyebrow mb-4 font-sans text-mocha">
+          <h3 id="extras-title" data-animate className="eyebrow mb-4 font-sans text-espresso/55">
             Extras
           </h3>
           <div className="divide-y overflow-hidden rounded-3xl border bg-card">

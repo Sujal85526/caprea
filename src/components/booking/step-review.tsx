@@ -12,7 +12,7 @@ function Block({ title, onEdit, children }: { title: string; onEdit: () => void;
   return (
     <section data-animate className="rounded-3xl border bg-card p-5 sm:p-6">
       <div className="flex items-center justify-between gap-4">
-        <h3 className="eyebrow font-sans text-mocha">{title}</h3>
+        <h3 className="eyebrow font-sans text-espresso/55">{title}</h3>
         <Button
           type="button"
           variant="ghost"

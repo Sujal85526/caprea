@@ -10,18 +10,17 @@ export const metadata: Metadata = {
 };
 
 export default async function MenuPage() {
-  const { menu } = await getCatalog();
+  const { menu, settings } = await getCatalog();
 
   return (
     <>
-      <PageHero eyebrow="The Oasis Edition" title="Our menu">
-        Everything we pour at the café and at your events. Catering packages are built from our signature drinks and
-        coffee selection.
+      <PageHero label="Menu" strong="Our" light="menu">
+        Everything we pour at the café and at your events.
       </PageHero>
-      <div className="mx-auto max-w-6xl px-6 pb-20 sm:px-10 sm:pb-28">
+      <div className="mx-auto max-w-6xl px-6 pt-6 pb-4 sm:px-10 sm:pt-10">
         <MenuBoard items={menu} />
       </div>
-      <CtaBand />
+      <CtaBand whatsapp={settings.whatsapp} />
     </>
   );
 }

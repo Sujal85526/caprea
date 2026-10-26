@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BookingFlow, type BookingStart } from "@/components/booking/booking-flow";
-import { Reveal } from "@/components/site/reveal";
+import { PageHero } from "@/components/site/page-hero";
 import { getCatalog } from "@/lib/catalog";
 
 export const metadata: Metadata = {
@@ -13,18 +13,9 @@ export const metadata: Metadata = {
 export default function BookPage({ searchParams }: PageProps<"/book">) {
   return (
     <>
-      <div className="relative overflow-hidden rounded-b-[3rem] bg-espresso text-cream">
-        <Reveal immediate stagger as="header" className="relative mx-auto max-w-7xl px-5 pt-28 pb-14 sm:px-8 md:pt-36 md:pb-20">
-          <p className="eyebrow text-sand">Catering · Abu Dhabi &amp; across the UAE</p>
-          <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1] text-cream uppercase sm:text-6xl md:text-7xl">
-            Book your Caprea cart
-          </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-cream/70 md:text-lg">
-            Specialty coffee, ceremonial matcha and our signature drinks, poured fresh by our baristas at your
-            celebration. Build your menu below and see your price as you go.
-          </p>
-        </Reveal>
-      </div>
+      <PageHero wide label="Book" strong="Book" light="your event">
+        Build your menu and see your price as you go. Bookings confirm instantly.
+      </PageHero>
 
       <div className="mx-auto max-w-7xl px-5 pt-10 pb-36 sm:px-8 md:pt-14 lg:pb-28">
         <Suspense fallback={<FlowSkeleton />}>

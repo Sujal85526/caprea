@@ -45,7 +45,7 @@ export function EventDatePicker({
         className="w-full bg-transparent p-0 [--cell-radius:9999px] [--cell-size:--spacing(10)] sm:[--cell-size:--spacing(11)]"
         classNames={{
           root: "w-full",
-          caption_label: "font-display text-xl tracking-wide text-espresso uppercase select-none",
+          caption_label: "font-sans text-base font-semibold text-espresso select-none",
           weekday: "flex-1 pb-1 text-[0.72rem] font-normal tracking-[0.12em] text-muted-foreground uppercase select-none",
           disabled: "text-muted-foreground/45 opacity-100 [&>button]:line-through [&>button]:decoration-muted-foreground/40",
           today: "rounded-full [&>button]:ring-1 [&>button]:ring-sand",

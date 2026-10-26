@@ -98,7 +98,7 @@ export function StepContact({ form, update, catalog, errors }: StepProps) {
 
       {terms.length > 0 && (
         <section id="booking-terms" data-animate className="mt-10 rounded-3xl border bg-card px-5 py-2 sm:px-7">
-          <h3 className="eyebrow pt-5 pb-1 font-sans text-mocha">Booking terms</h3>
+          <h3 className="eyebrow pt-5 pb-1 font-sans text-espresso/55">Booking terms</h3>
           <TermsList terms={terms} />
         </section>
       )}

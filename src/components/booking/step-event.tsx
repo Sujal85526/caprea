@@ -39,7 +39,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
             describedBy={errors.eventDate ? "eventDate-error" : undefined}
           />
           <div className="mt-4 flex items-center gap-3 border-t pt-4 text-sm">
-            <CalendarBlank className="size-5 shrink-0 text-mocha" weight="light" />
+            <CalendarBlank className="size-5 shrink-0 text-espresso/55" weight="light" />
             <span className={form.eventDate ? "font-medium text-espresso" : "text-muted-foreground"}>
               {form.eventDate ? formatEventDate(form.eventDate) : "Select a date"}
             </span>
