@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useMemo, useState } from "react";
+import { CaretDown } from "@phosphor-icons/react";
+import { Reveal } from "@/components/site/reveal";
 import { aed } from "@/lib/pricing";
+import { photoFor } from "@/lib/photos";
 import type { MenuCategory, MenuItem } from "@/lib/types";
-import { cn } from "@/lib/utils";
 
 const sections: { key: MenuCategory; title: string }[] = [
   { key: "matcha", title: "Matcha" },
@@ -16,72 +17,92 @@ const sections: { key: MenuCategory; title: string }[] = [
   { key: "box", title: "Gathering boxes" },
 ];
 
-const tab =
-  "h-11 flex-none rounded-full border border-espresso/10 px-4 text-espresso/70 shadow-none data-[state=active]:border-espresso data-[state=active]:bg-espresso data-[state=active]:text-cream data-[state=active]:shadow-none";
-
+/** Catalogue bar (label + category select), then white product cards in a grid. */
 export function MenuBoard({ items }: { items: MenuItem[] }) {
   const groups = useMemo(
     () => sections.map((s) => ({ ...s, items: items.filter((i) => i.category === s.key) })).filter((g) => g.items.length),
     [items],
   );
+  const [filter, setFilter] = useState<MenuCategory | "all">("all");
+  const shown = filter === "all" ? groups : groups.filter((g) => g.key === filter);
 
   return (
-    <Tabs defaultValue="all" className="gap-8">
-      <div className="sticky top-16 z-30 -mx-6 bg-background/90 px-6 py-3 backdrop-blur-md sm:top-[4.5rem] sm:mx-0 sm:px-0">
-        <TabsList className="h-auto w-full justify-start gap-1.5 overflow-x-auto rounded-none bg-transparent p-px [scrollbar-width:none] group-data-horizontal/tabs:h-auto sm:w-auto">
-          <TabsTrigger value="all" className={tab}>
-            All
-          </TabsTrigger>
-          {groups.map((g) => (
-            <TabsTrigger key={g.key} value={g.key} className={tab}>
-              {g.title}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-espresso/10 pt-6">
+        <p className="label-caps text-sm text-espresso">Catalogue</p>
+        <label className="flex items-center gap-3">
+          <span className="label-caps text-xs text-espresso">Show</span>
+          <span className="relative">
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as MenuCategory | "all")}
+              className="h-11 w-48 appearance-none rounded-full border border-espresso/15 bg-linen pr-10 pl-4 text-sm text-espresso outline-none focus-visible:ring-3 focus-visible:ring-ring/60"
+            >
+              <option value="all">Everything</option>
+              {groups.map((g) => (
+                <option key={g.key} value={g.key}>
+                  {g.title}
+                </option>
+              ))}
+            </select>
+            <CaretDown aria-hidden className="pointer-events-none absolute top-1/2 right-4 size-3.5 -translate-y-1/2 text-espresso" />
+          </span>
+        </label>
       </div>
 
-      <TabsContent value="all" className="space-y-14">
-        {groups.map((g) => (
-          <section key={g.key}>
-            <h2 className="mb-5 font-sans text-2xl font-semibold tracking-normal text-espresso">{g.title}</h2>
-            <Grid items={g.items} photo={g.key === "box"} />
+      <div className="mt-8 space-y-16">
+        {shown.map((g) => (
+          <section key={g.key} aria-labelledby={`menu-${g.key}`}>
+            {filter === "all" && (
+              <h2 id={`menu-${g.key}`} className="display mb-6 text-3xl text-espresso sm:text-4xl">
+                {g.title}
+              </h2>
+            )}
+            <Reveal stagger className="grid grid-cols-1 gap-6 min-[460px]:grid-cols-2 lg:grid-cols-3">
+              {g.items.map((it) => (
+                <ProductCard key={it.id} item={it} />
+              ))}
+            </Reveal>
           </section>
         ))}
-      </TabsContent>
-      {groups.map((g) => (
-        <TabsContent key={g.key} value={g.key}>
-          <Grid items={g.items} photo={g.key === "box"} />
-        </TabsContent>
-      ))}
-    </Tabs>
+      </div>
+    </div>
   );
 }
 
-function Grid({ items, photo }: { items: MenuItem[]; photo: boolean }) {
+function ProductCard({ item }: { item: MenuItem }) {
+  const photo = photoFor(item.slug);
+  const src = photo ?? item.image_url;
   return (
-    <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
-      {items.map((it) => (
-        <article key={it.id} className="flex flex-col rounded-3xl bg-cream p-2.5 sm:p-3">
-          <div className={cn("relative aspect-square overflow-hidden rounded-2xl", photo ? "bg-cream-200" : "bg-linen/70")}>
-            {it.image_url && (
-              <Image
-                src={it.image_url}
-                alt={it.name}
-                fill
-                sizes="(min-width: 1024px) 260px, 45vw"
-                className={photo ? "object-cover" : "object-contain p-4"}
-              />
-            )}
-            {it.best_seller && (
-              <span className="eyebrow absolute top-2 left-2 rounded-full bg-espresso px-2 py-1 text-[0.5rem] font-semibold text-cream">Best seller</span>
-            )}
+    <article className="group flex flex-col rounded-[2rem] bg-linen p-2 shadow-[0_18px_40px_-30px_rgba(54,31,24,.35)]">
+      <div className="relative isolate aspect-square overflow-hidden rounded-[1.6rem] bg-cream">
+        {src && (
+          <Image
+            src={src}
+            alt={item.name}
+            fill
+            sizes="(min-width: 1024px) 380px, (min-width: 460px) 45vw, 90vw"
+            className={
+              photo
+                ? "object-cover transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-105"
+                : "object-contain p-10 transition-transform duration-700 ease-(--ease-luxe) group-hover:scale-105"
+            }
+          />
+        )}
+        {item.best_seller && (
+          <span className="label-caps absolute top-4 left-4 rounded-full bg-espresso px-3 py-1.5 text-[0.58rem] text-cream">Best seller</span>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col px-3 pt-5 pb-3">
+        <h3 className="display text-xl text-espresso [overflow-wrap:anywhere]">{item.name}</h3>
+        {item.description && <p className="mt-2 text-xs leading-relaxed text-espresso/60 uppercase italic">{item.description}</p>}
+        <div className="mt-auto pt-4">
+          <div className="border-t border-espresso/10 px-3 pt-4">
+            <p className="label-caps text-[0.6rem] text-espresso/70">Price</p>
+            <p className="mt-1 font-bold text-espresso">{item.price != null ? aed(item.price) : "On request"}</p>
           </div>
-          <div className="flex flex-1 flex-col gap-1 px-1.5 pt-3 pb-1.5">
-            <h3 className="font-sans text-[0.95rem] leading-snug font-semibold tracking-normal text-espresso [overflow-wrap:anywhere]">{it.name}</h3>
-            {it.price != null && <p className="mt-auto text-sm text-espresso/60">{aed(it.price)}</p>}
-          </div>
-        </article>
-      ))}
-    </div>
+        </div>
+      </div>
+    </article>
   );
 }

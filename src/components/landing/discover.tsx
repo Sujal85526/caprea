@@ -48,7 +48,7 @@ function TileCard({ tile }: { tile: Tile }) {
     <Link
       href={tile.href}
       className={cn(
-        "group relative flex overflow-hidden rounded-[2rem] border border-espresso/20 bg-espresso text-cream",
+        "group relative isolate flex overflow-hidden rounded-[2rem] border border-espresso/20 bg-espresso text-cream",
         tile.big ? "min-h-[26rem] lg:row-span-2 lg:min-h-[31rem]" : "min-h-[15rem]",
       )}
     >

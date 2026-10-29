@@ -14,10 +14,8 @@ export default async function MenuPage() {
 
   return (
     <>
-      <PageHero label="Menu" strong="Our" light="menu">
-        Everything we pour at the café and at your events.
-      </PageHero>
-      <div className="mx-auto max-w-6xl px-6 pt-6 pb-4 sm:px-10 sm:pt-10">
+      <PageHero title="Our menu">Everything we pour at the café and at your events.</PageHero>
+      <div className="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6 sm:pb-28">
         <MenuBoard items={menu} />
       </div>
       <CtaBand whatsapp={settings.whatsapp} />

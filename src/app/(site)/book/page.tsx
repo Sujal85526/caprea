@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function BookPage({ searchParams }: PageProps<"/book">) {
   return (
     <>
-      <PageHero wide label="Book" strong="Book" light="your event">
+      <PageHero eyebrow="Catering booking" title="Book Caprea for your event">
         Build your menu and see your price as you go. Bookings confirm instantly.
       </PageHero>
 

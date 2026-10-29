@@ -23,7 +23,7 @@ export default async function PackagesPage() {
 
   return (
     <>
-      <PageHero label="Packages" strong="Catering" light="packages">
+      <PageHero eyebrow="Coffee & matcha catering" title="Catering packages">
         Cart, barista, waiter and {settings.service_hours} hours of service, setup to pack-down.
       </PageHero>
 
