@@ -29,7 +29,8 @@ const BADGE_TEXT = "CAPREA · MADE FRESH · ABU DHABI · ";
 
 /**
  * "Made for your guests": a cut-out Caprea cup rises through the headline, leans and grows as the page
- * scrolls, bobs gently, tilts towards the pointer and lets bubbles float out of the foam. Around it a
+ * scrolls, bobs gently, turns to follow the cursor anywhere on the page and lets bubbles float out of the
+ * foam. Around it a
  * spinning badge, a cookie and a logo sticker float while sparkles pop in and twinkle.
  */
 export function GuestsHero() {
@@ -83,19 +84,27 @@ export function GuestsHero() {
       // Stickers drift a little against the scroll for depth.
       gsap.to(".gh-sticker-l", { yPercent: -40, ease: "none", scrollTrigger: { trigger: stage.current, start: "top bottom", end: "bottom top", scrub: true } });
       gsap.to(".gh-sticker-r", { yPercent: -70, ease: "none", scrollTrigger: { trigger: stage.current, start: "top bottom", end: "bottom top", scrub: true } });
+
+      // The cup keeps turning in place to follow the cursor, wherever it is on the page (mouse only).
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      const turnY = gsap.quickTo(".gh-tilt", "rotationY", { duration: 0.8, ease: "power3.out" });
+      const turnX = gsap.quickTo(".gh-tilt", "rotationX", { duration: 0.8, ease: "power3.out" });
+      const turnZ = gsap.quickTo(".gh-tilt", "rotation", { duration: 1, ease: "power3.out" });
+      const follow = (e: PointerEvent) => {
+        const r = stage.current?.getBoundingClientRect();
+        if (!r) return;
+        // Offset of the cursor from the cup's centre, scaled to the window, clamped to ±1.
+        const dx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2)));
+        const dy = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2)));
+        turnY(dx * 28);
+        turnX(-dy * 16);
+        turnZ(dx * 6);
+      };
+      window.addEventListener("pointermove", follow, { passive: true });
+      return () => window.removeEventListener("pointermove", follow);
     },
     { scope: root },
   );
-
-  // Pointer tilt: the cup turns slightly towards the cursor.
-  const tilt = (e: React.PointerEvent) => {
-    if (e.pointerType !== "mouse" || prefersReducedMotion() || !stage.current) return;
-    const r = stage.current.getBoundingClientRect();
-    const dx = (e.clientX - r.left) / r.width - 0.5;
-    const dy = (e.clientY - r.top) / r.height - 0.5;
-    gsap.to(".gh-tilt", { rotateY: dx * 18, rotateX: -dy * 12, duration: 0.6, ease: "power3.out", overwrite: true });
-  };
-  const untilt = () => gsap.to(".gh-tilt", { rotateY: 0, rotateX: 0, duration: 0.9, ease: "elastic.out(1, 0.5)", overwrite: true });
 
   return (
     <div ref={root} className="relative mx-auto flex max-w-[1400px] flex-col items-center text-center">
@@ -119,9 +128,7 @@ export function GuestsHero() {
 
       <div
         ref={stage}
-        onPointerMove={tilt}
-        onPointerLeave={untilt}
-        className="relative z-10 -mt-[clamp(3rem,11vw,9.5rem)] h-[340px] w-full min-[400px]:h-[400px] sm:h-[480px] md:h-[600px] lg:h-[660px]"
+        className="relative z-10 -mt-[clamp(1.5rem,6vw,5rem)] h-[340px] w-full min-[400px]:h-[400px] sm:h-[480px] md:h-[600px] lg:h-[660px]"
       >
         {sparkles.map((s, i) => (
           <svg key={i} aria-hidden viewBox="0 0 24 24" className={`gh-spark absolute ${s.cls}`}>
