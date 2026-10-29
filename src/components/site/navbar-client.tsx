@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { CalendarPlus, InstagramLogo, List, WhatsappLogo, X } from "@phosphor-icons/react";
+import { List, User, X } from "@phosphor-icons/react";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
@@ -16,27 +16,26 @@ const links = [
   { href: "/#contact", label: "Contact" },
 ];
 
-type Props = { whatsapp: string; instagram: string };
 
 // usePathname needs a Suspense boundary under Cache Components; the fallback is the same bar without
 // the active-link state so the static shell still has navigation.
-export function NavbarClient(props: Props) {
+export function NavbarClient() {
   return (
-    <Suspense fallback={<NavbarView {...props} pathname={null} />}>
-      <NavbarWithPath {...props} />
+    <Suspense fallback={<NavbarView pathname={null} />}>
+      <NavbarWithPath />
     </Suspense>
   );
 }
 
-function NavbarWithPath(props: Props) {
-  return <NavbarView {...props} pathname={usePathname()} />;
+function NavbarWithPath() {
+  return <NavbarView pathname={usePathname()} />;
 }
 
 /**
  * Floating pill bar. Over the home page's photo hero it starts transparent with cream type, then turns into a
  * frosted cream pill once the hero scrolls away. Phones get a full-screen menu with oversized links.
  */
-function NavbarView({ pathname, whatsapp, instagram }: Props & { pathname: string | null }) {
+function NavbarView({ pathname }: { pathname: string | null }) {
   const [open, setOpen] = useState(false);
   const [pastHero, setPastHero] = useState(false);
   const overlay = useRef<HTMLDivElement>(null);
@@ -115,26 +114,8 @@ function NavbarView({ pathname, whatsapp, instagram }: Props & { pathname: strin
             </ul>
 
             <div className="flex items-center justify-self-end gap-1 sm:gap-2">
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="WhatsApp"
-                className="grid size-11 place-items-center transition-opacity hover:opacity-70"
-              >
-                <WhatsappLogo className="size-[1.35rem]" />
-              </a>
-              <a
-                href={`https://instagram.com/${instagram}`}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="hidden size-11 place-items-center transition-opacity hover:opacity-70 sm:grid"
-              >
-                <InstagramLogo className="size-[1.35rem]" />
-              </a>
-              <Link href="/book" aria-label="Book your event" className="hidden size-11 place-items-center transition-opacity hover:opacity-70 sm:grid lg:hidden">
-                <CalendarPlus className="size-[1.35rem]" />
+              <Link href="/admin" aria-label="Account" className="grid size-11 place-items-center transition-opacity hover:opacity-70">
+                <User className="size-[1.35rem]" />
               </Link>
               <Link
                 href="/book"
