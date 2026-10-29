@@ -57,8 +57,8 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0 bg-espresso-900/25" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-espresso-900/70 via-espresso-900/20 via-55% to-espresso-900/40" />
 
-      {/* Phones (portrait photo): the headline sits just above the straw, half-way down the shot; the link drops to the bottom. */}
-      <div className="relative flex h-full flex-col items-center px-4 text-center text-cream portrait:justify-end portrait:pb-[47svh] landscape:pt-[max(8.5rem,27svh)]">
+      {/* Phones (portrait photo): the headline and its button sit just above the straw, half-way down the shot. */}
+      <div className="relative flex h-full flex-col items-center px-4 text-center text-cream portrait:justify-end portrait:pb-[50svh] landscape:pt-[max(8.5rem,27svh)]">
         <h1 className="font-display text-[clamp(1.5rem,10vw,8rem)] leading-none tracking-[0.02em] whitespace-nowrap text-cream drop-shadow-[0_4px_24px_rgba(36,20,15,.35)]">
           <span className="sr-only">Caprea: </span>
           <span className="block overflow-hidden pb-2">
@@ -67,7 +67,7 @@ export function Hero() {
         </h1>
         <Link
           href="/book"
-          className="hero-cta label-caps group mt-6 inline-flex min-h-11 items-center gap-2 text-sm tracking-[0.08em] sm:mt-8 portrait:absolute portrait:bottom-[max(2.5rem,env(safe-area-inset-bottom))] portrait:mt-0"
+          className="hero-cta label-caps group mt-5 inline-flex h-12 items-center gap-2 rounded-md border border-cream/35 bg-cream/10 px-6 text-[0.78rem] tracking-[0.1em] shadow-[0_8px_30px_rgba(36,20,15,.25)] backdrop-blur-md transition-colors duration-300 hover:bg-cream/20 sm:mt-8 sm:h-13 sm:px-8 sm:text-sm"
         >
           Book your event
           <ArrowRight weight="bold" className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
