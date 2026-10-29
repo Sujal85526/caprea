@@ -28,7 +28,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
       </StepHeader>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-        <fieldset data-animate className="min-w-0 rounded-3xl border bg-card p-4 sm:p-6">
+        <fieldset data-animate className="min-w-0 rounded-3xl border bg-card p-3 min-[380px]:p-4 sm:p-6">
           <legend className="sr-only">Event date</legend>
           <EventDatePicker
             value={form.eventDate}
@@ -101,7 +101,7 @@ export function StepEvent({ form, update, catalog, errors }: StepProps) {
           )}
 
           <fieldset data-animate>
-            <legend className="mb-2 text-sm font-medium text-espresso">Emirate</legend>
+            <legend className="label-caps mb-2 text-[0.68rem] text-espresso">Emirate</legend>
             <div role="radiogroup" aria-label="Emirate" className="grid grid-cols-2 gap-2">
               {regions.map((r) => {
                 const on = form.regionId === r.id;

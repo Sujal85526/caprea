@@ -177,7 +177,7 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
 
   return (
     <div ref={rootRef} data-no-tabbar className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-14">
-      <div className="min-w-0 rounded-[2rem] bg-card p-5 shadow-[0_30px_70px_-50px_rgba(54,31,24,.45)] sm:p-8 lg:p-10">
+      <div className="min-w-0 rounded-[1.5rem] bg-card p-4 shadow-[0_30px_70px_-50px_rgba(54,31,24,.45)] sm:rounded-[2rem] sm:p-8 lg:p-10">
         <StepIndicator steps={steps} current={stepIndex} maxReached={maxReached} onJump={goTo} />
 
         <div

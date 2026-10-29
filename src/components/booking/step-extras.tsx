@@ -48,12 +48,12 @@ export function StepExtras({ form, update, catalog, errors }: StepProps) {
                   key={a.slug}
                   data-animate
                   className={cn(
-                    "flex items-center gap-4 rounded-3xl border bg-card p-3 pr-4 transition-[border-color,background-color,box-shadow] duration-300",
+                    "flex items-center gap-3 rounded-3xl border bg-card p-3 pr-3 sm:gap-4 sm:pr-4 transition-[border-color,background-color,box-shadow] duration-300",
                     qty > 0 ? "border-espresso bg-secondary/45 ring-1 ring-espresso" : "border-border",
                   )}
                 >
-                  <span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-2xl bg-secondary/70">
-                    <ItemImage src={a.image_url} alt="" className="size-20" />
+                  <span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl bg-secondary/70 min-[360px]:size-20 sm:size-24">
+                    <ItemImage src={a.image_url} alt="" className="size-14 min-[360px]:size-16 sm:size-20" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="font-sans text-base leading-tight font-semibold tracking-normal text-espresso [overflow-wrap:anywhere]">

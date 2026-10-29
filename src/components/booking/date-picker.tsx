@@ -42,7 +42,7 @@ export function EventDatePicker({
         weekStartsOn={1}
         showOutsideDays
         fixedWeeks
-        className="w-full bg-transparent p-0 [--cell-radius:9999px] [--cell-size:--spacing(10)] sm:[--cell-size:--spacing(11)]"
+        className="w-full bg-transparent p-0 [--cell-radius:9999px] [--cell-size:min(2.5rem,calc((100vw_-_6rem)/7))] sm:[--cell-size:--spacing(11)]"
         classNames={{
           root: "w-full",
           caption_label: "font-sans text-base font-semibold text-espresso select-none",
