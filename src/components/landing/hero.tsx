@@ -1,16 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { ArrowUpRight } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "@phosphor-icons/react";
 import { Logo } from "@/components/ui/logo";
 import { useSiteReady } from "@/components/site/loader";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
-import { aed } from "@/lib/pricing";
 
-/** Typographic espresso hero: the wordmark, one line and two pills, with thin-line circles for decoration. */
-export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; minGuests: number; maxGuests: number }) {
+/** Full-screen photo hero: the wordmark set huge over a darkened shoot photo, one link underneath. */
+export function Hero() {
   const root = useRef<HTMLElement>(null);
   const ready = useSiteReady();
 
@@ -18,61 +17,54 @@ export function Hero({ fromPrice, minGuests, maxGuests }: { fromPrice: number; m
     () => {
       const reduce = prefersReducedMotion();
       if (!ready) {
-        // Hold everything hidden until the loader lifts (avoids a flash of the final state).
-        if (!reduce) gsap.set(".hero-in, .hero-ring, .hero-dots", { autoAlpha: 0 });
+        if (!reduce) gsap.set(".hero-word path, .hero-cta", { autoAlpha: 0 });
         return;
       }
       if (reduce) return;
 
       gsap
         .timeline({ defaults: { ease: "expo.out" } })
-        .fromTo(".hero-in", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.09 }, 0)
-        .fromTo(".hero-ring", { autoAlpha: 1, drawSVG: "0%" }, { drawSVG: "100%", duration: 2, stagger: 0.15, ease: "power2.inOut" }, 0.1)
-        .fromTo(".hero-dots", { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2 }, 0.8);
+        .fromTo(".hero-img", { scale: 1.18 }, { scale: 1.05, duration: 2.4 }, 0)
+        .fromTo(".hero-word path", { autoAlpha: 0, yPercent: 40 }, { autoAlpha: 1, yPercent: 0, duration: 1.3, stagger: 0.06 }, 0.1)
+        .fromTo(".hero-cta", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.6);
+
+      // Photo drifts slower than the page as you scroll away.
+      gsap.to(".hero-img-wrap", {
+        yPercent: 18,
+        ease: "none",
+        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
+      });
     },
     { scope: root, dependencies: [ready] },
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-espresso text-cream">
-      {/* Thin-line decoration */}
-      <svg
-        aria-hidden
-        viewBox="0 0 600 600"
-        fill="none"
-        className="pointer-events-none absolute top-1/2 -right-[45%] w-[150%] max-w-none -translate-y-1/2 text-sand/25 sm:-right-[20%] sm:w-[95%] lg:-right-[6%] lg:w-[54%]"
-      >
-        {[290, 225, 160].map((r) => (
-          <circle key={r} className="hero-ring" cx="300" cy="300" r={r} stroke="currentColor" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-        ))}
-        <g className="hero-dots max-sm:hidden" fill="currentColor">
-          {Array.from({ length: 25 }, (_, i) => (
-            <circle key={i} cx={420 + (i % 5) * 18} cy={400 + Math.floor(i / 5) * 18} r={i % 2 ? 2 : 2.8} />
-          ))}
-        </g>
-      </svg>
+    <section ref={root} className="relative h-[100svh] min-h-[34rem] overflow-hidden bg-espresso-900">
+      <div className="hero-img-wrap absolute inset-0">
+        <Image
+          src="/photos/v60-pour.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hero-img scale-105 object-cover object-[50%_40%]"
+        />
+      </div>
+      <div aria-hidden className="absolute inset-0 bg-espresso-900/60" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-espresso-900/70 to-transparent" />
 
-      <div className="relative mx-auto max-w-6xl px-6 pt-20 pb-24 sm:px-10 sm:pt-28 sm:pb-32 lg:pt-32 lg:pb-36">
-        <h1 className="hero-in">
-          <Logo className="w-[min(78vw,34rem)] text-cream" title="Caprea" />
+      <div className="relative flex h-full flex-col items-center justify-center px-4 text-center text-cream">
+        <h1 className="w-full">
+          <Logo className="hero-word mx-auto w-[min(88vw,58rem)]" title="Caprea" />
         </h1>
-        <p className="hero-in eyebrow mt-6 text-[0.7rem] text-sand sm:mt-8 sm:text-xs">Coffee &amp; matcha catering</p>
-        <p className="hero-in mt-5 max-w-md text-lg leading-relaxed font-light text-cream/85 sm:text-xl">
-          Our cart, a barista and our signature drinks, poured at your event.
-        </p>
-        <div className="hero-in mt-9 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:flex-wrap">
-          <Button asChild size="lg" variant="sand">
-            <Link href="/book">
-              Book your event <ArrowUpRight weight="bold" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="border-cream/30 bg-transparent text-cream hover:bg-cream/10 hover:text-cream">
-            <Link href="#packages">View packages</Link>
-          </Button>
-        </div>
-        <p className="hero-in mt-8 text-sm text-cream/55">
-          {minGuests}–{maxGuests} guests · from {aed(fromPrice)}
-        </p>
+        <p className="hero-cta label-caps mt-6 text-[0.62rem] text-sand sm:mt-8 sm:text-xs">Coffee &amp; matcha catering · Abu Dhabi</p>
+        <Link
+          href="/book"
+          className="hero-cta label-caps group mt-8 inline-flex min-h-11 items-center gap-2 text-sm tracking-[0.08em] sm:mt-10"
+        >
+          Book your event
+          <ArrowRight weight="bold" className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
       </div>
     </section>
   );
