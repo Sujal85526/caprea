@@ -58,13 +58,10 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-espresso-900/70 via-espresso-900/20 via-55% to-espresso-900/40" />
 
       <div className="relative flex h-full flex-col items-center px-4 pt-[max(7.5rem,20svh)] text-center text-cream">
-        <h1 className="display text-[clamp(3rem,11vw,8rem)] leading-[0.9] text-cream drop-shadow-[0_4px_24px_rgba(36,20,15,.35)]">
+        <h1 className="font-display text-[clamp(1.5rem,10vw,8rem)] leading-none tracking-[0.02em] whitespace-nowrap text-cream drop-shadow-[0_4px_24px_rgba(36,20,15,.35)]">
           <span className="sr-only">Caprea: </span>
-          <span className="block overflow-hidden pb-1">
-            <span className="hero-word block">Blame</span>
-          </span>
-          <span className="block overflow-hidden pb-1">
-            <span className="hero-word block">the brew</span>
+          <span className="block overflow-hidden pb-2">
+            <span className="hero-word block">Blame the brew</span>
           </span>
         </h1>
         <Link
