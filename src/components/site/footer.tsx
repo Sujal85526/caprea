@@ -4,63 +4,118 @@ import { EnvelopeSimple, InstagramLogo, Phone, WhatsappLogo } from "@phosphor-ic
 import { Logo } from "@/components/ui/logo";
 import { CATALOG_TAG, getCatalog } from "@/lib/catalog";
 
+/** Espresso footer: big wordmark and contact blocks on the left, two link columns on the right. */
 export async function Footer() {
   "use cache";
   cacheLife("days");
   cacheTag(CATALOG_TAG);
   const { settings } = await getCatalog();
 
-  const contact = [
-    { href: `https://wa.me/${settings.whatsapp}`, label: "WhatsApp", Icon: WhatsappLogo },
-    { href: `tel:${settings.phone.replace(/\s/g, "")}`, label: settings.phone, Icon: Phone },
-    { href: `mailto:${settings.email}`, label: settings.email, Icon: EnvelopeSimple },
-    { href: `https://instagram.com/${settings.instagram}`, label: `@${settings.instagram}`, Icon: InstagramLogo },
+  const wa = `https://wa.me/${settings.whatsapp}`;
+  const ig = `https://instagram.com/${settings.instagram}`;
+  const tel = `tel:${settings.phone.replace(/\s/g, "")}`;
+  const mail = `mailto:${settings.email}`;
+
+  const social = [
+    { href: wa, label: "WhatsApp", Icon: WhatsappLogo },
+    { href: ig, label: "Instagram", Icon: InstagramLogo },
+    { href: tel, label: "Call us", Icon: Phone },
+    { href: mail, label: "Email", Icon: EnvelopeSimple },
   ];
 
-  const links = [
-    ["/packages", "Packages"],
-    ["/menu", "Menu"],
-    ["/book", "Book"],
-    ["/packages#terms", "Terms"],
+  const columns: { title: string; links: [string, string][] }[] = [
+    {
+      title: "The experience",
+      links: [
+        ["/packages", "Packages"],
+        ["/menu", "Menu"],
+        ["/book", "Book your event"],
+        ["/book?mode=custom", "Custom request"],
+      ],
+    },
+    {
+      title: "Explore",
+      links: [
+        [ig, "Instagram"],
+        [wa, "WhatsApp"],
+        ["/packages#terms", "Booking terms"],
+        [tel, "Call us"],
+        [mail, "Contact"],
+      ],
+    },
   ];
 
   return (
-    <footer id="contact" className="scroll-mt-20 border-t border-espresso/10 bg-cream text-espresso">
-      <div className="mx-auto max-w-6xl px-6 pt-14 pb-32 sm:px-10 lg:pb-12">
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-          <div>
-            <Logo className="w-32" />
-            <p className="mt-4 max-w-xs text-sm text-espresso/60">Specialty coffee &amp; matcha catering, Abu Dhabi.</p>
+    <footer id="contact" className="scroll-mt-24 border-t border-cream/5 bg-espresso px-4 pt-16 pb-5 text-cream sm:px-8 sm:pt-24">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="grid gap-14 md:grid-cols-[1.1fr_1fr] md:gap-10">
+          <div className="max-w-md">
+            <Link href="/" aria-label="Caprea home" className="inline-block">
+              <Logo className="w-[min(70vw,22rem)] text-cream" />
+            </Link>
+            <p className="mt-7 leading-relaxed text-cream/80">
+              Specialty coffee &amp; matcha catering. Our cart, a barista and our signature drinks, poured at your event.
+            </p>
+
+            <div className="mt-6 grid grid-cols-2 gap-6 border-t border-cream/10 pt-6">
+              <div>
+                <p className="display text-[0.7rem] tracking-[0.06em]">Abu Dhabi · Café</p>
+                <p className="mt-2 text-xs leading-relaxed text-cream/60">Catering across the UAE</p>
+                <a href={tel} className="mt-1 block text-xs text-cream/60 hover:text-cream">
+                  {settings.phone}
+                </a>
+              </div>
+              <div>
+                <p className="display text-[0.7rem] tracking-[0.06em]">Bookings</p>
+                <p className="mt-2 text-xs leading-relaxed text-cream/60">{settings.min_notice_days} days&apos; notice</p>
+                <a href={mail} className="mt-1 block text-xs break-all text-cream/60 hover:text-cream">
+                  {settings.email}
+                </a>
+              </div>
+            </div>
+
+            <ul className="mt-8 flex gap-3">
+              {social.map(({ href, label, Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    aria-label={label}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel="noreferrer"
+                    className="grid size-11 place-items-center rounded-full border border-cream/20 transition-colors hover:border-cream hover:bg-cream hover:text-espresso"
+                  >
+                    <Icon className="size-[1.1rem]" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <ul className="grid gap-x-10 gap-y-1 text-sm sm:grid-cols-2">
-            {contact.map(({ href, label, Icon }) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel="noreferrer"
-                  className="inline-flex min-h-11 items-center gap-3 text-espresso/75 transition-colors hover:text-espresso"
-                >
-                  <Icon className="size-4" weight="light" /> {label}
-                </a>
-              </li>
+          <div className="grid grid-cols-2 gap-8">
+            {columns.map((c) => (
+              <div key={c.title}>
+                <p className="display text-sm tracking-[0.12em]">{c.title}</p>
+                <ul className="mt-5 space-y-1">
+                  {c.links.map(([href, label]) => (
+                    <li key={label}>
+                      <Link
+                        href={href}
+                        target={href.startsWith("http") ? "_blank" : undefined}
+                        className="inline-flex min-h-9 items-center text-[0.95rem] text-cream/70 transition-colors hover:text-cream"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-espresso/10 pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <ul className="-mx-2 flex flex-wrap gap-x-2">
-            {links.map(([href, label]) => (
-              <li key={href}>
-                <Link href={href} className="inline-flex min-h-11 min-w-11 items-center justify-center px-2 text-espresso/75 transition-colors hover:text-espresso">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <p className="text-xs text-espresso/45">© {new Date().getFullYear()} Caprea · Abu Dhabi, UAE</p>
-        </div>
+        <p className="label-caps mt-16 border-t border-cream/10 pt-6 text-center text-[0.68rem] tracking-[0.08em] sm:mt-20">
+          © {new Date().getFullYear()} Caprea. Poured in Abu Dhabi.
+        </p>
       </div>
     </footer>
   );

@@ -4,11 +4,11 @@ import { Navbar } from "@/components/site/navbar";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
-    <>
+    <div className="bg-cream">
       <Loader />
       <Navbar />
-      <main>{children}</main>
+      <main className="overflow-x-clip">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

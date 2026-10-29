@@ -141,6 +141,24 @@
 }
 
 @layer components {
+  /* Heavy uppercase display type for the public site's headings */
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.015em;
+    line-height: 0.92;
+    text-wrap: balance;
+  }
+
+  /* Small bold uppercase label (nav links, buttons, field labels) */
+  .label-caps {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
   .eyebrow {
     font-family: var(--font-sans);
     font-size: 0.72rem;

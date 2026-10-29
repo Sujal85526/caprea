@@ -19,8 +19,8 @@ export function useSiteReady() {
   );
 }
 
-// The home page's drink illustrations; the hero itself is typographic.
-const PRELOAD = ["/menu/matcha-latte.webp", "/menu/acai-smoothie.webp", "/menu/golden-hour.webp", "/menu/cloud-nine.webp"];
+// The home hero photo.
+const PRELOAD = ["/photos/v60-pour.webp"];
 
 function preload(src: string) {
   return new Promise<void>((resolve) => {
@@ -84,6 +84,8 @@ export function Loader() {
       gsap.to(".ld-wave-b", { x: -120, duration: 3.4, ease: "none", repeat: -1 });
 
       const tick = () => {
+        // The ticker can outlive the loader (it unmounts mid-frame); stop once its markup is gone.
+        if (!root.current?.isConnected) return gsap.ticker.remove(tick);
         const v = level.current.v;
         // Liquid surface travels from the cup bottom (y≈150) to just under the lid (y≈52).
         gsap.set(".ld-liquid", { y: 150 - v * 98 });

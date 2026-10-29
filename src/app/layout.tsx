@@ -14,7 +14,8 @@ const gaqire = localFont({
 const josefin = Josefin_Sans({
   variable: "--font-josefin",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FBF8F4",
+  themeColor: "#F6EFE6",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
