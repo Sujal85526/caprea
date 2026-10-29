@@ -121,7 +121,7 @@ export function GuestsHero() {
         ref={stage}
         onPointerMove={tilt}
         onPointerLeave={untilt}
-        className="relative z-10 -mt-[clamp(3rem,11vw,9.5rem)] h-[400px] w-full sm:h-[480px] md:h-[600px] lg:h-[660px]"
+        className="relative z-10 -mt-[clamp(3rem,11vw,9.5rem)] h-[340px] w-full min-[400px]:h-[400px] sm:h-[480px] md:h-[600px] lg:h-[660px]"
       >
         {sparkles.map((s, i) => (
           <svg key={i} aria-hidden viewBox="0 0 24 24" className={`gh-spark absolute ${s.cls}`}>
@@ -183,11 +183,11 @@ export function GuestsHero() {
                   />
                 ))}
                 <Image
-                  src="/cutouts/cloudy-matcha-cup.webp"
-                  alt="Caprea cloudy matcha"
-                  width={614}
-                  height={1100}
-                  sizes="(min-width: 768px) 370px, 230px"
+                  src="/cutouts/matcha-splash-cup.webp"
+                  alt="Caprea matcha splashing out of the cup"
+                  width={773}
+                  height={1054}
+                  sizes="(min-width: 768px) 480px, 300px"
                   className="h-full w-auto drop-shadow-[0_40px_50px_rgba(0,0,0,.45)] select-none"
                   draggable={false}
                 />
