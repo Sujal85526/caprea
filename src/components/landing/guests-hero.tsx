@@ -111,7 +111,7 @@ export function GuestsHero() {
           <span className="gh-title relative inline-block whitespace-nowrap">
             your guests
             <svg aria-hidden viewBox="0 0 400 16" preserveAspectRatio="none" className="absolute -bottom-3 left-0 h-[0.14em] w-full text-sand" fill="none">
-              <path className="gh-underline" d="M3 10 C 90 4, 200 3, 300 7 S 380 11, 397 8" stroke="currentColor" strokeWidth="5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path className="gh-underline" d="M3 10 C 90 4, 200 3, 300 7 S 380 11, 397 8" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
             </svg>
           </span>
         </span>
