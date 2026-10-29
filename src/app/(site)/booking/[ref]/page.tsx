@@ -49,7 +49,7 @@ type PublicBooking = Pick<
 
 export default function BookingPage({ params, searchParams }: PageProps<"/booking/[ref]">) {
   return (
-    <div className="mx-auto max-w-5xl px-5 pt-12 pb-28 sm:px-8 md:pt-16">
+    <div className="mx-auto max-w-6xl px-4 pt-32 pb-28 sm:px-8 sm:pt-44">
       <Suspense fallback={<Skeleton />}>
         <Confirmation params={params} searchParams={searchParams} />
       </Suspense>
@@ -89,7 +89,7 @@ function whatsappHref(settings: Settings, text: string) {
 
 function SuccessMark() {
   return (
-    <span className="mx-auto grid size-20 place-items-center rounded-full bg-secondary text-espresso">
+    <span className="mx-auto grid size-20 place-items-center rounded-full bg-espresso text-cream">
       <CheckCircle className="size-11" weight="light" />
     </span>
   );
@@ -98,12 +98,12 @@ function SuccessMark() {
 function Actions({ settings, text }: { settings: Settings; text: string }) {
   return (
     <div className="flex flex-col justify-center gap-3 sm:flex-row">
-      <Button asChild size="lg">
+      <Button asChild size="lg" className="label-caps text-[0.72rem]">
         <a href={whatsappHref(settings, text)} target="_blank" rel="noopener noreferrer">
           <WhatsappLogo weight="light" className="size-5" /> WhatsApp us
         </a>
       </Button>
-      <Button asChild size="lg" variant="outline">
+      <Button asChild size="lg" variant="outline" className="label-caps border-espresso/20 bg-transparent text-[0.72rem]">
         <Link href="/">Back to home</Link>
       </Button>
     </div>
@@ -114,8 +114,8 @@ function Generic({ settings, bookingRef }: { settings: Settings; bookingRef?: st
   return (
     <div className="mx-auto max-w-2xl text-center">
       <SuccessMark />
-      <p className="eyebrow mt-8 text-espresso/55">Thank you</p>
-      <h1 className="mt-4 font-sans text-4xl font-semibold tracking-normal text-espresso md:text-5xl">Booking received</h1>
+      <p className="mt-8 text-lg text-espresso/65 italic">Thank you</p>
+      <h1 className="display mt-3 text-[clamp(2.4rem,7vw,4.5rem)] text-espresso">Booking received</h1>
       <p className="mx-auto mt-6 max-w-lg leading-relaxed text-muted-foreground">
         If you&apos;ve just booked with us, your confirmation is on its way to your inbox with every detail of your event.
         Can&apos;t find it? Message us and we&apos;ll help right away.
@@ -132,8 +132,8 @@ function Generic({ settings, bookingRef }: { settings: Settings; bookingRef?: st
 
 function Card({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
   return (
-    <section className={`rounded-3xl border bg-card p-6 sm:p-7 ${className ?? ""}`}>
-      <h2 className="eyebrow font-sans text-espresso/55">{title}</h2>
+    <section className={`rounded-[2rem] bg-card p-7 shadow-[0_24px_50px_-36px_rgba(54,31,24,.45)] sm:p-8 ${className ?? ""}`}>
+      <h2 className="display border-b border-espresso/10 pb-4 text-xl text-espresso">{title}</h2>
       <div className="mt-5">{children}</div>
     </section>
   );
@@ -141,9 +141,9 @@ function Card({ title, children, className }: { title: string; children: ReactNo
 
 function Row({ k, v, strong }: { k: ReactNode; v: ReactNode; strong?: boolean }) {
   return (
-    <div className="flex items-start justify-between gap-6 border-b py-3 text-sm last:border-0">
-      <dt className="text-muted-foreground">{k}</dt>
-      <dd className={strong ? "text-right font-sans font-semibold text-2xl text-espresso" : "text-right text-espresso"}>{v}</dd>
+    <div className="flex items-start justify-between gap-6 border-b border-espresso/10 py-3 text-sm last:border-0">
+      <dt className="font-bold text-espresso">{k}</dt>
+      <dd className={strong ? "display text-right text-2xl text-espresso" : "text-right text-espresso/75"}>{v}</dd>
     </div>
   );
 }
@@ -169,10 +169,10 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
     <div>
       <header className="mx-auto max-w-2xl text-center">
         <SuccessMark />
-        <p className="eyebrow mt-8 text-espresso/55">
+        <p className="mt-8 text-lg text-espresso/65 italic">
           {isRequest ? "Request" : "Booking"} {b.ref}
         </p>
-        <h1 className="mt-4 font-sans text-4xl font-semibold tracking-normal text-espresso md:text-5xl">
+        <h1 className="display mt-3 text-[clamp(2.4rem,7vw,4.5rem)] text-espresso">
           {isRequest ? "Request received" : "Booking confirmed"}
         </h1>
         <p className="mx-auto mt-6 max-w-lg leading-relaxed text-muted-foreground">
@@ -181,12 +181,12 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
             : `Thank you, ${first}. We can't wait to serve your guests. We'll send your ${settings.deposit_percent}% deposit link to ${b.customer_email} shortly.`}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs text-espresso">
-            <span className="size-1.5 rounded-full bg-matcha" />
+          <span className="label-caps inline-flex items-center gap-2 rounded-full bg-espresso px-4 py-2 text-[0.62rem] text-cream">
+            <span className="size-1.5 rounded-full bg-sand" />
             {b.status === "request" ? "Awaiting quote" : b.status === "confirmed" ? "Confirmed" : b.status}
           </span>
           {!isRequest && (
-            <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-xs text-muted-foreground capitalize">
+            <span className="label-caps inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-[0.62rem] text-espresso">
               <Clock className="size-3.5" weight="light" />
               {b.payment_status === "unpaid" ? "Deposit pending" : b.payment_status.replace("_", " ")}
             </span>
@@ -194,7 +194,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
         </div>
       </header>
 
-      <div className="mt-16 grid gap-5 md:grid-cols-2">
+      <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card title="Your event">
           <dl>
             <Row k="Date" v={formatEventDate(b.event_date)} />
@@ -240,7 +240,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
 
         <Card title="What happens next">
           <ol className="relative space-y-6 pl-10">
-            <span aria-hidden className="absolute top-2 bottom-2 left-[0.85rem] w-px bg-border" />
+            <span aria-hidden className="absolute top-2 bottom-2 left-[0.85rem] w-px bg-espresso/15" />
             {steps.map((s, i) => (
               <li key={s.t} className="relative">
                 <span
@@ -250,7 +250,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
                 >
                   {i === 0 ? <Check className="size-3.5" weight="bold" /> : i + 1}
                 </span>
-                <p className="text-espresso">{s.t}</p>
+                <p className="font-bold text-espresso">{s.t}</p>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.d}</p>
               </li>
             ))}
@@ -259,7 +259,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
       </div>
 
       {b.notes && (
-        <Card title="Your notes" className="mt-5">
+        <Card title="Your notes" className="mt-6">
           <p className="text-sm leading-relaxed whitespace-pre-line text-espresso/85">{b.notes}</p>
         </Card>
       )}
@@ -277,7 +277,7 @@ function Details({ b, settings }: { b: PublicBooking; settings: Settings }) {
 function Skeleton() {
   return (
     <div className="mx-auto max-w-2xl text-center" aria-busy>
-      <div className="mx-auto size-20 animate-pulse rounded-full bg-secondary" />
+      <div className="mx-auto size-20 animate-pulse rounded-full bg-cream-200" />
       <div className="mx-auto mt-8 h-3 w-32 animate-pulse rounded-full bg-secondary" />
       <div className="mx-auto mt-5 h-14 w-3/4 animate-pulse rounded-2xl bg-secondary/70" />
       <div className="mx-auto mt-6 h-4 w-2/3 animate-pulse rounded-full bg-secondary/70" />
