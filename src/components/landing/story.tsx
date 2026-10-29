@@ -26,15 +26,20 @@ const tabs = [
 ];
 
 const photos = [
-  { src: "/photos/matcha-splash.webp", cls: "left-[4%] top-[12%] -rotate-[8deg] z-10" },
-  { src: "/photos/barista-shirt.webp", cls: "left-1/2 top-0 -translate-x-1/2 rotate-[5deg] z-0" },
-  { src: "/photos/trio-hands.webp", cls: "right-[4%] top-[10%] rotate-[-3deg] z-20" },
+  { src: "/photos/matcha-splash.webp", alt: "Matcha splashing out of a Caprea cup", cls: "left-[4%] top-[12%] -rotate-[8deg]" },
+  { src: "/photos/barista-shirt.webp", alt: "Caprea barista holding takeaway cups", cls: "left-1/2 top-0 -translate-x-1/2 rotate-[5deg]" },
+  { src: "/photos/trio-hands.webp", alt: "Three Caprea drinks raised together", cls: "right-[4%] top-[10%] rotate-[-3deg]" },
 ];
 
-/** A fan of three shoot photos, then the heading, pill tabs with a paragraph each, and a link to the menu. */
+/**
+ * A fan of three shoot photos (tap one to bring it to the front), then the heading, pill tabs with a
+ * paragraph each, and a link to the menu.
+ */
 export function Story() {
   const root = useRef<HTMLElement>(null);
   const [active, setActive] = useState(tabs[0].id);
+  // Stacking order of the photos, back to front.
+  const [order, setOrder] = useState([1, 0, 2]);
   const body = useRef<HTMLParagraphElement>(null);
 
   useGSAP(
@@ -62,6 +67,13 @@ export function Story() {
     { scope: root },
   );
 
+  const bringToFront = (i: number, el: HTMLElement) => {
+    if (order[order.length - 1] === i) return;
+    setOrder((o) => [...o.filter((x) => x !== i), i]);
+    if (!prefersReducedMotion())
+      gsap.fromTo(el, { y: -28, scale: 1.06 }, { y: 0, scale: 1, duration: 0.7, ease: "back.out(1.8)", overwrite: "auto" });
+  };
+
   const choose = (id: string) => {
     setActive(id);
     if (body.current && !prefersReducedMotion()) gsap.fromTo(body.current, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.5 });
@@ -70,21 +82,29 @@ export function Story() {
   return (
     <section ref={root} className="w-full bg-cream px-4 py-16 sm:px-8 sm:py-24 md:px-16 md:py-32 lg:px-24">
       <div className="story-fan relative mx-auto aspect-[4/3.4] w-full max-w-[44rem]">
-        {photos.map((p) => (
-          <div
-            key={p.src}
-            className={cn(
-              "story-card absolute aspect-[3/4] w-[46%] overflow-hidden rounded-[1.25rem] border border-cream bg-cream-200 shadow-[0_30px_60px_-30px_rgba(36,20,15,.55)] sm:rounded-[1.75rem]",
-              p.cls,
-            )}
-          >
-            <Image src={p.src} alt="" fill sizes="(min-width: 768px) 320px, 46vw" className="object-cover" />
-          </div>
-        ))}
+        {photos.map((p, i) => {
+          const front = order[order.length - 1] === i;
+          return (
+            <button
+              key={p.src}
+              type="button"
+              onClick={(e) => bringToFront(i, e.currentTarget)}
+              aria-label={front ? p.alt : `Bring to front: ${p.alt}`}
+              aria-pressed={front}
+              style={{ zIndex: order.indexOf(i) + 1 }}
+              className={cn(
+                "story-card absolute isolate aspect-[3/4] w-[46%] cursor-pointer overflow-hidden rounded-[1.25rem] border border-cream bg-cream-200 shadow-[0_30px_60px_-30px_rgba(36,20,15,.55)] outline-none focus-visible:ring-3 focus-visible:ring-sand sm:rounded-[1.75rem]",
+                p.cls,
+              )}
+            >
+              <Image src={p.src} alt="" fill sizes="(min-width: 768px) 320px, 46vw" className="object-cover" />
+            </button>
+          );
+        })}
       </div>
 
       <div className="story-text mx-auto mt-10 max-w-[1100px] sm:mt-14">
-        <h2 className="story-in display text-[clamp(2.25rem,6vw,4.5rem)] text-espresso">Your café, at your event</h2>
+        <h2 className="story-in display text-[clamp(2.25rem,6vw,4.5rem)] text-espresso">Good coffee, good company</h2>
 
         <div role="tablist" aria-label="About Caprea" className="story-in mt-8 flex flex-wrap gap-1 border-b border-espresso/10 pb-4 sm:max-w-[42rem]">
           {tabs.map((t) => (
