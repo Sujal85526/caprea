@@ -64,7 +64,7 @@ export function CtaBand() {
 
         <div className="relative grid items-center md:grid-cols-[1.25fr_1fr]">
           {/* Cookie stack: above the text on phones, on the right (breaking out of the card) from tablet up */}
-          <div className="relative order-first -mt-20 flex justify-center md:order-last md:-my-14 md:mt-0">
+          <div className="relative order-first -mt-14 flex justify-center md:order-last md:-my-14 md:mt-0">
             <svg aria-hidden viewBox="0 0 24 24" className="cta-spark absolute top-[18%] left-[16%] z-20 size-7 text-sand md:left-[4%]">
               <g className="anim-twinkle" style={{ "--dur": "4.2s" } as CSSProperties}>
                 <path d={SPARK} fill="currentColor" />
@@ -84,7 +84,7 @@ export function CtaBand() {
                     width={644}
                     height={773}
                     sizes="(min-width: 768px) 300px, 200px"
-                    className="h-auto w-[min(52vw,13rem)] drop-shadow-[0_30px_40px_rgba(0,0,0,.45)] select-none md:w-[17rem] lg:w-[19rem]"
+                    className="h-auto w-[min(36vw,9rem)] drop-shadow-[0_30px_40px_rgba(0,0,0,.45)] select-none md:w-[17rem] lg:w-[19rem]"
                     draggable={false}
                   />
                 </div>

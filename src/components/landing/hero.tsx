@@ -67,7 +67,7 @@ export function Hero() {
         </h1>
         <Link
           href="/book"
-          className="hero-cta label-caps group mt-5 inline-flex h-12 items-center gap-2 rounded-md border border-cream/35 bg-cream/10 px-6 text-[0.78rem] tracking-[0.1em] shadow-[0_8px_30px_rgba(36,20,15,.25)] backdrop-blur-md transition-colors duration-300 hover:bg-cream/20 sm:mt-8 sm:h-13 sm:px-8 sm:text-sm"
+          className="hero-cta label-caps group mt-5 inline-flex h-12 items-center gap-2 rounded-none border border-cream/40 bg-cream/[0.05] px-6 text-[0.78rem] tracking-[0.1em] shadow-[0_8px_30px_rgba(36,20,15,.25)] backdrop-blur-sm transition-colors duration-300 hover:bg-cream/15 sm:mt-8 sm:h-13 sm:px-8 sm:text-sm"
         >
           Book your event
           <ArrowRight weight="bold" className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
