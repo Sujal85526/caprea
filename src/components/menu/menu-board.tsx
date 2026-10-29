@@ -74,7 +74,7 @@ function ProductCard({ item }: { item: MenuItem }) {
   const photo = photoFor(item.slug);
   const src = photo ?? item.image_url;
   return (
-    <article className="group flex flex-col rounded-[2rem] bg-linen p-2 shadow-[0_18px_40px_-30px_rgba(54,31,24,.35)]">
+    <article className="group flex flex-col rounded-[2rem] bg-card p-2 shadow-[0_18px_40px_-30px_rgba(54,31,24,.35)]">
       <div className="relative isolate aspect-square overflow-hidden rounded-[1.6rem] bg-cream">
         {src && (
           <Image
