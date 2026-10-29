@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Check, Minus, Plus, WarningCircle } from "@phosphor-icons/react";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { Label as UiLabel } from "@/components/ui/label";
 import type { Catalog } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -17,22 +17,29 @@ export type StepProps = {
 
 /** Shared look for text inputs / textareas / select triggers on the booking page. */
 export const fieldClass =
-  "h-12 rounded-xl border-input bg-card px-4 text-[0.95rem] shadow-none md:text-[0.95rem] placeholder:text-muted-foreground/70";
+  "h-12 rounded-xl border-espresso/10 bg-cream/60 px-4 text-[0.95rem] shadow-none md:text-[0.95rem] placeholder:text-muted-foreground/70 focus-visible:bg-card";
 
-/** Selectable card: white with a thin border; selected = espresso ring + beige fill. */
+/** Selectable card: soft cream with a thin border; selected = espresso ring + raised shadow. */
 export const optionClass = (on: boolean) =>
   cn(
-    "rounded-3xl border bg-card text-left transition-[border-color,box-shadow,background-color] duration-300 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
+    "rounded-[1.5rem] border text-left transition-[border-color,box-shadow,background-color] duration-300 outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
     on
-      ? "border-espresso bg-secondary/45 ring-1 ring-espresso"
-      : "border-border hover:border-sand hover:shadow-[0_20px_50px_-32px_rgba(54,31,24,.45)]",
+      ? "border-espresso bg-cream ring-1 ring-espresso shadow-[0_18px_40px_-28px_rgba(54,31,24,.55)]"
+      : "border-espresso/10 bg-cream/40 hover:border-espresso/30 hover:bg-cream/70",
   );
 
+/** The current step's number, so each step's heading reads "2. Choose your drinks". */
+export const StepNumber = createContext<number | null>(null);
+
 export function StepHeader({ eyebrow, title, children }: { eyebrow: string; title: ReactNode; children?: ReactNode }) {
+  const n = useContext(StepNumber);
   return (
-    <header data-animate className="mb-8 md:mb-10">
-      <p className="eyebrow text-espresso/55">{eyebrow}</p>
-      <h2 className="mt-3 font-sans text-[1.75rem] leading-tight font-semibold tracking-normal text-espresso sm:text-4xl">{title}</h2>
+    <header data-animate className="mb-8 border-b border-espresso/10 pb-6 md:mb-10">
+      <p className="text-espresso/60 italic">{eyebrow}</p>
+      <h2 className="display mt-2 text-[1.65rem] leading-[1.05] text-espresso sm:text-[2.1rem]">
+        {n != null && <span>{n}. </span>}
+        {title}
+      </h2>
       {children && <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-muted-foreground">{children}</p>}
     </header>
   );
@@ -51,7 +58,7 @@ export function FieldError({ id, children }: { id?: string; children?: ReactNode
 export function Label({ htmlFor, children, hint }: { htmlFor?: string; children: ReactNode; hint?: ReactNode }) {
   return (
     <div className="mb-2 flex items-baseline justify-between gap-3">
-      <UiLabel htmlFor={htmlFor} className="text-sm font-medium text-espresso">
+      <UiLabel htmlFor={htmlFor} className="label-caps text-[0.68rem] text-espresso">
         {children}
       </UiLabel>
       {hint && <span className="text-xs text-muted-foreground">{hint}</span>}

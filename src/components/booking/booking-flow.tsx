@@ -29,6 +29,7 @@ import { StepMode } from "./step-mode";
 import { StepPackage } from "./step-package";
 import { StepReview } from "./step-review";
 import { SummaryCard, SummarySheet } from "./summary";
+import { StepNumber } from "./ui";
 
 export type BookingStart = { kind: BookingKind | null; packageId: string | null };
 
@@ -176,7 +177,7 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
 
   return (
     <div ref={rootRef} data-no-tabbar className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] xl:grid-cols-[minmax(0,1fr)_24rem] xl:gap-14">
-      <div className="min-w-0">
+      <div className="min-w-0 rounded-[2rem] bg-card p-5 shadow-[0_30px_70px_-50px_rgba(54,31,24,.45)] sm:p-8 lg:p-10">
         <StepIndicator steps={steps} current={stepIndex} maxReached={maxReached} onJump={goTo} />
 
         <div
@@ -187,12 +188,12 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
           aria-label={`Step ${stepIndex + 1}: ${STEP_LABELS[step]}`}
           className="outline-none"
         >
-          {panels[step]}
+          <StepNumber.Provider value={stepIndex + 1}>{panels[step]}</StepNumber.Provider>
         </div>
 
-        <div className="mt-12 flex items-center justify-between gap-4 border-t pt-8">
+        <div className="mt-12 flex items-center justify-between gap-4 border-t border-espresso/10 pt-8">
           {stepIndex > 0 ? (
-            <Button type="button" variant="outline" size="lg" onClick={back} disabled={pending} className="px-5 sm:px-7">
+            <Button type="button" variant="outline" size="lg" onClick={back} disabled={pending} className="label-caps px-5 text-[0.72rem] sm:px-7">
               <ArrowLeft weight="bold" /> <span className="max-sm:sr-only">Back</span>
             </Button>
           ) : (
@@ -200,7 +201,7 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
           )}
 
           {isLast ? (
-            <Button type="button" size="lg" onClick={submit} disabled={pending} aria-busy={pending} className="min-w-[13rem]">
+            <Button type="button" size="lg" onClick={submit} disabled={pending} aria-busy={pending} className="label-caps min-w-[13rem] text-[0.72rem]">
               {pending ? (
                 <>
                   <CircleNotch weight="bold" className="animate-spin" /> {form.kind === "custom" ? "Sending…" : "Confirming…"}
@@ -214,7 +215,7 @@ export function BookingFlow({ catalog, start }: { catalog: Catalog; start: Booki
           ) : step === "mode" && !form.kind ? (
             <span />
           ) : (
-            <Button type="button" size="lg" onClick={next}>
+            <Button type="button" size="lg" onClick={next} className="label-caps text-[0.72rem]">
               Continue <ArrowRight weight="bold" className="transition-transform duration-300 group-hover/button:translate-x-0.5" />
             </Button>
           )}

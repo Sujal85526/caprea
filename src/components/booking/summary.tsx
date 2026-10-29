@@ -26,14 +26,12 @@ export function SummaryBody({ form, catalog, quote }: Props) {
 
   return (
     <div>
-      <p className="eyebrow text-espresso/55">Your booking</p>
-      <p className="mt-2 font-sans text-xl leading-tight font-semibold tracking-normal text-espresso">
-        {form.kind ? KIND_TITLE[form.kind] : "Getting started"}
-      </p>
+      <p className="display text-[1.4rem] text-espresso">Live price estimate</p>
+      <p className="mt-2 text-espresso/60 italic">{form.kind ? KIND_TITLE[form.kind] : "Getting started"}</p>
 
       {pkg && (
-        <div className="mt-4 flex items-center gap-3 rounded-2xl bg-secondary/70 p-4">
-          <span className="font-sans text-3xl leading-none font-semibold text-espresso">{pkg.guests}</span>
+        <div className="mt-4 flex items-center gap-3 rounded-2xl bg-cream p-4">
+          <span className="display text-3xl text-espresso">{pkg.guests}</span>
           <span className="text-sm text-espresso">
             guests · {pkg.name}
             <span className="block text-xs text-muted-foreground">
@@ -65,7 +63,7 @@ export function SummaryBody({ form, catalog, quote }: Props) {
         </div>
       )}
 
-      <Separator className="my-5" />
+      <Separator className="my-5 bg-espresso/10" />
 
       {quote.lines.length === 0 ? (
         <p className="text-sm text-muted-foreground">Your selections and live price will appear here.</p>
@@ -73,20 +71,20 @@ export function SummaryBody({ form, catalog, quote }: Props) {
         <ul className="space-y-3">
           {quote.lines.map((l, i) => (
             <li key={`${l.label}-${i}`} className="flex items-start justify-between gap-4 text-sm">
-              <span className="min-w-0 text-espresso">
+              <span className="min-w-0 font-bold text-espresso">
                 {l.label}
-                {l.detail && <span className="block text-xs text-muted-foreground">{l.detail}</span>}
+                {l.detail && <span className="block text-xs font-normal text-muted-foreground">{l.detail}</span>}
               </span>
-              <span className="shrink-0 text-espresso tabular-nums">{l.amount == null ? "On request" : aed(l.amount)}</span>
+              <span className="shrink-0 font-bold text-espresso tabular-nums">{l.amount == null ? "On request" : aed(l.amount)}</span>
             </li>
           ))}
         </ul>
       )}
 
-      <div className="mt-5 rounded-2xl bg-secondary/70 p-4">
+      <div className="mt-5 rounded-2xl bg-cream p-4">
         <div className="flex items-baseline justify-between gap-3">
-          <span className="text-sm font-medium text-espresso">{estimate ? "Estimated total" : "Total"}</span>
-          <span className="font-sans text-2xl font-semibold whitespace-nowrap text-espresso tabular-nums">{aed(quote.total)}</span>
+          <span className="display text-sm tracking-[0.06em] text-espresso">{estimate ? "Estimated total" : "Total"}</span>
+          <span className="display text-2xl whitespace-nowrap text-espresso tabular-nums">{aed(quote.total)}</span>
         </div>
         {estimate ? (
           <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
@@ -123,8 +121,8 @@ export function SummaryBody({ form, catalog, quote }: Props) {
 /** Sticky card on desktop. */
 export function SummaryCard(props: Props) {
   return (
-    <aside aria-label="Booking summary" className="sticky top-24 hidden self-start lg:block">
-      <div className="rounded-3xl border bg-card p-7 shadow-[0_24px_60px_-40px_rgba(54,31,24,.35)]">
+    <aside aria-label="Booking summary" className="sticky top-28 hidden self-start lg:block">
+      <div className="rounded-[2rem] bg-card p-7 shadow-[0_30px_70px_-50px_rgba(54,31,24,.45)] xl:p-8">
         <SummaryBody {...props} />
       </div>
     </aside>
@@ -142,7 +140,7 @@ export function SummarySheet(props: Props) {
         <div className="min-w-0">
           <p className="text-xs text-muted-foreground">{estimate ? "Estimated total" : "Total"}</p>
           <p className="flex min-w-0 items-baseline gap-2">
-            <span className="font-sans text-xl leading-tight font-semibold whitespace-nowrap text-espresso tabular-nums">{aed(total)}</span>
+            <span className="display text-xl whitespace-nowrap text-espresso tabular-nums">{aed(total)}</span>
             {!estimate && total > 0 && (
               <span className="truncate text-xs text-muted-foreground">Deposit {aed(deposit)}</span>
             )}
@@ -150,7 +148,7 @@ export function SummarySheet(props: Props) {
         </div>
         <Sheet>
           <SheetTrigger asChild>
-            <Button type="button" variant="outline" className="shrink-0">
+            <Button type="button" variant="outline" className="label-caps shrink-0 border-espresso/20 text-[0.7rem]">
               Summary <CaretUp weight="bold" />
             </Button>
           </SheetTrigger>
