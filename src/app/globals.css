@@ -211,6 +211,71 @@
   }
 }
 
+/* Looping sticker motion for the "Made for your guests" section */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-16px) rotate(calc(var(--r, 0deg) + 9deg));
+  }
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.7) rotate(45deg);
+    opacity: 0.6;
+  }
+}
+@keyframes bubble {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(var(--drift, 0), -180px) scale(1.1);
+    opacity: 0;
+  }
+}
+.anim-bob {
+  animation: bob var(--dur, 5s) ease-in-out var(--delay, 0s) infinite;
+}
+.anim-floaty {
+  animation: floaty var(--dur, 6s) ease-in-out var(--delay, 0s) infinite;
+}
+.anim-spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+.anim-twinkle {
+  transform-box: fill-box;
+  animation: twinkle var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+}
+.anim-bubble {
+  animation: bubble var(--dur, 4s) ease-out var(--delay, 0s) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

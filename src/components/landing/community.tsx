@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { GuestsHero } from "@/components/landing/guests-hero";
 import Link from "next/link";
 import { useRef } from "react";
 import { CaretLeft, CaretRight, Plus } from "@phosphor-icons/react";
@@ -10,8 +11,8 @@ import { photoFor } from "@/lib/photos";
 import type { MenuItem } from "@/lib/types";
 
 /**
- * Espresso section revealed by a circle that grows to fill the screen as you scroll, with a floating photo
- * over the headline and a row of signature-drink cards you can slide through.
+ * Espresso section revealed by a circle that grows to fill the screen as you scroll, with the animated cup
+ * scene under the headline and a row of signature-drink cards you can slide through.
  */
 export function Community({ drinks }: { drinks: MenuItem[] }) {
   const root = useRef<HTMLElement>(null);
@@ -28,19 +29,6 @@ export function Community({ drinks }: { drinks: MenuItem[] }) {
           ease: "none",
           scrollTrigger: { trigger: root.current, start: "top 85%", end: "top 5%", scrub: 0.6 },
         },
-      );
-      gsap.from(".cm-title", {
-        yPercent: 40,
-        autoAlpha: 0,
-        duration: 1,
-        stagger: 0.08,
-        ease: "expo.out",
-        scrollTrigger: { trigger: ".cm-head", start: "top 75%", once: true },
-      });
-      gsap.fromTo(
-        ".cm-photo",
-        { yPercent: 18, rotate: -10 },
-        { yPercent: -6, rotate: -4, ease: "none", scrollTrigger: { trigger: ".cm-head", start: "top bottom", end: "bottom top", scrub: true } },
       );
       gsap.from(".cm-card", {
         y: 50,
@@ -63,18 +51,9 @@ export function Community({ drinks }: { drinks: MenuItem[] }) {
   return (
     <section ref={root} className="relative z-20 w-full bg-espresso-900">
       <div className="cm-circle relative overflow-hidden bg-espresso px-4 pt-24 pb-16 sm:px-8 sm:pt-28 sm:pb-24">
-        <div className="cm-head relative mx-auto flex max-w-5xl flex-col items-center text-center">
-          <p className="cm-title text-lg text-sand italic sm:text-xl">Homegrown in Abu Dhabi</p>
-          <h2 className="mt-3 display text-[clamp(3rem,10vw,7.5rem)] leading-[0.88] text-cream">
-            <span className="cm-title block">Made for</span>
-            <span className="cm-title block">your guests</span>
-          </h2>
-          <div className="cm-photo relative z-10 -mt-6 aspect-[3/4] w-[min(62vw,20rem)] overflow-hidden rounded-[2rem] border-4 border-cream shadow-[0_40px_80px_-30px_rgba(0,0,0,.6)] sm:-mt-10">
-            <Image src="/photos/iced-latte-pour.webp" alt="Iced latte being poured" fill sizes="320px" className="object-cover" />
-          </div>
-        </div>
+        <GuestsHero />
 
-        <div className="mx-auto mt-16 max-w-[1400px] sm:mt-20">
+        <div className="mx-auto mt-6 max-w-[1400px] sm:mt-10">
           <div className="flex flex-col items-center gap-5 text-center">
             <h3 className="display text-[clamp(1.75rem,4vw,2.5rem)] text-cream">
               Our signature
