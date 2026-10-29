@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MenuPage() {
-  const { menu, settings } = await getCatalog();
+  const { menu } = await getCatalog();
 
   return (
     <>
@@ -18,7 +18,7 @@ export default async function MenuPage() {
       <div className="mx-auto max-w-[1400px] px-4 pb-20 sm:px-6 sm:pb-28">
         <MenuBoard items={menu} />
       </div>
-      <CtaBand whatsapp={settings.whatsapp} />
+      <CtaBand />
     </>
   );
 }

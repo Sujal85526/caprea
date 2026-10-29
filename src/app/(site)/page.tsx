@@ -22,7 +22,7 @@ export default async function HomePage() {
       <Community drinks={menu.filter((m) => m.catering_signature)} />
       <Discover fromLabel={fromPrice} />
       <Follow instagram={settings.instagram} />
-      <CtaBand whatsapp={settings.whatsapp} />
+      <CtaBand />
     </>
   );
 }

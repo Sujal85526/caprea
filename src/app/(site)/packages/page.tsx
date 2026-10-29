@@ -98,7 +98,7 @@ export default async function PackagesPage() {
         </div>
       </section>
 
-      <CtaBand whatsapp={settings.whatsapp} />
+      <CtaBand />
     </>
   );
 }
